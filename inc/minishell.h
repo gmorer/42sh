@@ -8,7 +8,8 @@
 # include <sys/time.h>
 # include <sys/resource.h>
 # include <signal.h>
-# include "libft/libft.h"
+# include "libft.h"
+# include "get_next_line.h"
 
 size_t	ft_strstrlen(char **c);
 char**	ft_strstrnew(size_t i);
