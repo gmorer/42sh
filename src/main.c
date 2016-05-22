@@ -36,8 +36,11 @@ int		boucle(char **env)
 			bin = ft_strdup(temp[0]);
 			execve(ft_strjoin("/bin/",bin), temp, env);
 		}
+		ft_putendl("test1");
 		free(test);
-		free(temp);
+		ft_putendl("test2");
+		//free(temp);
+		ft_putendl("test3");
 	}
 		return (1);
 }
