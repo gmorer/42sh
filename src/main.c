@@ -13,28 +13,28 @@
 #include "minishell.h"
 #include <stdio.h>
 
-int		boucle()
+int		boucle(char **env)
 {
 	char	*test;
 	char	**temp;
-	pid_t	father;
+	pid_t	pid;
 	int		exit;
 	char	*bin;
 
 	while(1)
 	{
-		father = fork();
-		if (father > 0)
+		pid = fork();
+		if (pid > 0)
 		{
-			wait(&exit);
+			waitpid(pid, &exit, 0);
 		}
-		if (father == 0)
+		if (pid == 0)
 		{
 			ft_putstr("prompt>");
 			get_next_line(1, &test);
 			temp = ft_strsplit(test, ' ');
 			bin = ft_strdup(temp[0]);
-			execve(ft_strjoin("/bin/",bin), temp, NULL);
+			execve(ft_strjoin("/bin/",bin), temp, env);
 		}
 		free(test);
 		free(temp);
@@ -42,10 +42,11 @@ int		boucle()
 		return (1);
 }
 
-int main()
+int main(int argc, char **argv, char **env)
 {
-
-	boucle();
+	(void)argv;
+	(void)argc;
+	boucle(env);
 	ft_putendl("test3");
 	return (0);
 }
