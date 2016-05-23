@@ -11,9 +11,13 @@
 # include "libft.h"
 # include "get_next_line.h"
 
+int		redirectfunction(char **argv, char **env);
+void	ft_strstrfree(char **str);
+int		ft_exec(char *bin, char **temp, char **env);
+char	*toexec(char **env, char *argv);
 size_t	ft_strstrlen(char **c);
-char**	ft_strstrnew(size_t i);
-char**	ft_strstrjoin(char **s1, char **s2);
-char**	ft_strstrdup(char **tab);
-char**	ft_strstrdelfirst(char **c);
+char	**ft_strstrnew(size_t i);
+char	**ft_strstrjoin(char **s1, char **s2);
+char	**ft_strstrdup(char **tab);
+char	**ft_strstrdelfirst(char **c);
 #endif
