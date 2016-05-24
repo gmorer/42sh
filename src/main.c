@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/23 17:32:39 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/05/24 17:48:31 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int		boucle(char **env)
 	char	*bin;
 	int		boucle;
 
+	//char	*yolo = "test $HOME yolo";
+	//ft_putendl(ft_strstr(yolo, "$HOME"));
 	boucle = 42;
 	while(boucle == 42)
 	{
@@ -41,17 +43,14 @@ int		boucle(char **env)
 		if(test[0] && boucle == 42)
 		{
 			temp = ft_strsplit(test, ' ');
-			bin = toexec(env, temp[0]);
-			if (bin == NULL)
+			temp = argvclean(temp, env);
+			if(redirectfunction(temp, env) == 0)
 			{
-				ft_putendl("test");
-				redirectfunction(temp, env);
-				ft_putendl("no binary file");
-			}
-			else
-			{
-				ft_putendl("test1");
-				ft_exec(bin, temp, env);
+				bin = toexec(env, temp[0]);
+				if (bin == NULL)
+					ft_putendl("no binary file");
+				else
+					ft_exec(bin, temp, env);
 			}
 			ft_strstrfree(temp);
 		}

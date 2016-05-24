@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/23 17:36:49 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/05/24 17:24:06 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ char	*getexec(char *path, char *file)
 	closedir(dir);
 	if (ofile)
 	{
-		ft_putstr(path);
-		ft_putendl(ofile->d_name);
+		//ft_putstr(path);
+		//ft_putendl(ofile->d_name);
 		return(path);
 	}
 	return (NULL);

@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2016/05/23 17:27:38 by gmorer           ###   ########.fr        #
+#    Updated: 2016/05/24 17:14:53 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ CFILES = main.c\
 		 	libstrstr.c\
 			get_next_line.c\
 			getbin.c\
-			builtin.c
+			builtin.c\
+			libenv.c\
+			argv.c
 
 OFILES = $(CFILES:.c=.o)
 HFILES = inc/minishell.h libft/libft.h

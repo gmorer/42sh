@@ -11,6 +11,10 @@
 # include "libft.h"
 # include "get_next_line.h"
 
+char	**argvclean(char **argv, char **env);
+char	*getenvline(char **env, char *argv);
+char	**getline(char **env, char *argv);
+int		casenofor(char **env, char *argv);
 int		redirectfunction(char **argv, char **env);
 void	ft_strstrfree(char **str);
 int		ft_exec(char *bin, char **temp, char **env);
