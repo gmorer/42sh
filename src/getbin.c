@@ -27,11 +27,14 @@ char	*getexec(char *path, char *file)
 	DIR				*dir;
 	struct dirent	*ofile;
 
+	(void)file;
 	dir = opendir(path);
+	if(dir == NULL)
+		return (NULL);
 	while ((ofile = readdir(dir)) && ft_strcmp(ofile->d_name, file))
 		;
 	closedir(dir);
-	if (ofile)
+	if (ofile && ofile->d_name[0] != '.')
 	{
 		//ft_putstr(path);
 		//ft_putendl(ofile->d_name);
@@ -47,19 +50,13 @@ char	*toexec(char **env, char *argv)
 	size_t	len;
 	char	*temp;
 
-	path = getline(env, "PATH=");
+	path = ft_strsplit(getenvline(env, "PATH="), ':');
 	len = ft_strlen(path[0]);
-	i = 0;
-	while (i < len - 5)
-	{
-		path[0][i] = path[0][i + 5];
-		i++;
-	}
-	path[0][i] = '\0';
 //	ft_putendl("pathenv = ");
 //	ft_putmap(path);
 	len = ft_strstrlen(path);
 	i = 0;
+	//ft_putendl(path[i]);
 	while(i < len && getexec(path[i], argv) == NULL)
 		i++;
 	if (i == len)

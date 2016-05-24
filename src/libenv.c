@@ -40,6 +40,6 @@ char	*getenvline(char **env, char *argv)
 	if (i == x)
 		return (NULL);
 	rslt = ft_strnew(ft_strlen(env[i]) - ft_strlen(argv));
-	rslt = ft_strdup(env[i] + ft_strlen(argv));
+	rslt = ft_strcpy(rslt , &env[i][ft_strlen(argv)]);
 	return (rslt);
 }
