@@ -11,6 +11,7 @@
 # include "libft.h"
 # include "get_next_line.h"
 
+char	*rmchar(char *str, size_t i);
 char	**argvclean(char **argv, char **env);
 char	*getenvline(char **env, char *argv);
 char	**getline(char **env, char *argv);
