@@ -6,11 +6,83 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/25 17:11:33 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/05/26 16:44:56 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**ft_strstradd(char *str, char **tab)
+{
+	char **rslt;
+	int i;
+
+	i = 0;
+	rslt = ft_strstrnew(ft_strstrlen(tab) + 1);
+	while (tab[i] != NULL)
+	{
+		rslt[i] = (tab[i]);
+		i++;
+	}
+	rslt[i] = str;
+	i = 0;
+	//free(tab);
+	return (rslt);
+}
+
+
+char	**argvsplit(char *argv)
+{
+	char	**rslt;
+	int		test;
+	int		i;
+	int		start;
+
+	start = 0;
+	i = 0;
+	test = 0;
+	rslt = ft_strstrnew(1);
+	while (argv[i])
+	{
+		while (argv[i] && argv[i] == ' ' && argv[i - 1] != '\\')
+			i++;
+		if(argv[i] == '"' && test == 0)
+		{
+			test = 1;
+			i++;//
+		}
+		else if(argv[i] == '"' && test == 1)
+		{
+			test = 0;
+			i++;
+		}
+		start = i;
+		while(argv[i] && (argv[i] != ' ' || (test == 1 && argv[i] == ' ' ) || (argv[i] == ' ' && argv[i - 1] == '\\' && test != 1)))
+		{
+			if(argv[i] == '"' && test == 0)
+			{
+				test = 1;
+				i++;
+			}
+			else if(argv[i] == '"' && test == 1)
+			{
+				test = 0;
+				i++;
+			}
+			i++;
+		}
+		if(argv[i - 1] == '\\')
+			i += 1;
+		rslt = ft_strstradd(ft_strndup(argv + start, i - start), rslt);
+	}
+	i = 0;
+	while(rslt[i])
+	{
+		rslt[i] = rmchar(rslt[i], '\\');
+		i++;
+	}
+	return (rslt);
+}
 
 char	*charadd(char *str, char c)
 {

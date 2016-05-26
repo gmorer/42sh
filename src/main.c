@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/24 17:48:31 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/05/26 16:54:18 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,10 @@ int		boucle(char **env)
 		ft_strcmp(test, "exit") == 0 ? boucle = 0 : 0;
 		if(test[0] && boucle == 42)
 		{
-			temp = ft_strsplit(test, ' ');
+			//temp = ft_strsplit(test, ' ');
+			temp = argvsplit(test);
 			temp = argvclean(temp, env);
-			if(redirectfunction(temp, env) == 0)
+			if(redirectfunction(temp, &env) == 0)
 			{
 				bin = toexec(env, temp[0]);
 				if (bin == NULL)
@@ -65,6 +66,9 @@ int		boucle(char **env)
 
 int main(int argc, char **argv, char **env)
 {
+	char	**envdup;
+
+	envdup = ft_strstrdup(env);
 	(void)argv;
 	(void)argc;
 	boucle(env);

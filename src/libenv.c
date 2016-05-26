@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 10:52:08 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/25 17:10:08 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/05/26 17:35:44 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ int		casenofor(char **env, char *argv)
 
 	n = ft_strlen(argv);
 	rslt = 0;
-	while(ft_strnstr(env[rslt], argv, n) == NULL)
+	while(env[rslt] && ft_strnstr(env[rslt], argv, n) == NULL)
 		rslt++;
+	if (!env[rslt])
+		return (0);
 	return (rslt);
 }
 
@@ -50,31 +52,70 @@ char	*getenvline(char **env, char *argv)
 	return (rslt);
 }
 
-char	*rmchar(char *str, size_t i)
+char	*rmno(char *str, int x)
 {
-	char	*rslt;
-	size_t	n;
+	int i;
 
-	ft_putendl("test");
-	if(ft_strlen(str) > i)
-		return (NULL);
-	ft_putendl("test");
-	rslt = ft_strnew(ft_strlen(str));
+	//ft_putendl(str);
+	i = x;
+	while (str[i])
+	{
+		str[i] = str[i + 1];
+	i++;
+	}
+	//str[i - 1] = '\0';
+	//ft_putendl(str);
+	return (str);
+}
+
+char	*rmchar(char *str, char c)
+{
+	int i;
+
+	(void)c;
+	i = 0;
+	while (str[i])
+	{
+		if(str[i] == '\\' && str[i - 1] == '\\' && str[i + 1] == '\\')
+		{
+			str = rmno(str, i);
+		}
+		else if(str[i] == '\\')
+		{
+			if(str[i + 1] == 'n')
+			{
+				str = rmno(str, i);
+				str[i] = '\n';
+			}
+			else
+			{
+				str = rmno(str, i);
+				str = rmno(str, i);
+			}
+		}
+		if(str[i] == '"' && str[i - 1] != '\\' && str[i + 1] != '\\')
+			str = rmno(str, i);
+		i++;
+	}
+	return (str);
+
+	
+	
+	
+	/*
+	size_t	n;
+	size_t	rm;
+
 	n = 0;
-	ft_putendl("test");
-	while ( n < i && str[n])
+	rm = 0;
+	while (str[n + rm])
 	{
-		rslt[n] = str[n];
+		if(str[n + rm] == c && str[n + rm - 1] != '\\')
+			rm++;
+		str[n] = str[n + rm];
 		n++;
 	}
-	ft_putendl("test");
-	n++;
-	while (str[n + 1])
-	{
-		rslt[n] = str[n + 1];
-		n++;
-	}
-	ft_putendl("test");
-	rslt[n] = '\0';
-	return (rslt);
+	if (rm > 0)
+		str[n] = '\0';
+	return (str);*/
 }
