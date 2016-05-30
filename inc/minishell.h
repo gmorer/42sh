@@ -11,6 +11,7 @@
 # include "libft.h"
 # include "get_next_line.h"
 
+char		**ft_strstrdelone(int i, char **str)	;
 char	**ft_strstradd(char *str, char **argv);
 char	**argvsplit(char *argv);
 char	*rmchar(char *str, char c);
@@ -20,7 +21,7 @@ char	**getline(char **env, char *argv);
 int		casenofor(char **env, char *argv);
 int		redirectfunction(char **argv, char ***env);
 void	ft_strstrfree(char **str);
-int		ft_exec(char *bin, char **temp, char **env);
+int		ft_exec(char *bin, char **temp, char ***env);
 char	*toexec(char **env, char *argv);
 size_t	ft_strstrlen(char **c);
 char	**ft_strstrnew(size_t i);

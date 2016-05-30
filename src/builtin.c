@@ -6,14 +6,14 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/26 17:56:14 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/05/30 17:46:30 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
-int		ft_cd(char **argv, char **env)
+static int		ft_cd(char **argv, char **env)
 {
 	(void)env;
 	if (ft_strstrlen(argv) > 2)
@@ -30,10 +30,10 @@ int		ft_cd(char **argv, char **env)
 	}
 	env[casenofor(env, "OLDPWD=")] = ft_strjoin("OLDPWD=", getenvline(env, "PWD="));
 	env[casenofor(env, "PWD=")] = ft_strjoin("PWD=", getcwd(NULL,0));
-	return (1);
+	return (0);
 }
 
-int		ft_setenv(char	**argv, char ***env)
+static int		ft_setenv(char	**argv, char ***env)
 {
 	int i;
 
@@ -43,30 +43,61 @@ int		ft_setenv(char	**argv, char ***env)
 		ft_putendl("setenv: bad usage");
 		return (-1);
 	}
-	if((i = casenofor(*env, argv[1])) == 0)
+	if((i = casenofor(*env, argv[1])) == -1)
 		*env = ft_strstradd(ft_strjoin(ft_strjoin(argv[1], "="), argv[2]), *env);
 	else
 	{
 		(*env)[i] = ft_strjoin(ft_strjoin(argv[1], "="), argv[2]);
 	}
-		ft_putnbr(i - 1);
-	return (1);
+	return (0);
+}
+
+char		**ft_strstrdelone(int i, char **str)
+{
+	i++;
+	while(str[i])
+	{
+		str[i - 1] = str[i];
+		i++;
+	}
+	str[i - 1] = NULL;
+	return (str);
+}
+
+static int		ft_unsetenv(char **argv, char ***env)
+{
+	int i;
+
+	if (ft_strstrlen(argv) != 2)
+	{
+		ft_putendl("unsetenv: bad usage\nusage: unsetenv [environement varibale]");
+		return (1);
+	}
+	if ((i = casenofor(*env, argv[1])) == -1)
+	{
+		ft_putstr("unsetenv: no variable ");
+		ft_putstr(argv[1]);
+		ft_putendl(" in the environement");
+		return (1);
+	}
+	*env = ft_strstrdelone(i, *env);
+	return (0);
 }
 
 int		redirectfunction(char **argv, char ***env)
 {
 	int result;
 
-	result = 0;
+	result = -1;
 	if(ft_strcmp("cd", argv[0]) == 0)
 		result = ft_cd(argv, *env);
 	if(ft_strcmp("setenv", argv[0]) == 0)
-		result = ft_setenv(argv, env);/*
-	if(ft_strcmp("unsetev", argv[0]) == 0)
-		result = ft_unsetenv(argv, env);*/
+		result = ft_setenv(argv, env);
+	if(ft_strcmp("unsetenv", argv[0]) == 0)
+		result = ft_unsetenv(argv, env);
 	if(ft_strcmp("env", argv[0]) == 0)
 	{
-		result = 1;
+		result = 0;
 		ft_putmap(*env);
 	}
 	return (result);

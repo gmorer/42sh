@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/26 16:54:18 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/05/30 17:45:09 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,33 +25,44 @@ void	ft_strstrfree(char **str)
 	free(str);
 }
 
-int		boucle(char **env)
+static int		boucle(char **env)
 {
 	char	*test;
 	char	**temp;
 	char	*bin;
 	int		boucle;
+	int		returnvalue;
 
+	returnvalue = 0;
 	//char	*yolo = "test $HOME yolo";
 	//ft_putendl(ft_strstr(yolo, "$HOME"));
 	boucle = 42;
 	while(boucle == 42)
 	{
+		ft_putchar('[');
+		ft_putnbr(returnvalue);
+		ft_putchar(']');
 		ft_putstr("prompt -> ");
 		get_next_line(1, &test);
 		ft_strcmp(test, "exit") == 0 ? boucle = 0 : 0;
-		if(test[0] && boucle == 42)
+		temp = argvsplit(test);
+		temp = argvclean(temp, env);
+		if(temp[0] && boucle == 42)
 		{
 			//temp = ft_strsplit(test, ' ');
-			temp = argvsplit(test);
-			temp = argvclean(temp, env);
-			if(redirectfunction(temp, &env) == 0)
+			//temp = argvsplit(test);
+			//temp = argvclean(temp, env);
+			if((returnvalue = (redirectfunction(temp, &env))) == -1)
 			{
 				bin = toexec(env, temp[0]);
+				//ft_putendl(bin);
 				if (bin == NULL)
+				{
+					returnvalue = 1;
 					ft_putendl("no binary file");
+				}
 				else
-					ft_exec(bin, temp, env);
+					returnvalue = ft_exec(bin, temp, &env);
 			}
 			ft_strstrfree(temp);
 		}

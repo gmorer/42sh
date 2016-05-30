@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2016/05/24 17:14:53 by gmorer           ###   ########.fr        #
+#    Updated: 2016/05/30 12:12:01 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ $(NAME): $(OBJ)
 
 debug: $(OBJ)
 		make -C libft
-		$(CC) -g $(CFLAGS) $(OBJ) libft/libft.a -o $(NAME)
+		$(CC) -g -arch x86_64  $(CFLAGS) $(OBJ) libft/libft.a -o $(NAME)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
 		mkdir -p $(OPATH)

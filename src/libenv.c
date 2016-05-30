@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 10:52:08 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/26 17:35:44 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/05/30 17:44:49 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,33 @@ int		casenofor(char **env, char *argv)
 	while(env[rslt] && ft_strnstr(env[rslt], argv, n) == NULL)
 		rslt++;
 	if (!env[rslt])
-		return (0);
+		return (-1);
 	return (rslt);
+}
+
+static int		envtest(char *str, char *test)
+{
+	size_t	len;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	len = ft_strlen(str);
+	while(test[i] && test[i] != '=')
+		i++;
+	if(str[ft_strlen(str) - 1] == '=')
+		i++;
+	tmp = ft_strndup(test, i);
+	if(ft_strcmp(tmp, str) == 0)
+	{
+		free(tmp);
+		return (1);
+	}
+	else
+	{
+		free(tmp);
+		return (0);
+	}
 }
 
 char	*getenvline(char **env, char *argv)
@@ -37,12 +62,11 @@ char	*getenvline(char **env, char *argv)
 	i = 0;
 	rslt = NULL;
 	n = ft_strlen(argv);
-	while(i < x &&ft_strnstr(env[i], argv, n) == NULL)
+	while(i < x &&  envtest(argv, env[i]) == 0)
 		i++;
 	if (i == x)
 	{
-		ft_putstr("bad enviroement variable: ");
-		ft_putendl(argv);
+		//ft_putstr("bad enviroement variable: ");
 		return (NULL);
 	}
 	if(argv[n - 1] != '=')
@@ -52,7 +76,7 @@ char	*getenvline(char **env, char *argv)
 	return (rslt);
 }
 
-char	*rmno(char *str, int x)
+static char	*rmno(char *str, int x)
 {
 	int i;
 

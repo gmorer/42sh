@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/24 17:24:06 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/05/30 17:46:02 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	**getline(char **env, char *argv)
 	return(ft_strsplit(strstr(env[i], argv), ':'));
 }
 
-char	*getexec(char *path, char *file)
+static char	*getexec(char *path, char *file)
 {
 	DIR				*dir;
 	struct dirent	*ofile;
@@ -33,9 +33,9 @@ char	*getexec(char *path, char *file)
 		return (NULL);
 	while ((ofile = readdir(dir)) && ft_strcmp(ofile->d_name, file))
 		;
-	closedir(dir);
 	if (ofile && ofile->d_name[0] != '.')
 	{
+		closedir(dir);
 		//ft_putstr(path);
 		//ft_putendl(ofile->d_name);
 		return(path);
@@ -50,6 +50,10 @@ char	*toexec(char **env, char *argv)
 	size_t	len;
 	char	*temp;
 
+	if(casenofor(env, "PATH") == -1)
+	{
+		return (NULL);
+	}
 	path = ft_strsplit(getenvline(env, "PATH="), ':');
 	len = ft_strlen(path[0]);
 //	ft_putendl("pathenv = ");
@@ -66,17 +70,33 @@ char	*toexec(char **env, char *argv)
 	return (ft_strjoin(temp, argv));
 }
 
-int		ft_exec(char *bin, char **temp, char **env)
+int		ft_exec(char *bin, char **temp, char ***env)
 {
 	int		exit;
 	pid_t	pid;
+	int		i;
 
+	exit = 1;
 	pid = fork();
 	if (pid > 0)
 	{
 		waitpid(pid, &exit, 0);
 	}	
 	if (pid == 0)
-		execve(bin, temp, env);
-	return (1);
+		execve(bin, temp, *env);
+	i = casenofor(*env, "_=");
+	if(i > -1)
+	{
+		//free((*env)[i]);
+		(*env)[i] = ft_strjoin("_=", bin);
+	}
+	else
+	{
+		*env = ft_strstradd(ft_strjoin("_=", bin), *env);
+	}
+	if (WIFEXITED(exit))
+		return (WEXITSTATUS(exit));
+	if (WIFSIGNALED(exit))
+		return (WTERMSIG(exit));
+	return (exit);
 }
