@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/30 17:45:09 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/05/31 17:42:17 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,19 @@ static int		boucle(char **env)
 	boucle = 42;
 	while(boucle == 42)
 	{
+		test = NULL;
 		ft_putchar('[');
 		ft_putnbr(returnvalue);
 		ft_putchar(']');
 		ft_putstr("prompt -> ");
 		get_next_line(1, &test);
+		if(test[0])
+		{
 		ft_strcmp(test, "exit") == 0 ? boucle = 0 : 0;
 		temp = argvsplit(test);
 		temp = argvclean(temp, env);
-		if(temp[0] && boucle == 42)
+		}
+		if(test[0] && temp[0] && boucle == 42)
 		{
 			//temp = ft_strsplit(test, ' ');
 			//temp = argvsplit(test);
@@ -62,7 +66,10 @@ static int		boucle(char **env)
 					ft_putendl("no binary file");
 				}
 				else
+				{
 					returnvalue = ft_exec(bin, temp, &env);
+					free(bin);
+				}
 			}
 			ft_strstrfree(temp);
 		}
@@ -71,7 +78,8 @@ static int		boucle(char **env)
 		//ft_putendl("test2");
 		//ft_putendl("test3");
 	}
-		return (1);
+	ft_strstrfree(temp);
+	return (1);
 }
 
 
@@ -82,6 +90,7 @@ int main(int argc, char **argv, char **env)
 	envdup = ft_strstrdup(env);
 	(void)argv;
 	(void)argc;
-	boucle(env);
+	boucle(envdup);
+	ft_strstrfree(envdup);
 	return (0);
 }

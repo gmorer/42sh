@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/30 14:57:03 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/05/31 17:43:37 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ char	**ft_strstradd(char *str, char **tab)
 		i++;
 	}
 	rslt[i] = str;
-	i = 0;
-	//free(tab);
+	rslt[i + 1] = NULL;
+	//ft_strstrfree(tab);
+	free(tab);
 	return (rslt);
 }
 
@@ -85,6 +86,7 @@ static char	*charadd(char *str, char c)
 		rslt[i] = str[i];
 		i++;
 	}
+	free(str);
 	rslt[i] = c;
 	rslt[i + 1] = '\0';
 	return (rslt);
@@ -96,6 +98,8 @@ static char	*argvtest(char *str, char **env)
 	size_t	i;
 	char	*rslt;
 	size_t	l;
+	char	*temp;
+	char	*temp2;
 
 	rslt = ft_strnew(1);
 	l = 0;
@@ -103,33 +107,55 @@ static char	*argvtest(char *str, char **env)
 	len = ft_strlen(str);
 	while (i < len)
 	{
-		if (str[i] == '~' && str[i - 1] != '\\' && getenvline(env, "HOME"))
-			rslt = ft_strjoin(rslt, getenvline(env, "HOME="));
-		else
+		temp = getenvline(env, "HOME=");
+		if (str[i] == '~' && str[i - 1] != '\\' && temp)
+		{
+			temp2 = ft_strdup(rslt);
+			free(rslt);
+			rslt = ft_strjoin(temp2, temp);
+			free(temp2);
+		}
+			else
 			rslt = charadd(rslt, str[i]);
-		if (str[i] == '$' && str[i + 1] && str[i - 1] != '\\')
+			free(temp);
+		if ((i < 2 && str[i] == '$' && str[i + 1]) ||(i > 1 && str[i] == '$' &&
+					str[i + 1] && str[i - 1] != '\\'))
 		{
 			if(str[i + 1] == '(')
 			{
 				while(str[i + l] && str[i + l] != ')')
 					l++;
-				if( getenvline(env, ft_strndup(str + i + 2, (int)l - 2)) == NULL)
+				temp2 = ft_strndup(str + (int)i + 2, (int)l - 2);
+				temp = getenvline(env, temp2);
+				free(temp2);
+				if(temp == NULL)
 				{
 					ft_putendl("Undefined variable");
 					return (NULL);
 				}
-				rslt = ft_strjoin(ft_strndup(str, (int)i) , getenvline(env, ft_strndup(str + (int)i + 2, (int)l - 2)));
+				free(rslt);
+				temp2 = ft_strndup(str, (int)i);
+				rslt = ft_strjoin(temp2 , temp);
+				free(temp2);
+				free(temp);
 				i += l;
 			}
 			else
 			{
 				l = ft_strlen(str + i);
-				if( getenvline(env, ft_strndup(str + i + 1, (int)l - 1)) == NULL)
+				temp2 = ft_strndup(str + i + 1, (int)l - 1);
+				temp = getenvline(env, temp2);
+				free(temp2);
+				if(temp == NULL)
 				{
 					ft_putendl("Undefined variable");
 					return (NULL);
 				}
-				rslt = ft_strjoin(ft_strndup(str, (int)i), getenvline(env, ft_strndup(str + i + 1, (int)l - 1)));
+				free(rslt);
+				temp2 = ft_strndup(str, (int)i);
+				rslt = ft_strjoin(temp2, temp);
+				free(temp2);
+				free(temp);
 				i += l;
 			}
 		}/*
@@ -154,5 +180,6 @@ char	**argvclean(char **argv, char **env)
 		rslt[i] = argvtest(argv[i], env);
 		i++;
 	}
+	ft_strstrfree(argv);
 	return(rslt);
 }

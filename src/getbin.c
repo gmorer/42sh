@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/30 17:46:02 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/05/31 17:13:34 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static char	*getexec(char *path, char *file)
 		//ft_putendl(ofile->d_name);
 		return(path);
 	}
+	closedir(dir);
 	return (NULL);
 }
 
@@ -49,12 +50,15 @@ char	*toexec(char **env, char *argv)
 	size_t	i;
 	size_t	len;
 	char	*temp;
+	char	*temp2;
 
 	if(casenofor(env, "PATH") == -1)
 	{
 		return (NULL);
 	}
-	path = ft_strsplit(getenvline(env, "PATH="), ':');
+	temp = getenvline(env, "PATH=");
+	path = ft_strsplit(temp, ':');
+	free(temp);
 	len = ft_strlen(path[0]);
 //	ft_putendl("pathenv = ");
 //	ft_putmap(path);
@@ -67,7 +71,9 @@ char	*toexec(char **env, char *argv)
 		return (NULL);
 	temp = ft_strjoin(path[i], "/");
 	ft_strstrfree(path);
-	return (ft_strjoin(temp, argv));
+	temp2 = ft_strjoin(temp, argv);
+	free(temp);
+	return (temp2);
 }
 
 int		ft_exec(char *bin, char **temp, char ***env)
@@ -87,7 +93,7 @@ int		ft_exec(char *bin, char **temp, char ***env)
 	i = casenofor(*env, "_=");
 	if(i > -1)
 	{
-		//free((*env)[i]);
+		free((*env)[i]);
 		(*env)[i] = ft_strjoin("_=", bin);
 	}
 	else
