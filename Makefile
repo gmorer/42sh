@@ -39,7 +39,7 @@ $(NAME): $(OBJ)
 
 debug: $(OBJ)
 		make -C libft
-		$(CC) -g -arch x86_64  $(CFLAGS) $(OBJ) libft/libft.a -o $(NAME)
+		$(CC) -g  $(CFLAGS) $(OBJ) libft/libft.a -o $(NAME)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
 		mkdir -p $(OPATH)

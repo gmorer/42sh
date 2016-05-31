@@ -79,6 +79,7 @@ static int		boucle(char **env)
 		//ft_putendl("test3");
 	}
 	ft_strstrfree(temp);
+	ft_strstrfree(env);
 	return (1);
 }
 
@@ -91,6 +92,5 @@ int main(int argc, char **argv, char **env)
 	(void)argv;
 	(void)argc;
 	boucle(envdup);
-	ft_strstrfree(envdup);
 	return (0);
 }

@@ -29,7 +29,7 @@ static int		ft_cd(char **argv, char **env)
 		free(temp);
 		ft_putstr("cd: bad directory: ");
 		ft_putendl(argv[1]);
-		return (-1);
+		return (1);
 	}
 	free(temp);
 	temp = getenvline(env, "PWD=");
