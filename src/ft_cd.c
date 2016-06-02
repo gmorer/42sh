@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:20:25 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/02 17:44:55 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/02 18:04:57 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ int		ft_cd(char **argv, char ***env)
 		oldpwd = getcwd(NULL, 0);
 	if((argv[1] ? chdir(argv[1]) : chdir(temp)) == -1)
 	{
-		free(oldpwd);
-		free(temp);
 		ft_putstr("cd: bad directory: ");
 		ft_putendl(argv[1]);
+		free(oldpwd);
+		free(temp);
 		return (1);
 	}
 	free(temp);
