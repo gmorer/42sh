@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/31 17:43:37 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/02 13:03:37 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,13 @@ static char	*argvtest(char *str, char **env)
 	while (i < len)
 	{
 		temp = getenvline(env, "HOME=");
-		if (str[i] == '~' && str[i - 1] != '\\' && temp)
+		if (str[i] == '~' && str[i - 1] != '\\')
 		{
+		if(!temp)
+		{
+			ft_putendl("No $home variable set.");
+			return(ft_strdup(""));
+		}
 			temp2 = ft_strdup(rslt);
 			free(rslt);
 			rslt = ft_strjoin(temp2, temp);
@@ -158,9 +163,7 @@ static char	*argvtest(char *str, char **env)
 				free(temp);
 				i += l;
 			}
-		}/*
-		if(str[i] == '\\')
-			rslt = rmchar(rslt, (size_t)i);*/
+		}
 		i++;
 	}
 	return (rslt);

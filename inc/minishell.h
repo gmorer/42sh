@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
+/*   Updated: 2016/06/01 14:37:55 by gmorer           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <sys/types.h>
@@ -11,7 +23,8 @@
 # include "libft.h"
 # include "get_next_line.h"
 
-char		**ft_strstrdelone(int i, char **str)	;
+int		ft_cd(char **argv, char ***env);
+char	**ft_strstrdelone(int i, char **str)	;
 char	**ft_strstradd(char *str, char **argv);
 char	**argvsplit(char *argv);
 char	*rmchar(char *str, char c);

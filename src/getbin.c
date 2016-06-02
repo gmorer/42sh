@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/31 17:13:34 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/01 15:26:36 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ char	*toexec(char **env, char *argv)
 	while(i < len && getexec(path[i], argv) == NULL)
 		i++;
 	if (i == len)
+	{
+		ft_strstrfree(path);
 		return (NULL);
+	}
 	temp = ft_strjoin(path[i], "/");
 	ft_strstrfree(path);
 	temp2 = ft_strjoin(temp, argv);
