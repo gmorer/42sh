@@ -77,10 +77,7 @@ static int		boucle(char **env)
 	while(boucle == 42)
 	{
 		test = NULL;
-		ft_putchar('[');
-		ft_putnbr(returnvalue);
-		ft_putchar(']');
-		ft_putstr("prompt -> ");
+		prompt(env, returnvalue);
 		get_next_line(1, &test);
 		if(test[0])
 		{

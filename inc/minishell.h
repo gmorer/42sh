@@ -23,6 +23,7 @@
 # include "libft.h"
 # include "get_next_line.h"
 
+void	prompt(char **env, int returnvalue);
 int		ft_setenv(char	**argv, char ***env);
 int		ft_cd(char **argv, char ***env);
 char	**ft_strstrdelone(int i, char **str)	;
