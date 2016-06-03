@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/01 15:26:36 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/03 14:23:41 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,12 @@ int		ft_exec(char *bin, char **temp, char ***env)
 	pid_t	pid;
 	int		i;
 
+	if(access(bin, X_OK) == -1)
+	{
+		ft_putstr(bin);
+		ft_putendl(": Permission denied.");
+		return(1);
+	}
 	exit = 1;
 	pid = fork();
 	if (pid > 0)

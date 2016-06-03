@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/31 17:42:17 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/03 16:58:02 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,43 @@ void	ft_strstrfree(char **str)
 		i++;
 	}
 	free(str);
+}
+
+int		actuel_folder(char **str, char **env)
+{
+	char *temp;
+	if (str && str[0] && str[0][0] && str[0][1] && str[0][0] == '.' && str[0][1] == '/')
+	{
+		temp = ft_strdup(str[0] + 2);
+		free(str[0]);
+		str[0] = temp;
+		if(access(str[0], F_OK) == -1)
+		{
+			ft_putstr("./");
+			ft_putstr(str[0]);
+			ft_putendl(": Command not found.");
+			return (1);
+		}
+		return (ft_exec(str[0], str, &env));
+	}
+	return (-1);
+}
+
+static void		returnvaluetoenv(int returnvalue, char ***env)
+{
+	char	**temp;
+
+	//temp = NULL;
+	temp = ft_strstrnew(3);
+	temp[0] = ft_strdup("setenv");
+	temp[1] = ft_strdup("?");
+	temp[2] = ft_itoa(returnvalue);
+	temp[3] = NULL;
+	ft_setenv(temp, env);
+	free(temp[0]);
+	free(temp[1]);
+	free(temp[2]);
+	free(temp);
 }
 
 static int		boucle(char **env)
@@ -47,7 +84,6 @@ static int		boucle(char **env)
 		get_next_line(1, &test);
 		if(test[0])
 		{
-		ft_strcmp(test, "exit") == 0 ? boucle = 0 : 0;
 		temp = argvsplit(test);
 		temp = argvclean(temp, env);
 		}
@@ -56,6 +92,7 @@ static int		boucle(char **env)
 			//temp = ft_strsplit(test, ' ');
 			//temp = argvsplit(test);
 			//temp = argvclean(temp, env);
+			if((returnvalue = (actuel_folder(temp, env)) == -1))
 			if((returnvalue = (redirectfunction(temp, &env))) == -1)
 			{
 				bin = toexec(env, temp[0]);
@@ -72,6 +109,7 @@ static int		boucle(char **env)
 				}
 			}
 			ft_strstrfree(temp);
+			returnvaluetoenv(returnvalue, &env);
 		}
 		//ft_putendl("test1");
 		free(test);
@@ -79,7 +117,8 @@ static int		boucle(char **env)
 		//ft_putendl("test3");
 	}
 	ft_strstrfree(temp);
-	ft_strstrfree(env);
+	if(env)
+		ft_strstrfree(env);
 	return (1);
 }
 

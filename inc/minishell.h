@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/01 14:37:55 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/03 16:42:00 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "libft.h"
 # include "get_next_line.h"
 
+int		ft_setenv(char	**argv, char ***env);
 int		ft_cd(char **argv, char ***env);
 char	**ft_strstrdelone(int i, char **str)	;
 char	**ft_strstradd(char *str, char **argv);

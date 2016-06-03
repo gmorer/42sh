@@ -6,13 +6,13 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/01 15:25:34 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/03 16:48:43 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		ft_setenv(char	**argv, char ***env)
+int			ft_setenv(char	**argv, char ***env)
 {
 	int		i;
 	char	*temp;
@@ -69,6 +69,26 @@ static int		ft_unsetenv(char **argv, char ***env)
 	return (0);
 }
 
+static int	ft_exit(char **argv)
+{
+	int i;
+
+	if(ft_strstrlen(argv) > 2)
+	{
+		ft_putendl("exit: too many arguments");
+		return (1);
+	}
+	if(ft_strstrlen(argv) == 1)
+		exit(1);
+	i = ft_atoi(argv[1]);
+	if(!i)
+	{
+		ft_putendl("exit: Expression Syntax.");
+		return (1);
+	}
+	exit(i);
+}
+
 int		redirectfunction(char **argv, char ***env)
 {
 	int result;
@@ -85,5 +105,7 @@ int		redirectfunction(char **argv, char ***env)
 		result = 0;
 		ft_putmap(*env);
 	}
+	if(ft_strcmp("exit", argv[0]) == 0)
+		result = ft_exit(argv);
 	return (result);
 }
