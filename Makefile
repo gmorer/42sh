@@ -25,7 +25,8 @@ CFILES = main.c\
 			libenv.c\
 			argv.c\
 			ft_cd.c\
-			prompt.c
+			prompt.c\
+			ft_setenv.c
 
 OFILES = $(CFILES:.c=.o)
 HFILES = inc/minishell.h libft/libft.h

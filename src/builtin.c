@@ -12,28 +12,6 @@
 
 #include "minishell.h"
 
-int			ft_setenv(char	**argv, char ***env)
-{
-	int		i;
-	char	*temp;
-
-	temp = ft_strjoin(argv[1], "=");
-	if (ft_strstrlen(argv) != 3)
-	{
-		ft_putendl("setenv: bad usage");
-		return (-1);
-	}
-	if((i = casenofor(*env, argv[1])) == -1)
-		*env = ft_strstradd(ft_strjoin(temp, argv[2]), *env);
-	else
-	{
-		free((*env)[i]);
-		(*env)[i] = ft_strjoin(temp, argv[2]);
-	}
-	free(temp);
-	return (0);
-}
-
 char		**ft_strstrdelone(int i, char **str)
 {
 	i++;
