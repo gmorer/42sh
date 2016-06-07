@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/06 17:15:52 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/07 14:45:59 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/07 17:16:00 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static char	*checkhomedir(char *str, char **env, int i, char *rslt)
 	char	*temp2;
 
 	temp = getenvline(env, "HOME=");
-	if (str[i] && str[i] == '~' && str[i - 1] != '\\')
+	if ((str[i] && str[i] == '~' && i == 0) || (str[i] && str[i] == '~' &&
+				str[i - 1] != '\\'))
 	{
 		if (!temp)
 		{

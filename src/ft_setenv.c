@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/06 15:34:32 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/06 15:35:14 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/07 17:16:14 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int			ft_setenv(char **argv, char ***env)
 	char	**argvtemp;
 
 	argvtemp = ft_setenvcheck(argv);
-	temp = ft_strjoin(argvtemp[1], "=");
+	if (argvtemp[1])
+		temp = ft_strjoin(argvtemp[1], "=");
 	if (ft_strstrlen(argvtemp) != 3)
 	{
 		ft_putendl("setenv: bad usage");

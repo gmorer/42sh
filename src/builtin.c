@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/06 15:39:01 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/07 14:54:57 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	ft_exit(char **argv)
 		return (1);
 	}
 	if (ft_strstrlen(argv) == 1)
-		exit(1);
+		exit(0);
 	i = ft_atoi(argv[1]);
 	if (!i)
 	{
