@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_setenv.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/06/06 15:34:32 by gmorer            #+#    #+#             */
+/*   Updated: 2016/06/06 15:35:14 by gmorer           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	**ft_setenvcheck(char **argv)
@@ -36,7 +48,7 @@ int			ft_setenv(char **argv, char ***env)
 		ft_putendl("setenv: bad usage");
 		return (1);
 	}
-	if((i = casenofor(*env, argvtemp[1])) == -1)
+	if ((i = casenofor(*env, argvtemp[1])) == -1)
 		*env = ft_strstradd(ft_strjoin(temp, argvtemp[2]), *env);
 	else
 	{
@@ -47,4 +59,3 @@ int			ft_setenv(char **argv, char ***env)
 	free(temp);
 	return (0);
 }
-

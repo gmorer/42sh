@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:58:14 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/12 15:26:13 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/06 15:53:49 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,19 @@ size_t	ft_strstrlen(char **c)
 	while (c[i] != NULL)
 		i++;
 	return (i);
+}
+
+void	ft_strstrfree(char **str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
 }
 
 char	**ft_strstrnew(size_t i)
@@ -79,19 +92,4 @@ char	**ft_strstrdup(char **tab)
 	rslt[i] = NULL;
 	i = 0;
 	return (rslt);
-}
-
-char	**ft_strstrdelfirst(char **c)
-{
-	int	i;
-
-	i = 1;
-	free(c[0]);
-	while (c[i] != NULL)
-	{
-		c[i - 1] = c[i];
-		i++;
-	}
-	c[i - 1] = NULL;
-	return (c);
 }

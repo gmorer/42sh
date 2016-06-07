@@ -6,20 +6,20 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/03 14:23:41 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/07 14:48:20 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**getline(char **env, char *argv)
+char		**getline(char **env, char *argv)
 {
 	int	i;
 
 	i = 0;
-	while(ft_strstr(env[i], argv) == NULL)
+	while (ft_strstr(env[i], argv) == NULL)
 		i++;
-	return(ft_strsplit(strstr(env[i], argv), ':'));
+	return (ft_strsplit(strstr(env[i], argv), ':'));
 }
 
 static char	*getexec(char *path, char *file)
@@ -29,22 +29,20 @@ static char	*getexec(char *path, char *file)
 
 	(void)file;
 	dir = opendir(path);
-	if(dir == NULL)
+	if (dir == NULL)
 		return (NULL);
 	while ((ofile = readdir(dir)) && ft_strcmp(ofile->d_name, file))
 		;
 	if (ofile && ofile->d_name[0] != '.')
 	{
 		closedir(dir);
-		//ft_putstr(path);
-		//ft_putendl(ofile->d_name);
-		return(path);
+		return (path);
 	}
 	closedir(dir);
 	return (NULL);
 }
 
-char	*toexec(char **env, char *argv)
+char		*toexec(char **env, char *argv)
 {
 	char	**path;
 	size_t	i;
@@ -52,26 +50,20 @@ char	*toexec(char **env, char *argv)
 	char	*temp;
 	char	*temp2;
 
-	if(casenofor(env, "PATH") == -1)
-	{
+	if (casenofor(env, "PATH") == -1)
 		return (NULL);
-	}
 	temp = getenvline(env, "PATH=");
 	path = ft_strsplit(temp, ':');
 	free(temp);
 	len = ft_strlen(path[0]);
-//	ft_putendl("pathenv = ");
-//	ft_putmap(path);
 	len = ft_strstrlen(path);
 	i = 0;
-	//ft_putendl(path[i]);
-	while(i < len && getexec(path[i], argv) == NULL)
+	while (i < len && getexec(path[i], argv) == NULL)
 		i++;
 	if (i == len)
-	{
 		ft_strstrfree(path);
+	if (i == len)
 		return (NULL);
-	}
 	temp = ft_strjoin(path[i], "/");
 	ft_strstrfree(path);
 	temp2 = ft_strjoin(temp, argv);
@@ -79,39 +71,31 @@ char	*toexec(char **env, char *argv)
 	return (temp2);
 }
 
-int		ft_exec(char *bin, char **temp, char ***env)
+int			ft_exec(char *bin, char **temp, char ***env)
 {
 	int		exit;
 	pid_t	pid;
 	int		i;
 
-	if(access(bin, X_OK) == -1)
+	if ((exit = 1) && access(bin, X_OK) == -1)
 	{
 		ft_putstr(bin);
 		ft_putendl(": Permission denied.");
-		return(1);
+		return (1);
 	}
-	exit = 1;
 	pid = fork();
 	if (pid > 0)
-	{
 		waitpid(pid, &exit, 0);
-	}	
 	if (pid == 0)
 		execve(bin, temp, *env);
 	i = casenofor(*env, "_=");
-	if(i > -1)
-	{
+	if (i > -1)
 		free((*env)[i]);
+	if (i > -1)
 		(*env)[i] = ft_strjoin("_=", bin);
-	}
 	else
-	{
 		*env = ft_strstradd(ft_strjoin("_=", bin), *env);
-	}
 	if (WIFEXITED(exit))
 		return (WEXITSTATUS(exit));
-	if (WIFSIGNALED(exit))
-		return (WTERMSIG(exit));
-	return (exit);
+	return (WIFSIGNALED(exit) ? WTERMSIG(exit) : exit);
 }

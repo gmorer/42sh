@@ -6,20 +6,20 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 10:52:08 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/30 17:44:49 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/06 15:32:31 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		casenofor(char **env, char *argv)
+int				casenofor(char **env, char *argv)
 {
-	int	rslt;
-	size_t n;
+	int		rslt;
+	size_t	n;
 
 	n = ft_strlen(argv);
 	rslt = 0;
-	while(env[rslt] && ft_strnstr(env[rslt], argv, n) == NULL)
+	while (env[rslt] && ft_strnstr(env[rslt], argv, n) == NULL)
 		rslt++;
 	if (!env[rslt])
 		return (-1);
@@ -34,12 +34,12 @@ static int		envtest(char *str, char *test)
 
 	i = 0;
 	len = ft_strlen(str);
-	while(test[i] && test[i] != '=')
+	while (test[i] && test[i] != '=')
 		i++;
-	if(str[ft_strlen(str) - 1] == '=')
+	if (str[ft_strlen(str) - 1] == '=')
 		i++;
 	tmp = ft_strndup(test, i);
-	if(ft_strcmp(tmp, str) == 0)
+	if (ft_strcmp(tmp, str) == 0)
 	{
 		free(tmp);
 		return (1);
@@ -51,7 +51,7 @@ static int		envtest(char *str, char *test)
 	}
 }
 
-char	*getenvline(char **env, char *argv)
+char			*getenvline(char **env, char *argv)
 {
 	size_t	i;
 	size_t	n;
@@ -62,37 +62,33 @@ char	*getenvline(char **env, char *argv)
 	i = 0;
 	rslt = NULL;
 	n = ft_strlen(argv);
-	while(i < x &&  envtest(argv, env[i]) == 0)
+	while (i < x && envtest(argv, env[i]) == 0)
 		i++;
 	if (i == x)
 	{
-		//ft_putstr("bad enviroement variable: ");
 		return (NULL);
 	}
-	if(argv[n - 1] != '=')
+	if (argv[n - 1] != '=')
 		n += 1;
 	rslt = ft_strnew(ft_strlen(env[i]) - n);
-	rslt = ft_strcpy(rslt , &env[i][n]);
+	rslt = ft_strcpy(rslt, &env[i][n]);
 	return (rslt);
 }
 
-static char	*rmno(char *str, int x)
+static char		*rmno(char *str, int x)
 {
 	int i;
 
-	//ft_putendl(str);
 	i = x;
 	while (str[i])
 	{
 		str[i] = str[i + 1];
-	i++;
+		i++;
 	}
-	//str[i - 1] = '\0';
-	//ft_putendl(str);
 	return (str);
 }
 
-char	*rmchar(char *str, char c)
+char			*rmchar(char *str, char c)
 {
 	int i;
 
@@ -100,46 +96,23 @@ char	*rmchar(char *str, char c)
 	i = 0;
 	while (str[i])
 	{
-		if(str[i] == '\\' && str[i - 1] == '\\' && str[i + 1] == '\\')
-		{
+		if (str[i] == '\\' && str[i - 1] == '\\' && str[i + 1] == '\\')
 			str = rmno(str, i);
-		}
-		else if(str[i] == '\\')
+		else if (str[i] == '\\')
 		{
-			if(str[i + 1] == 'n')
-			{
+			if (str[i + 1] == 'n')
 				str = rmno(str, i);
+			if (str[i + 1] == 'n')
 				str[i] = '\n';
-			}
 			else
 			{
 				str = rmno(str, i);
 				str = rmno(str, i);
 			}
 		}
-		if(str[i] == '"' && str[i - 1] != '\\' && str[i + 1] != '\\')
+		if (str[i] == '"' && str[i - 1] != '\\' && str[i + 1] != '\\')
 			str = rmno(str, i);
 		i++;
 	}
 	return (str);
-
-	
-	
-	
-	/*
-	size_t	n;
-	size_t	rm;
-
-	n = 0;
-	rm = 0;
-	while (str[n + rm])
-	{
-		if(str[n + rm] == c && str[n + rm - 1] != '\\')
-			rm++;
-		str[n] = str[n + rm];
-		n++;
-	}
-	if (rm > 0)
-		str[n] = '\0';
-	return (str);*/
 }

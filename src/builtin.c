@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/03 16:48:43 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/06 15:39:01 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char		**ft_strstrdelone(int i, char **str)
 {
 	i++;
 	free(str[i - 1]);
-	while(str[i])
+	while (str[i])
 	{
 		str[i - 1] = str[i];
 		i++;
@@ -25,7 +25,7 @@ char		**ft_strstrdelone(int i, char **str)
 	return (str);
 }
 
-static int		ft_unsetenv(char **argv, char ***env)
+static int	ft_unsetenv(char **argv, char ***env)
 {
 	int		i;
 	size_t	len;
@@ -33,7 +33,8 @@ static int		ft_unsetenv(char **argv, char ***env)
 	len = ft_strstrlen(*env);
 	if (ft_strstrlen(argv) != 2)
 	{
-		ft_putendl("unsetenv: bad usage\nusage: unsetenv [environement varibale]");
+		ft_putstr("unsetenv: bad usage\nusage: ");
+		ft_putendl("unsetenv [environement varibale]");
 		return (1);
 	}
 	if ((i = casenofor(*env, argv[1])) == -1)
@@ -51,15 +52,15 @@ static int	ft_exit(char **argv)
 {
 	int i;
 
-	if(ft_strstrlen(argv) > 2)
+	if (ft_strstrlen(argv) > 2)
 	{
 		ft_putendl("exit: too many arguments");
 		return (1);
 	}
-	if(ft_strstrlen(argv) == 1)
+	if (ft_strstrlen(argv) == 1)
 		exit(1);
 	i = ft_atoi(argv[1]);
-	if(!i)
+	if (!i)
 	{
 		ft_putendl("exit: Expression Syntax.");
 		return (1);
@@ -67,23 +68,23 @@ static int	ft_exit(char **argv)
 	exit(i);
 }
 
-int		redirectfunction(char **argv, char ***env)
+int			redirectfunction(char **argv, char ***env)
 {
 	int result;
 
 	result = -1;
-	if(ft_strcmp("cd", argv[0]) == 0)
+	if (ft_strcmp("cd", argv[0]) == 0)
 		result = ft_cd(argv, env);
-	if(ft_strcmp("setenv", argv[0]) == 0)
+	if (ft_strcmp("setenv", argv[0]) == 0)
 		result = ft_setenv(argv, env);
-	if(ft_strcmp("unsetenv", argv[0]) == 0)
+	if (ft_strcmp("unsetenv", argv[0]) == 0)
 		result = ft_unsetenv(argv, env);
-	if(ft_strcmp("env", argv[0]) == 0)
+	if (ft_strcmp("env", argv[0]) == 0)
 	{
 		result = 0;
 		ft_putmap(*env);
 	}
-	if(ft_strcmp("exit", argv[0]) == 0)
+	if (ft_strcmp("exit", argv[0]) == 0)
 		result = ft_exit(argv);
 	return (result);
 }
