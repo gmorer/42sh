@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/29 13:33:39 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/29 15:00:03 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int		boucle(char **env, char **temp, char *bin, int returnvalue)
 			else if (bin == NULL && (returnvalue = 1))
 				if ((returnvalue = (redirectfunction(temp, &env))) == -1)
 					if ((returnvalue = (folder(temp, env)) == -1))
-					ft_putendl("command not found");
+						ft_putendl("command not found");
 			ft_strstrfree(temp);
 			returnvaluetoenv(returnvalue, &env);
 		}
