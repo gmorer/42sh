@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/06 17:23:23 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/29 11:34:10 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include "libft.h"
 # include "get_next_line.h"
 
+char	**ft_shlvl(char **env);
+int		ft_echo(char **argv);
 char	*charadd(char *str, char c);
 char	*argvtest(char *str, char **env);
 void	prompt(char **env, int returnvalue);

@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2016/06/06 17:15:40 by gmorer           ###   ########.fr        #
+#    Updated: 2016/06/29 11:34:34 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,9 @@ CFILES = main.c\
 			ft_cd.c\
 			prompt.c\
 			ft_setenv.c\
-			argvtest.c
+			argvtest.c\
+			ft_echo.c\
+			ft_shlvl.c
 
 OFILES = $(CFILES:.c=.o)
 HFILES = inc/minishell.h libft/libft.h

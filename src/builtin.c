@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/07 14:54:57 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/29 11:25:00 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ int			redirectfunction(char **argv, char ***env)
 		result = ft_setenv(argv, env);
 	if (ft_strcmp("unsetenv", argv[0]) == 0)
 		result = ft_unsetenv(argv, env);
+	if (ft_strcmp("echo", argv[0]) == 0)
+		result = ft_echo(argv);
 	if (ft_strcmp("env", argv[0]) == 0)
 	{
 		result = 0;

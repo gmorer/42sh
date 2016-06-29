@@ -6,32 +6,27 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/07 14:49:50 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/06/29 13:33:39 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int				actuel_folder(char **str, char **env)
+static int		folder(char **str, char **env)
 {
-	char *temp;
-
-	if (str && str[0] && str[0][0] && str[0][1] && str[0][0] == '.' &&
-			str[0][1] == '/')
+	if (access(str[0], F_OK) == -1)
 	{
-		temp = ft_strdup(str[0] + 2);
-		free(str[0]);
-		str[0] = temp;
-		if (access(str[0], F_OK) == -1)
-		{
-			ft_putstr("./");
-			ft_putstr(str[0]);
-			ft_putendl(": Command not found.");
-			return (1);
-		}
-		return (ft_exec(str[0], str, &env));
+		ft_putstr("minishell: no such file or directory: ");
+		ft_putendl(str[0]);
+		return (1);
 	}
-	return (-1);
+	if (access(str[0], X_OK) == -1)
+	{
+		ft_putstr("minishell: permission denied: ");
+		ft_putendl("str[0]");
+		return (1);
+	}
+	return (ft_exec(str[0], str, &env));
 }
 
 static void		returnvaluetoenv(int returnvalue, char ***env)
@@ -76,15 +71,13 @@ static int		boucle(char **env, char **temp, char *bin, int returnvalue)
 		temp = getarg(env, returnvalue);
 		if (temp && temp[0] && temp[0][0])
 		{
-			if ((returnvalue = (actuel_folder(temp, env)) == -1))
+			bin = toexec(env, temp[0]);
+			if (bin && ((returnvalue = ft_exec(bin, temp, &env)) || 1))
+				free(bin);
+			else if (bin == NULL && (returnvalue = 1))
 				if ((returnvalue = (redirectfunction(temp, &env))) == -1)
-				{
-					bin = toexec(env, temp[0]);
-					if (bin == NULL && (returnvalue = 1))
-						ft_putendl("no binary file");
-					else if ((returnvalue = ft_exec(bin, temp, &env)) || 1)
-						free(bin);
-				}
+					if ((returnvalue = (folder(temp, env)) == -1))
+					ft_putendl("command not found");
 			ft_strstrfree(temp);
 			returnvaluetoenv(returnvalue, &env);
 		}
@@ -109,6 +102,7 @@ int				main(int argc, char **argv, char **env)
 	envdup = ft_strstrdup(env);
 	(void)argv;
 	(void)argc;
+	envdup = ft_shlvl(envdup);
 	boucle(envdup, temp, bin, returnvalue);
 	return (0);
 }
