@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/29 11:25:00 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/07/05 10:22:17 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	ft_exit(char **argv)
 	exit(i);
 }
 
-int			redirectfunction(char **argv, char ***env)
+int			redirectfunction_builtin(char **argv, char ***env)
 {
 	int result;
 

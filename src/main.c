@@ -6,28 +6,11 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/29 15:00:03 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/07/05 10:57:42 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int		folder(char **str, char **env)
-{
-	if (access(str[0], F_OK) == -1)
-	{
-		ft_putstr("minishell: no such file or directory: ");
-		ft_putendl(str[0]);
-		return (1);
-	}
-	if (access(str[0], X_OK) == -1)
-	{
-		ft_putstr("minishell: permission denied: ");
-		ft_putendl("str[0]");
-		return (1);
-	}
-	return (ft_exec(str[0], str, &env));
-}
 
 static void		returnvaluetoenv(int returnvalue, char ***env)
 {
@@ -64,20 +47,14 @@ static char		**getarg(char **env, int returnvalue)
 	return (temp);
 }
 
-static int		boucle(char **env, char **temp, char *bin, int returnvalue)
+static int		boucle(char **env, char **temp, int returnvalue)
 {
 	while (42)
 	{
 		temp = getarg(env, returnvalue);
 		if (temp && temp[0] && temp[0][0])
 		{
-			bin = toexec(env, temp[0]);
-			if (bin && ((returnvalue = ft_exec(bin, temp, &env)) || 1))
-				free(bin);
-			else if (bin == NULL && (returnvalue = 1))
-				if ((returnvalue = (redirectfunction(temp, &env))) == -1)
-					if ((returnvalue = (folder(temp, env)) == -1))
-						ft_putendl("command not found");
+			returnvalue = ft_redirect(temp, &env);
 			ft_strstrfree(temp);
 			returnvaluetoenv(returnvalue, &env);
 		}
@@ -103,6 +80,6 @@ int				main(int argc, char **argv, char **env)
 	(void)argv;
 	(void)argc;
 	envdup = ft_shlvl(envdup);
-	boucle(envdup, temp, bin, returnvalue);
+	boucle(envdup, temp, returnvalue);
 	return (0);
 }
