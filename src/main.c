@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/07/05 10:57:42 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/07/05 11:04:54 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static int		boucle(char **env, char **temp, int returnvalue)
 			ft_strstrfree(temp);
 			returnvaluetoenv(returnvalue, &env);
 		}
+		else
+			returnvalue = 0;
 	}
 	ft_strstrfree(temp);
 	if (env)
