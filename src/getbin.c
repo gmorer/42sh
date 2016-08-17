@@ -26,13 +26,17 @@ static char	*getexec(char *path, char *file)
 {
 	DIR				*dir;
 	struct dirent	*ofile;
+	char		*tmp;
+	char		*tmp1;
 
 	(void)file;
 	dir = opendir(path);
 	if (dir == NULL)
 		return (NULL);
-	while ((ofile = readdir(dir)) && ft_strcmp(ofile->d_name, file))
-		;
+	tmp = ft_strjoin(path, "/");
+	while ((ofile = readdir(dir)) && (ft_strcmp(ofile->d_name, file) || ft_checklink((tmp1 = ft_strjoin(tmp, ofile->d_name))) == 0))
+		free(tmp1);
+	free(tmp);
 	if (ofile && ofile->d_name[0] != '.')
 	{
 		closedir(dir);

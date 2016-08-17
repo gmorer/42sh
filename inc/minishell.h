@@ -23,6 +23,7 @@
 # include "libft.h"
 # include "get_next_line.h"
 
+int		ft_checklink(char *path);
 int		ft_redirect(char **str, char ***env);
 char	**ft_shlvl(char **env);
 int		ft_echo(char **argv);
