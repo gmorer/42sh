@@ -23,6 +23,18 @@
 # include "libft.h"
 # include "get_next_line.h"
 
+typedef struct		s_data
+{
+	char		*name;
+	char		*full_path;
+}			t_data;
+
+typedef struct		s_binary
+{
+	t_data		*data;
+	struct s_binary *next;
+}			t_binary;
+
 int		ft_checklink(char *path);
 int		ft_redirect(char **str, char ***env);
 char	**ft_shlvl(char **env);

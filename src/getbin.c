@@ -55,7 +55,8 @@ char		*toexec(char **env, char *argv)
 	len = ft_strlen(path[0]);
 	len = ft_strstrlen(path);
 	i = 0;
-	while (i < len && getexec(path[i], argv) == NULL)
+	//while (i < len && getexec(path[i], argv) == NULL)
+	while (path[i] && getexec(path[i], argv) == NULL)
 		i++;
 	if (i == len)
 		ft_strstrfree(path);
