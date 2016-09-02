@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/01 11:07:29 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/02 13:47:25 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,18 @@ char		**getline(char **env, char *argv)
 
 static char	*getexec(char *path, char *file)
 {
-	DIR				*dir;
-	struct dirent	*ofile;
 	char			*tmp;
 	char			*tmp1;
 
-	(void)file;
-	dir = opendir(path);
-	if (dir == NULL)
-		return (NULL);
 	tmp = ft_strjoin(path, "/");
-	tmp1 = NULL;
-	while ((ofile = readdir(dir)) && (ft_strcmp(ofile->d_name, file) ||
-				ft_checklink((tmp1 = ft_strjoin(tmp, ofile->d_name))) == 0))
-		if (ft_strcmp(ofile->d_name, file) == 0)
-			free(tmp1);
-	if (ofile && ft_strcmp(ofile->d_name, file) == 0)
-		free(tmp1);
+	tmp1 = ft_strjoin(tmp, file);
 	free(tmp);
-	if (ofile && ofile->d_name[0] != '.')
+	if (ft_checklink(tmp1) == 1)
 	{
-		closedir(dir);
+		free(tmp1);
 		return (path);
 	}
-	closedir(dir);
+	free(tmp1);
 	return (NULL);
 }
 
