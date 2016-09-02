@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 18:17:49 by gmorer            #+#    #+#             */
-/*   Updated: 2016/05/25 15:21:59 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/01 10:59:50 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+int					ft_isspace(char c);
 char				*ft_strndup(char *s1, int n);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));

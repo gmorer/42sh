@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/08/31 16:06:31 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/01 11:07:29 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*getexec(char *path, char *file)
 				ft_checklink((tmp1 = ft_strjoin(tmp, ofile->d_name))) == 0))
 		if (ft_strcmp(ofile->d_name, file) == 0)
 			free(tmp1);
-	if (ofile &&ft_strcmp(ofile->d_name, file) == 0)
+	if (ofile && ft_strcmp(ofile->d_name, file) == 0)
 		free(tmp1);
 	free(tmp);
 	if (ofile && ofile->d_name[0] != '.')

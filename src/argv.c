@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/06 17:23:41 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/01 11:05:18 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,16 @@ char		**argvsplit(char *av)
 	rslt = ft_strstrnew(1);
 	while (i < (int)ft_strlen(av))
 	{
-		while (i < (int)ft_strlen(av) && av[i] == ' ' && av[i - 1] != '\\')
+		while (i < (int)ft_strlen(av) && ft_isspace(av[i]) && av[i - 1] != '\\')
 			i++;
 		if (av[i] == '"' && test == 0 && (test = 1))
 			i++;
 		else if (av[i] == '"' && test == 1 && (test = 0))
 			i++;
 		start = i;
-		while (i < (int)ft_strlen(av) && (av[i] != ' ' || (test == 1 && av[i]
-						== ' ') || (av[i] == ' ' && av[i - 1] == '\\' &&
-							test != 1)))
+		while (i < (int)ft_strlen(av) && (!ft_isspace(av[i]) || (test == 1 &&
+						ft_isspace(av[i])) || (ft_isspace(av[i]) && av[i - 1] ==
+						'\\' && test != 1)))
 			i++;
 		i = av[i - 1] == '\\' ? i += 1 : i;
 		rslt = ft_strstradd(ft_strndup(av + start, i - start), rslt);

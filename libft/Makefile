@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/01 11:36:51 by gmorer            #+#    #+#              #
-#    Updated: 2016/02/17 10:38:25 by gmorer           ###   ########.fr        #
+#    Updated: 2016/09/01 10:59:32 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,7 +73,8 @@ SRC =	ft_abs.c\
 		ft_lstiter.c\
 		ft_lstdelone.c\
 		ft_lstdel.c\
-		ft_lstadd.c
+		ft_lstadd.c\
+		ft_isspace.c
 
 OBJS = $(SRC:.c=.o)
 CFLAGS= -Wall -Werror -Wextra

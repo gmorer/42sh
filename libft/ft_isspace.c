@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_checklink.c                                     :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/01 11:05:28 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/01 11:05:52 by gmorer           ###   ########.fr       */
+/*   Created: 2016/09/01 10:57:24 by gmorer            #+#    #+#             */
+/*   Updated: 2016/09/01 11:03:17 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int		ft_checklink(char *path)
+int		ft_isspace(char c)
 {
-	struct stat tmp;
-
-	lstat(path, &tmp);
-	if (!(S_ISLNK(tmp.st_mode)))
+	if (c == '\t' || c == ' ')
 		return (1);
-	if (stat(path, &tmp) == -1)
+	else
 		return (0);
-	return (1);
 }

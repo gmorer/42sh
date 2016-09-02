@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:20:25 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/03 16:40:03 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/02 11:46:49 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,30 +64,53 @@ static int	ft_cdtest(char *path)
 	return (1);
 }
 
+static int	ft_cd_find(int test, char ***env, char **argv)
+{
+	char *temp;
+
+	if ((ft_strcmp(argv[1], "-") == 0))
+	{
+		temp = getenvline(*env, "OLDPWD=");
+		test = ft_cdtest(temp);
+		free(temp);
+	}
+	else if ((argv[1]))
+		test = ft_cdtest(argv[1]);
+	else if (!argv[1])
+	{
+		temp = getenvline(*env, "HOME=");
+		if (temp)
+			test = ft_cdtest(temp);
+		if (temp)
+			free(temp);
+		else
+		{
+			test = 0;
+			ft_putendl("cd: No home directory.");
+		}
+	}
+	return (test);
+}
+
 int			ft_cd(char **argv, char ***env)
 {
-	char	*temp;
 	char	*oldpwd;
+	int		test;
 
+	test = 0;
 	if (ft_strstrlen(argv) > 2)
 		ft_putendl("cd: too many arguments");
 	if (ft_strstrlen(argv) > 2)
 		return (-1);
-	if ((temp = getenvline(*env, "HOME=")) != NULL)
+	oldpwd = getenvline(*env, "PWD=");
+	if (!oldpwd)
+		oldpwd = getcwd(NULL, 0);
+	test = ft_cd_find(test, env, argv);
+	if (test == 0)
 	{
-		oldpwd = getenvline(*env, "PWD=");
-		if (!oldpwd)
-			oldpwd = getcwd(NULL, 0);
-		if ((argv[1] ? ft_cdtest(argv[1]) : ft_cdtest(temp)) == 0)
-		{
-			free(oldpwd);
-			free(temp);
-			return (1);
-		}
-		free(temp);
-		ft_cdok(env, oldpwd);
-		return (0);
+		free(oldpwd);
+		return (1);
 	}
-	ft_putendl("cd: No home directory.");
-	return (1);
+	ft_cdok(env, oldpwd);
+	return (0);
 }
