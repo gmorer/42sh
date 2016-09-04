@@ -50,7 +50,9 @@ int	ft_hash_algo(char *str, char **env)
 	i = 0;
 	result = 0;
 	while (str[i])
+	{
 		result = str[i++] + result * 10;
+	}
 	if ((temp = getenvline(env, "BINARY_LEN=")) == NULL)
 	{
 		ft_putendl("ft_hash_algo error");
@@ -58,7 +60,7 @@ int	ft_hash_algo(char *str, char **env)
 	}
 	result = result % ft_atoi(temp);
 	free(temp);
-	return (result);
+	return (ft_abs(result));
 }
 
 static t_binary	*ft_remp(t_binary *bin, char *binary, char *path)
@@ -166,7 +168,7 @@ t_binary	**ft_init_hash_table(char ***env)
 	temp[2]	= ft_itoa(i);
 	temp[3] = NULL;
 	ft_setenv(temp, env);
-	result[i + 1] = NULL;
+	result[i] = NULL;
 	while ( i >= 0)
 	{
 		if (!(result[i] = (t_binary*)malloc(sizeof(t_binary))))
