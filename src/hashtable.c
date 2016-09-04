@@ -108,11 +108,12 @@ t_binary	**ft_add_hash_to_tab(char *binary, char *path, t_binary **table, char *
 	{
 		last = table[result];
 		ft_putstr(" -> existing tab");
-		while (last->next)
+		while ((last->next))
 			last = last->next;
 		if (!(last->next = malloc(sizeof(t_binary))))
 			return (NULL);
 		ft_remp(last->next, binary, path);
+		last->next->next = NULL;
 	}
 	ft_putendl(": ok");
 	return (table);
