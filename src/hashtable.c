@@ -41,6 +41,38 @@ static int	ft_count_binary(char **env)
 	return (result);
 }
 
+int	ft_show_hash_tab(char **env, t_binary **table)
+{
+	int		i;
+	t_binary	*bin;
+	char		*temp;
+	int		len;
+
+	if(!(temp = getenvline(env, "BINARY_LEN=")))
+		return (1);
+	len = ft_atoi(temp);
+	free(temp);
+	i = 0;
+	while (i < len)
+	{
+		if ((table[i]) && (table[i]->data))
+		{
+			bin = table[i];
+			while ((bin) && (bin->data))
+			{
+				ft_putnbr(i);
+				ft_putstr("---------");
+				ft_putstr(bin->data->name);
+				ft_putstr("---------");
+				ft_putendl(bin->data->full_path);
+				bin = bin->next;
+			}
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	ft_hash_algo(char *str, char **env)
 {
 	int	i;

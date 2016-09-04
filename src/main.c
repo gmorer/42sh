@@ -56,16 +56,16 @@ static int		boucle(char **env, char **temp, int returnvalue, t_binary **table)
 		temp = getarg(env, returnvalue);
 		if (temp && temp[0] && temp[0][0])
 		{
-			returnvalue = ft_redirect(temp, &env);
+			returnvalue = ft_redirect(temp, &env, table);
 			ft_strstrfree(temp);
 			returnvaluetoenv(returnvalue, &env);
 		}
 		else
 			returnvalue = 0;
-	}
+	}/*
 	ft_strstrfree(temp);
 	if (env)
-		ft_strstrfree(env);
+		ft_strstrfree(env);*/
 	return (1);
 }
 

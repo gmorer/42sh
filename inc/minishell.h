@@ -35,10 +35,11 @@ typedef struct		s_binary
 	struct s_binary *next;
 }			t_binary;
 
+int		ft_show_hash_tab(char **env, t_binary **table);
 t_binary	**ft_init_hash_table(char ***env);
 int		ft_hash_algo(char *str, char **env);
 int		ft_checklink(char *path);
-int		ft_redirect(char **str, char ***env);
+int		ft_redirect(char **str, char ***env, t_binary **table);
 char	**ft_shlvl(char **env);
 int		ft_echo(char **argv);
 char	*charadd(char *str, char c);
@@ -54,7 +55,7 @@ char	**argvclean(char **argv, char **env);
 char	*getenvline(char **env, char *argv);
 char	**getline(char **env, char *argv);
 int		casenofor(char **env, char *argv);
-int		redirectfunction_builtin(char **argv, char ***env);
+int		redirectfunction_builtin(char **argv, char ***env, t_binary **table);
 void	ft_strstrfree(char **str);
 int		ft_exec(char *bin, char **temp, char ***env);
 char	*toexec(char **env, char *argv);

@@ -68,7 +68,7 @@ static int	ft_exit(char **argv)
 	exit(i);
 }
 
-int			redirectfunction_builtin(char **argv, char ***env)
+int			redirectfunction_builtin(char **argv, char ***env, t_binary **table)
 {
 	int result;
 
@@ -81,6 +81,8 @@ int			redirectfunction_builtin(char **argv, char ***env)
 		result = ft_unsetenv(argv, env);
 	if (ft_strcmp("echo", argv[0]) == 0)
 		result = ft_echo(argv);
+	if (ft_strcmp("hashtab", argv[0]) == 0)
+		result = ft_show_hash_tab(*env, table);
 	if (ft_strcmp("env", argv[0]) == 0)
 	{
 		result = 0;

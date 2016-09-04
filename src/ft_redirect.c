@@ -43,7 +43,7 @@ static int		folder(char **str, char **env)
 	return (ft_exec(str[0], str, &env));
 }
 
-int				ft_redirect(char **str, char ***env)
+int				ft_redirect(char **str, char ***env, t_binary **table)
 {
 	char	*bin;
 	int		result;
@@ -54,7 +54,7 @@ int				ft_redirect(char **str, char ***env)
 		result = folder(str, *env);
 		return (result);
 	}
-	if ((result = redirectfunction_builtin(str, env)) != -1)
+	if ((result = redirectfunction_builtin(str, env, table)) != -1)
 		return (result);
 	bin = toexec(*env, str[0]);
 	if (bin)

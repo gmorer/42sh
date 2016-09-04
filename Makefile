@@ -12,7 +12,7 @@
 
 NAME = minishell
 CC = clang
-CFLAGS = -Werror -Wextra -Wall -g
+CFLAGS = -Wall -Werror -Wextra -g
 CPATH = src/
 OPATH = obj/
 HPATH = inc/ libft/

@@ -41,6 +41,7 @@ int			ft_setenv(char **argv, char ***env)
 	char	*temp;
 	char	**argvtemp;
 
+	temp = NULL;
 	argvtemp = ft_setenvcheck(argv);
 	if (argvtemp[1])
 		temp = ft_strjoin(argvtemp[1], "=");
