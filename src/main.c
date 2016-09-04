@@ -47,10 +47,12 @@ static char		**getarg(char **env, int returnvalue)
 	return (temp);
 }
 
-static int		boucle(char **env, char **temp, int returnvalue)
+static int		boucle(char **env, char **temp, int returnvalue, t_binary **table)
 {
 	while (42)
 	{
+		if (table == NULL)
+			table = ft_init_hash_table(&env);
 		temp = getarg(env, returnvalue);
 		if (temp && temp[0] && temp[0][0])
 		{
@@ -73,15 +75,17 @@ int				main(int argc, char **argv, char **env)
 	char	**temp;
 	char	*bin;
 	int		returnvalue;
+	t_binary	**table;
 
 	temp = NULL;
 	bin = NULL;
 	returnvalue = 0;
 	signal(SIGINT, SIG_IGN);
+	table = NULL;
 	envdup = ft_strstrdup(env);
 	(void)argv;
 	(void)argc;
 	envdup = ft_shlvl(envdup);
-	boucle(envdup, temp, returnvalue);
+	boucle(envdup, temp, returnvalue, table);
 	return (0);
 }

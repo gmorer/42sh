@@ -35,6 +35,8 @@ typedef struct		s_binary
 	struct s_binary *next;
 }			t_binary;
 
+t_binary	**ft_init_hash_table(char ***env);
+int		ft_hash_algo(char *str, char **env);
 int		ft_checklink(char *path);
 int		ft_redirect(char **str, char ***env);
 char	**ft_shlvl(char **env);

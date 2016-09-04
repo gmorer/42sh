@@ -31,7 +31,8 @@ CFILES = main.c\
 			ft_echo.c\
 			ft_shlvl.c\
 			ft_redirect.c\
-			ft_checklink.c
+			ft_checklink.c\
+			hashtable.c
 
 OFILES = $(CFILES:.c=.o)
 HFILES = inc/minishell.h libft/libft.h
