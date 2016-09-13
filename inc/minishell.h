@@ -35,6 +35,7 @@ typedef struct		s_binary
 	struct s_binary *next;
 }			t_binary;
 
+int		ft_free_hash_tab(char **env, t_binary **table);
 int		ft_show_hash_tab(char **env, t_binary **table);
 t_binary	**ft_init_hash_table(char ***env);
 int		ft_hash_algo(char *str, char **env);

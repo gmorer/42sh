@@ -48,7 +48,7 @@ static int	ft_unsetenv(char **argv, char ***env)
 	return (0);
 }
 
-static int	ft_exit(char **argv)
+static int	ft_exit(char **argv, t_binary **table, char **env)
 {
 	int i;
 
@@ -58,13 +58,17 @@ static int	ft_exit(char **argv)
 		return (1);
 	}
 	if (ft_strstrlen(argv) == 1)
+	{
+		ft_free_hash_tab(env, table);
 		exit(0);
+	}
 	i = ft_atoi(argv[1]);
 	if (!i)
 	{
 		ft_putendl("exit: Expression Syntax.");
 		return (1);
 	}
+	ft_free_hash_tab(env, table);
 	exit(i);
 }
 
@@ -89,6 +93,6 @@ int			redirectfunction_builtin(char **argv, char ***env, t_binary **table)
 		ft_putmap(*env);
 	}
 	if (ft_strcmp("exit", argv[0]) == 0)
-		result = ft_exit(argv);
+		result = ft_exit(argv, table, *env);
 	return (result);
 }

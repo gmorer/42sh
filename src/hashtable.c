@@ -213,3 +213,37 @@ t_binary	**ft_init_hash_table(char ***env)
 	result = ft_remp_table(result, *env);
 	return (result);
 }
+
+
+int	ft_free_hash_tab(char **env, t_binary **table)
+{
+	int		i;
+	t_binary	*bin;
+	t_binary	*bin2;
+	char		*temp;
+	int		len;
+
+	if(!(temp = getenvline(env, "BINARY_LEN=")))
+		return (1);
+	len = ft_atoi(temp);
+	free(temp);
+	i = 0;
+	while (i < len)
+	{
+		if ((table[i]) && (table[i]->data))
+		{
+			bin = table[i];
+			bin2 = bin;
+			while ((bin) && (bin->data))
+			{
+				bin2 = bin;
+				bin = bin->next;
+				free(bin2->data);
+				free(bin2);
+			}
+		}
+		i++;
+	}
+	free(table);
+	return (0);
+}
