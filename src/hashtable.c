@@ -157,7 +157,7 @@ static t_binary	**ft_remp_table_dir(char *path, t_binary **table, char **env)
 	struct	dirent *file;
 
 	if (!(directory = opendir(path)))
-		return (NULL);
+		return (table);
 	while ((file = readdir(directory)))
 		if (file->d_name[0] != '.')
 			table = ft_add_hash_to_tab(file->d_name, path, table , env);
@@ -201,6 +201,7 @@ t_binary	**ft_init_hash_table(char ***env)
 	temp[2]	= ft_itoa(i);
 	temp[3] = NULL;
 	ft_setenv(temp, env);
+	ft_strstrfree(temp);
 	result[i] = NULL;
 	while ( i >= 0)
 	{
@@ -238,6 +239,8 @@ int	ft_free_hash_tab(char **env, t_binary **table)
 			{
 				bin2 = bin;
 				bin = bin->next;
+				free(bin2->data->name);
+				free(bin2->data->full_path);
 				free(bin2->data);
 				free(bin2);
 			}
