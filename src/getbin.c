@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/02 13:47:25 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/14 17:39:45 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char		**getline(char **env, char *argv)
 		i++;
 	return (ft_strsplit(strstr(env[i], argv), ':'));
 }
-
+/*
 static char	*getexec(char *path, char *file)
 {
 	char			*tmp;
@@ -37,8 +37,8 @@ static char	*getexec(char *path, char *file)
 	}
 	free(tmp1);
 	return (NULL);
-}
-
+}*/
+/*
 char		*toexec(char **env, char *argv)
 {
 	char	**path;
@@ -67,7 +67,7 @@ char		*toexec(char **env, char *argv)
 	temp2 = ft_strjoin(temp, argv);
 	free(temp);
 	return (temp2);
-}
+}*/
 
 int			ft_exec(char *bin, char **temp, char ***env)
 {

@@ -250,3 +250,22 @@ int	ft_free_hash_tab(char **env, t_binary **table)
 	free(table);
 	return (0);
 }
+
+char	*ft_give_path(char *name, t_binary **table, char **env)
+{
+	int			hash;
+	t_binary	*bin;
+
+	hash = ft_hash_algo(name, env);
+	bin = table[hash];
+	while (bin)
+	{
+		if (bin->data)
+		{
+			if (ft_strcmp(bin->data->name, name) == 0)
+				return (ft_strdup(bin->data->full_path));
+		}
+		bin = bin->next;
+	}
+	return (NULL);
+}
