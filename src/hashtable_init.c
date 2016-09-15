@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/15 12:56:31 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/15 17:57:13 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/15 18:25:09 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_binary	**ft_init_hash_table(char ***env)
 	temp[1] = ft_strdup("BINARY_LEN");
 	temp[2]	= ft_itoa(i);
 	temp[3] = NULL;
-	ft_setenv(temp, env);
+	ft_setenv(temp, env, NULL);
 	ft_strstrfree(temp);
 	result[i] = NULL;
 	while (i >= 0)

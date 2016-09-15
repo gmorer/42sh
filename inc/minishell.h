@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/15 17:55:22 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/15 18:22:39 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		ft_echo(char **argv);
 char	*charadd(char *str, char c);
 char	*argvtest(char *str, char **env);
 void	prompt(char **env, int returnvalue);
-int		ft_setenv(char	**argv, char ***env);
+int		ft_setenv(char	**argv, char ***env, t_binary ***table);
 int		ft_cd(char **argv, char ***env);
 char	**ft_strstrdelone(int i, char **str)	;
 char	**ft_strstradd(char *str, char **argv);

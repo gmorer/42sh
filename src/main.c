@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/15 17:55:35 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/15 18:22:52 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void		returnvaluetoenv(int returnvalue, char ***env)
 	temp[1] = ft_strdup("?");
 	temp[2] = ft_itoa(returnvalue);
 	temp[3] = NULL;
-	ft_setenv(temp, env);
+	ft_setenv(temp, env, NULL);
 	free(temp[0]);
 	free(temp[1]);
 	free(temp[2]);

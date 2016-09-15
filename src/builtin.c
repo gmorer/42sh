@@ -6,17 +6,11 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/15 17:58:38 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/15 18:23:49 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static t_binary	**new_path(char ***env, t_binary ***table)
-{
-	ft_free_hash_tab(*env, table);
-	return (ft_init_hash_table(env));
-}
 
 char		**ft_strstrdelone(int i, char **str)
 {
@@ -92,7 +86,7 @@ int			redirectfunction_builtin(char **argv, char ***env, t_binary ***table)
 	if (ft_strcmp("cd", argv[0]) == 0)
 		result = ft_cd(argv, env);
 	if (ft_strcmp("setenv", argv[0]) == 0)
-		result = ft_setenv(argv, env);
+		result = ft_setenv(argv, env, table);
 	if (ft_strcmp("unsetenv", argv[0]) == 0)
 		result = ft_unsetenv(argv, env, table);
 	if (ft_strcmp("echo", argv[0]) == 0)
@@ -106,7 +100,5 @@ int			redirectfunction_builtin(char **argv, char ***env, t_binary ***table)
 	}
 	if (ft_strcmp("exit", argv[0]) == 0)
 		result = ft_exit(argv, table, *env);
-	if (result == 2)
-		*table = new_path(env, table);
 	return (result);
 }
