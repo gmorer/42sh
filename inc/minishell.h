@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/14 17:34:17 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/15 13:36:55 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct		s_binary
 	struct s_binary *next;
 }			t_binary;
 
+int		ft_count_binary(char **env);
 char	*ft_give_path(char *name, t_binary **table, char **env);
 int		ft_free_hash_tab(char **env, t_binary **table);
 int		ft_show_hash_tab(char **env, t_binary **table);
