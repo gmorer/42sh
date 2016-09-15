@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/14 17:39:45 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/15 13:23:11 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,53 +21,27 @@ char		**getline(char **env, char *argv)
 		i++;
 	return (ft_strsplit(strstr(env[i], argv), ':'));
 }
-/*
-static char	*getexec(char *path, char *file)
-{
-	char			*tmp;
-	char			*tmp1;
 
-	tmp = ft_strjoin(path, "/");
-	tmp1 = ft_strjoin(tmp, file);
-	free(tmp);
-	if (ft_checklink(tmp1) == 1)
+char	*ft_give_path(char *name, t_binary **table, char **env)
+{
+	int			hash;
+	t_binary	*bin;
+
+	if (!table)
+		return (NULL);
+	hash = ft_hash_algo(name, env);
+	bin = table[hash];
+	while (bin)
 	{
-		free(tmp1);
-		return (path);
+		if (bin->data)
+		{
+			if (ft_strcmp(bin->data->name, name) == 0)
+				return (ft_strdup(bin->data->full_path));
+		}
+		bin = bin->next;
 	}
-	free(tmp1);
 	return (NULL);
-}*/
-/*
-char		*toexec(char **env, char *argv)
-{
-	char	**path;
-	size_t	i;
-	size_t	len;
-	char	*temp;
-	char	*temp2;
-
-	if (casenofor(env, "PATH") == -1)
-		return (NULL);
-	temp = getenvline(env, "PATH=");
-	path = ft_strsplit(temp, ':');
-	free(temp);
-	len = ft_strlen(path[0]);
-	len = ft_strstrlen(path);
-	i = 0;
-	//while (i < len && getexec(path[i], argv) == NULL)
-	while (path[i] && getexec(path[i], argv) == NULL)
-		i++;
-	if (i == len)
-		ft_strstrfree(path);
-	if (i == len)
-		return (NULL);
-	temp = ft_strjoin(path[i], "/");
-	ft_strstrfree(path);
-	temp2 = ft_strjoin(temp, argv);
-	free(temp);
-	return (temp2);
-}*/
+}
 
 int			ft_exec(char *bin, char **temp, char ***env)
 {
