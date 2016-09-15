@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/15 12:56:31 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/15 12:59:44 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/15 17:57:13 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ t_binary	**ft_init_hash_table(char ***env)
 	ft_setenv(temp, env);
 	ft_strstrfree(temp);
 	result[i] = NULL;
-	while ( i >= 0)
+	while (i >= 0)
 	{
 		if (!(result[i] = (t_binary*)malloc(sizeof(t_binary))))
 			return(NULL);

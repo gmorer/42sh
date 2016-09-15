@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/15 12:57:25 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/15 13:02:17 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/15 17:43:36 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	ft_show_hash_tab(char **env, t_binary **table)
 	char		*temp;
 	int		len;
 
+	if (!table)
+		return (0);
 	if(!(temp = getenvline(env, "BINARY_LEN=")))
 		return (1);
 	len = ft_atoi(temp);
@@ -107,7 +109,7 @@ int	ft_hash_algo(char *str, char **env)
 	return (ft_abs(result));
 }
 
-int	ft_free_hash_tab(char **env, t_binary **table)
+int	ft_free_hash_tab(char **env, t_binary ***table)
 {
 	int		i;
 	t_binary	*bin;
@@ -119,25 +121,33 @@ int	ft_free_hash_tab(char **env, t_binary **table)
 		return (1);
 	len = ft_atoi(temp);
 	free(temp);
+	if (!len || !*table)
+		return (0);
 	i = 0;
-	while (i < len)
+	while (i <= len)
 	{
-		if ((table[i]) && (table[i]->data))
+		bin = (*table)[i];
+		if ((bin))
 		{
-			bin = table[i];
 			bin2 = bin;
-			while ((bin) && (bin->data))
+			if(bin->data)
 			{
-				bin2 = bin;
-				bin = bin->next;
-				free(bin2->data->name);
-				free(bin2->data->full_path);
-				free(bin2->data);
-				free(bin2);
+				while ((bin))
+				{
+					bin2 = bin;
+					bin = bin->next;
+					free(bin2->data->name);
+					free(bin2->data->full_path);
+					free(bin2->data);
+					free(bin2);
+				}
 			}
+			else
+				free(bin);
 		}
 		i++;
 	}
-	free(table);
+	free(*table);
+	*table = NULL;
 	return (0);
 }

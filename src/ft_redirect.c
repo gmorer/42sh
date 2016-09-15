@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/05 09:58:59 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/14 17:36:55 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/15 17:09:49 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int		folder(char **str, char **env)
 	return (ft_exec(str[0], str, &env));
 }
 
-int				ft_redirect(char **str, char ***env, t_binary **table)
+int				ft_redirect(char **str, char ***env, t_binary ***table)
 {
 	char	*bin;
 	int		result;
@@ -56,8 +56,7 @@ int				ft_redirect(char **str, char ***env, t_binary **table)
 	}
 	if ((result = redirectfunction_builtin(str, env, table)) != -1)
 		return (result);
-	//bin = toexec(*env, str[0]);
-	bin = ft_give_path(str[0], table, *env);
+	bin = ft_give_path(str[0], *table, *env);
 	if (bin)
 	{
 		result = ft_exec(bin, str, env);

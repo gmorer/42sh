@@ -6,11 +6,17 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/07/05 10:22:17 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/15 17:58:38 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static t_binary	**new_path(char ***env, t_binary ***table)
+{
+	ft_free_hash_tab(*env, table);
+	return (ft_init_hash_table(env));
+}
 
 char		**ft_strstrdelone(int i, char **str)
 {
@@ -25,7 +31,7 @@ char		**ft_strstrdelone(int i, char **str)
 	return (str);
 }
 
-static int	ft_unsetenv(char **argv, char ***env)
+static int	ft_unsetenv(char **argv, char ***env, t_binary ***table)
 {
 	int		i;
 	size_t	len;
@@ -44,11 +50,17 @@ static int	ft_unsetenv(char **argv, char ***env)
 		ft_putendl(" in the environement");
 		return (1);
 	}
+	if (ft_strcmp(argv[1], "BINARY_LEN") == 0)
+		return (0);
+	if (ft_strcmp(argv[1], "PATH") == 0)
+		ft_free_hash_tab(*env, table);
+	if (ft_strcmp(argv[1], "PATH") == 0)
+		return (0);
 	*env = ft_strstrdelone(i, *env);
 	return (0);
 }
 
-static int	ft_exit(char **argv, t_binary **table, char **env)
+static int	ft_exit(char **argv, t_binary ***table, char **env)
 {
 	int i;
 
@@ -72,7 +84,7 @@ static int	ft_exit(char **argv, t_binary **table, char **env)
 	exit(i);
 }
 
-int			redirectfunction_builtin(char **argv, char ***env, t_binary **table)
+int			redirectfunction_builtin(char **argv, char ***env, t_binary ***table)
 {
 	int result;
 
@@ -82,11 +94,11 @@ int			redirectfunction_builtin(char **argv, char ***env, t_binary **table)
 	if (ft_strcmp("setenv", argv[0]) == 0)
 		result = ft_setenv(argv, env);
 	if (ft_strcmp("unsetenv", argv[0]) == 0)
-		result = ft_unsetenv(argv, env);
+		result = ft_unsetenv(argv, env, table);
 	if (ft_strcmp("echo", argv[0]) == 0)
 		result = ft_echo(argv);
 	if (ft_strcmp("hashtab", argv[0]) == 0)
-		result = ft_show_hash_tab(*env, table);
+		result = ft_show_hash_tab(*env, *table);
 	if (ft_strcmp("env", argv[0]) == 0)
 	{
 		result = 0;
@@ -94,5 +106,7 @@ int			redirectfunction_builtin(char **argv, char ***env, t_binary **table)
 	}
 	if (ft_strcmp("exit", argv[0]) == 0)
 		result = ft_exit(argv, table, *env);
+	if (result == 2)
+		*table = new_path(env, table);
 	return (result);
 }

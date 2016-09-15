@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/06 15:34:32 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/07 17:16:14 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/15 17:59:01 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,21 @@ int			ft_setenv(char **argv, char ***env)
 	if ((i = casenofor(*env, argvtemp[1])) == -1)
 		*env = ft_strstradd(ft_strjoin(temp, argvtemp[2]), *env);
 	else
-	{
+	{/*
+		if (ft_strcmp(temp, "BINARY_LEN=") == 0)
+		{
+			ft_strstrfree(argvtemp);
+			free(temp);
+			return (0);
+		}*/
 		free((*env)[i]);
 		(*env)[i] = ft_strjoin(temp, argvtemp[2]);
+	}
+	if (ft_strcmp(temp, "PATH=") == 0)
+	{
+		ft_strstrfree(argvtemp);
+		free(temp);
+		return (2);
 	}
 	ft_strstrfree(argvtemp);
 	free(temp);

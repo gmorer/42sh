@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/07/05 11:04:54 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/15 17:55:35 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,16 @@ static int		boucle(char **env, char **temp, int returnvalue, t_binary **table)
 {
 	while (42)
 	{
-		if (table == NULL)
-			table = ft_init_hash_table(&env);
 		temp = getarg(env, returnvalue);
 		if (temp && temp[0] && temp[0][0])
 		{
-			returnvalue = ft_redirect(temp, &env, table);
+			returnvalue = ft_redirect(temp, &env, &table);
 			ft_strstrfree(temp);
 			returnvaluetoenv(returnvalue, &env);
 		}
 		else
 			returnvalue = 0;
-	}/*
-	ft_strstrfree(temp);
-	if (env)
-		ft_strstrfree(env);*/
+	}
 	return (1);
 }
 
@@ -86,6 +81,7 @@ int				main(int argc, char **argv, char **env)
 	(void)argv;
 	(void)argc;
 	envdup = ft_shlvl(envdup);
+	table = ft_init_hash_table(&envdup);
 	boucle(envdup, temp, returnvalue, table);
 	return (0);
 }
