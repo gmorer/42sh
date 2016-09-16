@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/01 11:36:51 by gmorer            #+#    #+#              #
-#    Updated: 2016/09/01 10:59:32 by gmorer           ###   ########.fr        #
+#    Updated: 2016/09/16 11:51:24 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC =	ft_abs.c\
 		ft_isalpha.c\
 		ft_isascii.c\
 		ft_isdigit.c\
+		ft_isfolder.c\
 		ft_isprint.c\
 		ft_itoa.c\
 		ft_memalloc.c\

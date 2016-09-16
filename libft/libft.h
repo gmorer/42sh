@@ -6,13 +6,14 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 18:17:49 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/01 10:59:50 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/16 11:52:20 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include <sys/stat.h>
 # include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -24,6 +25,7 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+int					ft_isfolder(char *path);
 int					ft_isspace(char c);
 char				*ft_strndup(char *s1, int n);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));

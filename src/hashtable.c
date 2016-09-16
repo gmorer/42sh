@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/15 12:57:25 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/15 17:43:36 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/16 12:11:51 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,25 @@
 
 static int	ft_count_file(char *path)
 {
-	DIR	*directory;
-	int	result;
+	DIR				*directory;
+	int				result;
+	struct dirent	*file;
+	char			*temp1;
+	char			*temp2;
 
 	result = 0;
 	if (!(directory = opendir(path)))
 		return (0);
-	while (readdir(directory))
-		result++;
+	while ((file = readdir(directory)))
+	{
+		temp1 = ft_strjoin(path, "/");
+		if (!ft_isfolder((temp2 = ft_strjoin(temp1, file->d_name))))
+			result++;
+		free(temp1);
+		free(temp2);
+	}
 	closedir(directory);
-	return (result - 2);
+	return (result);
 }
 	
 

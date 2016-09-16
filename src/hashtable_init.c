@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/15 12:56:31 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/15 18:25:09 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/16 12:11:15 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static t_binary	*ft_remp(t_binary *bin, char *binary, char *path)
 {
 	char *temp;
-	
+
 	temp = NULL;
 	if (!(bin->data = malloc(sizeof(t_data))))
 		return (NULL);
@@ -30,12 +30,12 @@ t_binary	**ft_add_hash_to_tab(char *binary, char *path, t_binary **table, char *
 {
 	int	result;
 	t_binary *last;
-//////////////////////////////////////
+	//////////////////////////////////////
 	ft_putstr("adding ");
 	ft_putstr(path);
 	ft_putchar('/');
 	ft_putstr(binary);
-//////////////////////////////////////
+	//////////////////////////////////////
 	if ((result = ft_hash_algo(binary, env)) == -1)
 	{
 		ft_putendl("Cannot add hash to table");
@@ -65,14 +65,23 @@ t_binary	**ft_add_hash_to_tab(char *binary, char *path, t_binary **table, char *
 
 static t_binary	**ft_remp_table_dir(char *path, t_binary **table, char **env)
 {
-	DIR	*directory;
-	struct	dirent *file;
+	DIR				*directory;
+	struct dirent	*file;
+	char			*temp1;
+	char			*temp2;
 
 	if (!(directory = opendir(path)))
 		return (table);
 	while ((file = readdir(directory)))
-		if (file->d_name[0] != '.')
+	{
+		temp1 = ft_strjoin(path, "/");
+		if (!ft_isfolder((temp2 = ft_strjoin(temp1, file->d_name))))
+		{
 			table = ft_add_hash_to_tab(file->d_name, path, table , env);
+		}
+		free(temp1);
+		free(temp2);
+	}
 	closedir(directory);
 	return (table);
 }
