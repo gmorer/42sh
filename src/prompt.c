@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/06 15:23:40 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/01 15:40:35 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/28 18:31:46 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void		prompt(char **env, int returnvalue)
 	temp1 = NULL;
 	temp2 = NULL;
 	temp = promptinit(env, returnvalue, &temp1, &temp2);
-	if (temp1)
+	if (temp1 && temp)
 	{
 		if (temp2)
 			allenv(temp, temp1, temp2);
@@ -58,13 +58,16 @@ void		prompt(char **env, int returnvalue)
 			free(temp1);
 		free(temp2);
 	}
-	else
+	else if (temp)
 	{
 		ft_putstr("\x1b[32m");
 		ft_putstr(temp);
 		if (temp2)
 			free(temp2);
 	}
-	free(temp);
+	if (temp)
+		free(temp);
+	else
+		ft_putstr(". -> ");
 	ft_putstr("\x1b[36m: \x1b[0m");
 }
