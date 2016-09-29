@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/15 18:23:49 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/29 09:52:04 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ static int	ft_unsetenv(char **argv, char ***env, t_binary ***table)
 		return (0);
 	if (ft_strcmp(argv[1], "PATH") == 0)
 		ft_free_hash_tab(*env, table);
-	if (ft_strcmp(argv[1], "PATH") == 0)
-		return (0);
+//	if (ft_strcmp(argv[1], "PATH") == 0)
+//		return (0);
 	*env = ft_strstrdelone(i, *env);
 	return (0);
 }
