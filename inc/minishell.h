@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/15 18:22:39 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/30 09:59:16 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 # include <sys/wait.h>
 # include <sys/time.h>
 # include <sys/resource.h>
+# include <sys/ioctl.h>
 # include <signal.h>
+# include <termios.h>
 # include "libft.h"
 # include "get_next_line.h"
 
@@ -57,6 +59,7 @@ char	*rmchar(char *str, char c);
 char	**argvclean(char **argv, char **env);
 char	*getenvline(char **env, char *argv);
 char	**getline(char **env, char *argv);
+char	**ft_save_env(char **env);
 int		casenofor(char **env, char *argv);
 int		redirectfunction_builtin(char **argv, char ***env, t_binary ***table);
 void	ft_strstrfree(char **str);
@@ -66,4 +69,5 @@ size_t	ft_strstrlen(char **c);
 char	**ft_strstrnew(size_t i);
 char	**ft_strstrjoin(char **s1, char **s2);
 char	**ft_strstrdup(char **tab);
+int		ft_signal();
 #endif

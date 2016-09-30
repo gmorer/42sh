@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/15 18:22:52 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/30 10:50:54 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,18 @@ static char		**getarg(char **env, int returnvalue)
 {
 	char	**temp;
 	char	*test;
+	int		i;
 
 	temp = NULL;
 	test = NULL;
 	prompt(env, returnvalue);
-	get_next_line(1, &test);
-	if (!test)
+	i = get_next_line(1, &test);
+	if (!test && i == 0)
 		ft_putendl("exit");
-	if (!test)
+	if (!test && i == 0)
 		exit(0);
+	if( !test && i == -1)
+		ft_putchar('\n');
 	if (test && test[0] && (temp = argvsplit(test)))
 		temp = argvclean(temp, env);
 	free(test);
@@ -51,6 +54,7 @@ static int		boucle(char **env, char **temp, int returnvalue, t_binary **table)
 {
 	while (42)
 	{
+		ft_save_env(env);
 		temp = getarg(env, returnvalue);
 		if (temp && temp[0] && temp[0][0])
 		{
@@ -75,12 +79,12 @@ int				main(int argc, char **argv, char **env)
 	temp = NULL;
 	bin = NULL;
 	returnvalue = 0;
-	signal(SIGINT, SIG_IGN);
 	table = NULL;
 	envdup = ft_strstrdup(env);
 	(void)argv;
 	(void)argc;
 	envdup = ft_shlvl(envdup);
+	ft_signal();
 	table = ft_init_hash_table(&envdup);
 	boucle(envdup, temp, returnvalue, table);
 	return (0);
