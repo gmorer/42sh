@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2016/09/29 16:47:07 by gmorer           ###   ########.fr        #
+#    Updated: 2016/09/30 16:42:03 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ CFILES = main.c\
 			ft_checklink.c\
 			hashtable.c\
 			hashtable_init.c\
-			ft_signal.c
+			ft_signal.c\
+			init_env.c
 
 OFILES = $(CFILES:.c=.o)
 HFILES = inc/minishell.h libft/libft.h

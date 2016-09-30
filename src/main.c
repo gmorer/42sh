@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/30 10:50:54 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/09/30 16:59:41 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ int				main(int argc, char **argv, char **env)
 	bin = NULL;
 	returnvalue = 0;
 	table = NULL;
-	envdup = ft_strstrdup(env);
+	//envdup = ft_strstrdup(env);
+	envdup = init(env);
 	(void)argv;
 	(void)argc;
 	envdup = ft_shlvl(envdup);
