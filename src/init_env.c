@@ -14,7 +14,7 @@
 
 /*
  * HOMEDIR OK
- * PATH
+ * PATH OkForOsx
  * SHLVL
  * TERM
  * USER OK
@@ -37,7 +37,7 @@ static char		*ft_change_c2c(char *str, char c1, char c2)
 	return (str);
 }
 
-static char		*ft_read_path(char *path)
+static char		*ft_read_pathosx(char *path)
 {
 	char	*result;
 	char	*temp;
@@ -58,6 +58,7 @@ static char		*ft_read_path(char *path)
 		free(temp3);
 		free(temp);	
 	}
+	close(fd);
 	return (ft_change_c2c(result, '\n', ':'));
 }
 
@@ -66,39 +67,27 @@ char		**init(char		**oldenv)
 	char	**env;
 	struct passwd *pw;
 	char	*temp;
-	char	*temp2;
 
 	pw = getpwuid(getuid());
 	env = ft_strstrnew(7);
-	temp = ft_strjoin("HOME=", pw->pw_dir);
-	env[1] = ft_strdup(temp);
+	env[1] = ft_strjoin("HOME=", pw->pw_dir);
+	env[0] = ft_strjoin("USER=", pw->pw_name);
+	env[2] = ft_strjoin("PWD=", getcwd(NULL, 0));
+	temp = getenvline(oldenv, "OLDPWD");
+	env[3] = ft_strjoin("OLDPWD=", temp);
 	free(temp);
-	temp = ft_strjoin("USER=", pw->pw_name);
-	env[0] = ft_strdup(temp);
+	temp = getenvline(oldenv, "TERM");
+	env[4] = ft_strjoin("OLDPWD=", temp);
 	free(temp);
-	temp = ft_strjoin("PWD=", getcwd(NULL, 0));
-	env[2] = ft_strdup(temp);
+	temp = (LINUX ? NULL :ft_read_pathosx(OSX_PATH));
+	if(temp)
+	{
+		env[5] = ft_strjoin("PATH=", temp);
+		free(temp);
+	}
+	temp = getenvline(oldenv, "SHLVL");
+	env[6] = ft_strjoin("SHLVL=", temp);
 	free(temp);
-	temp2 = getenvline(oldenv, "OLDPWD");
-	temp = ft_strjoin("OLDPWD=", temp2);
-	env[3] = ft_strdup(temp);
-	free(temp);
-	free(temp2);
-	temp2 = getenvline(oldenv, "TERM");
-	temp = ft_strjoin("OLDPWD=", temp2);
-	env[3] = ft_strdup(temp);
-	free(temp);
-	free(temp2);
-	temp2 = ft_read_path("/etc/paths");
-	temp = ft_strjoin("PATH=", temp2);
-	env[4] = ft_strdup(temp);
-	free(temp);
-	free(temp2);
-	temp2 = getenvline(oldenv, "SHLVL");
-	temp = ft_strjoin("SHLVL=", temp2);
-	env[5] = ft_strdup(temp);
-	free(temp);
-	free(temp2);
 	env = ft_shlvl(env);
 	return (env);
 }

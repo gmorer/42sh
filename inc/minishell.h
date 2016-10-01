@@ -26,6 +26,13 @@
 # include <pwd.h>
 # include "libft.h"
 # include "get_next_line.h"
+# define OSX_PATH "/etc/paths"
+# ifdef __APPLE__
+#  define LINUX 0
+# endif
+# ifndef __APPLE__
+#  define LINUX 1
+# endif
 
 typedef struct		s_data
 {
