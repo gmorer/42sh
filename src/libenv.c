@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 10:52:08 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/06 15:32:31 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/10/01 17:55:43 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,27 @@ int				casenofor(char **env, char *argv)
 	int		rslt;
 	size_t	n;
 
+	//ft_putendl("lol1");
+	if (!env || !argv)
+		return(-1);
+	//ft_putendl("lol2");
 	n = ft_strlen(argv);
 	rslt = 0;
+	//	ft_putendl(env[rslt]);
+	//	ft_putendl("compare to ");
+	//	ft_putendl(argv);
+	//ft_putendl("lol3");
 	while (env[rslt] && ft_strnstr(env[rslt], argv, n) == NULL)
+	{
+	//	ft_putendl(env[rslt]);
+	//	ft_putendl("compare to ");
+	//	ft_putendl(argv);
 		rslt++;
+	}
+	//ft_putendl("lol4");
 	if (!env[rslt])
 		return (-1);
+	//ft_putendl("lol5");
 	return (rslt);
 }
 
@@ -61,6 +76,8 @@ char			*getenvline(char **env, char *argv)
 	x = ft_strstrlen(env);
 	i = 0;
 	rslt = NULL;
+	if(!argv || !x || !env)
+		return (NULL);
 	n = ft_strlen(argv);
 	while (i < x && envtest(argv, env[i]) == 0)
 		i++;

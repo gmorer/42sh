@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/30 16:59:41 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/10/03 11:24:12 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int				main(int argc, char **argv, char **env)
 	envdup = init(env);
 	(void)argv;
 	(void)argc;
-	envdup = ft_shlvl(envdup);
 	ft_signal();
 	table = ft_init_hash_table(&envdup);
 	boucle(envdup, temp, returnvalue, table);

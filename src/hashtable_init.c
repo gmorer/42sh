@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/15 12:56:31 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/16 12:11:15 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/10/03 11:09:16 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,27 +31,28 @@ t_binary	**ft_add_hash_to_tab(char *binary, char *path, t_binary **table, char *
 	int	result;
 	t_binary *last;
 	//////////////////////////////////////
+	/*
 	ft_putstr("adding ");
 	ft_putstr(path);
 	ft_putchar('/');
-	ft_putstr(binary);
+	ft_putstr(binary);*/
 	//////////////////////////////////////
 	if ((result = ft_hash_algo(binary, env)) == -1)
 	{
 		ft_putendl("Cannot add hash to table");
 		return (NULL);
-	}
+	}/*
 	ft_putstr("... hash ->");
-	ft_putnbr(result);
+	ft_putnbr(result);*/
 	if (table[result]->data == NULL)
 	{
-		ft_putstr(" -> new tab");
+		//ft_putstr(" -> new tab");
 		ft_remp(table[result], binary, path);
 	}
 	else
 	{
 		last = table[result];
-		ft_putstr(" -> existing tab");
+		//ft_putstr(" -> existing tab");
 		while ((last->next))
 			last = last->next;
 		if (!(last->next = malloc(sizeof(t_binary))))
@@ -59,7 +60,7 @@ t_binary	**ft_add_hash_to_tab(char *binary, char *path, t_binary **table, char *
 		ft_remp(last->next, binary, path);
 		last->next->next = NULL;
 	}
-	ft_putendl(": ok");
+	//ft_putendl(": ok");
 	return (table);
 }
 

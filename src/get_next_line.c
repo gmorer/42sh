@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 16:56:57 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/06 15:28:48 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/10/03 11:20:28 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int			get_next_line(int fd, char **line)
 	static char	*save[257];
 	int			r;
 
+	r = 0;
 	if ((t = NULL) || fd < 0 || !line || BUFF_SIZE < 1 || fd > 256)
 		return (-1);
 	!save[fd] ? (save[fd] = ft_strnew(0)) : 0;
@@ -32,10 +33,8 @@ int			get_next_line(int fd, char **line)
 		save[fd] = t;
 	}
 	free(buf);
-	if (r < 0)
-		return (-1);
-	if (!t && save[fd][0] == '\0')
-		return (0);
+	if (r < 0 || (!t && save[fd][0] == '\0'))
+		return ((r < 0) ? -1 : 0);
 	*line = (t ? ft_strsub(save[fd], 0, t - save[fd]) : ft_strdup(save[fd]));
 	save[fd] = (t ? ft_strcpy(save[fd], ++t) : ft_strdup("\0"));
 	return (1);

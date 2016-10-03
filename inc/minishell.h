@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/30 16:59:08 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/10/02 01:22:43 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include "libft.h"
 # include "get_next_line.h"
 # define OSX_PATH "/etc/paths"
+# define LINUX_PATH "/etc/login.defs"
 # ifdef __APPLE__
 #  define LINUX 0
 # endif

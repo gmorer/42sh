@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/28 12:08:37 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/30 10:48:02 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/10/03 11:14:58 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int				ft_signal(void)
 	signal(SIGCONT, cont);
 	while (i < 32)
 	{
-		if (i != SIGCONT && i != SIGWINCH && i != SIGTTIN && i != SIGSEGV && i != SIGCHLD)
+		if (i != SIGCONT && i != SIGWINCH && i != SIGTTIN && i != SIGSEGV && i != SIGCHLD && i != SIGUSR2)
 			signal(i, catch_kill);
 		i++;
 	}
