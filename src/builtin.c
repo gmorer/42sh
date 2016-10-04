@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/30 10:22:41 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/10/05 00:10:49 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int			redirectfunction_builtin(char **argv, char ***env, t_binary ***table)
 		result = ft_echo(argv);
 	if (ft_strcmp("hashtab", argv[0]) == 0)
 		result = ft_show_hash_tab(*env, *table);
+	if (ft_strcmp("upper", argv[0]) == 0 && argv[1] && argv[2] && argv[3])
+		result = uppercase(argv[1], argv[2], argv[3]);
 	if (ft_strcmp("env", argv[0]) == 0)
 	{
 		result = 0;

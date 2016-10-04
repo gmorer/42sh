@@ -6,21 +6,11 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/10/01 18:29:51 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/10/05 00:15:00 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char		**getline(char **env, char *argv)
-{
-	int	i;
-
-	i = 0;
-	while (ft_strstr(env[i], argv) == NULL)
-		i++;
-	return (ft_strsplit(strstr(env[i], argv), ':'));
-}
 
 char	*ft_give_path(char *name, t_binary **table, char **env)
 {

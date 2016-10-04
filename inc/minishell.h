@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2016/10/02 01:22:43 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/10/05 00:15:07 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <signal.h>
 # include <termios.h>
 # include <pwd.h>
+# include <stdio.h>
 # include "libft.h"
 # include "get_next_line.h"
 # define OSX_PATH "/etc/paths"
@@ -68,7 +69,6 @@ char	**argvsplit(char *argv);
 char	*rmchar(char *str, char c);
 char	**argvclean(char **argv, char **env);
 char	*getenvline(char **env, char *argv);
-char	**getline(char **env, char *argv);
 char	**ft_save_env(char **env);
 int		casenofor(char **env, char *argv);
 int		redirectfunction_builtin(char **argv, char ***env, t_binary ***table);
@@ -81,4 +81,5 @@ char	**ft_strstrjoin(char **s1, char **s2);
 char	**ft_strstrdup(char **tab);
 int		ft_signal();
 char	**init(char **oldenv);
+int		uppercase(char *argv1, char *argv2, char *argv3);
 #endif
