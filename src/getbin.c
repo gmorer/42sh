@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/10/05 00:15:00 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/10/10 15:53:12 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ int			ft_exec(char *bin, char **temp, char ***env)
 		execve(bin, temp, *env);
 	i = casenofor(*env, "_=");
 	if (i > -1)
+	{
 		free((*env)[i]);
+	}
 	if (i > -1)
 		(*env)[i] = ft_strjoin("_=", bin);
 	else
