@@ -59,7 +59,7 @@ static char		*ft_read_pathlinux(char *path)
 	close(fd);
 	if(dup)
 	{
-		temp = ft_strdup((ft_strstr(dup, "PATH=")));
+		temp = ft_strdup((ft_strstr(dup, "PATH=") + ft_strlen("PATH=")));
 		free(dup);
 		return (temp);
 	}
