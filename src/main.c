@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/10/03 11:24:12 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/11/07 17:07:29 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,20 @@ static int		boucle(char **env, char **temp, int returnvalue, t_binary **table)
 
 int				main(int argc, char **argv, char **env)
 {
+	extern char	**environ;
 	char	**envdup;
 	char	**temp;
 	char	*bin;
 	int		returnvalue;
 	t_binary	**table;
 
+	(void)env;
 	temp = NULL;
 	bin = NULL;
 	returnvalue = 0;
 	table = NULL;
-	//envdup = ft_strstrdup(env);
-	envdup = init(env);
+	envdup = ft_strstrdup(environ);
+	//envdup = init(environ);
 	(void)argv;
 	(void)argc;
 	ft_signal();

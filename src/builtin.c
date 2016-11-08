@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/10/05 00:10:49 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/11/08 14:36:46 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,27 @@
 
 char		**ft_strstrdelone(int i, char **str)
 {
+	char	**rslt;
+	int		y;
+
+	y = 0;
+	if(!(rslt = malloc(sizeof(char*) * ft_strstrlen(str))))
+		return (NULL);
 	i++;
+	while (y < i)
+	{
+		rslt[y] = str[y];
+		y++;
+	}
 	free(str[i - 1]);
 	while (str[i])
 	{
-		str[i - 1] = str[i];
+		rslt[i - 1] = str[i];
 		i++;
 	}
-	str[i - 1] = NULL;
-	return (str);
+	rslt[i - 1] = NULL;
+	free(str);
+	return (rslt);
 }
 
 static int	ft_unsetenv(char **argv, char ***env, t_binary ***table)
