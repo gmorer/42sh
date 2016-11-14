@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/05 09:58:59 by gmorer            #+#    #+#             */
-/*   Updated: 2016/10/18 17:56:08 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/11/14 11:51:32 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ int				ft_redirect(char **str, char ***env, t_binary ***table)
 	else if ((bin = toexec(*env, str[0])) != NULL)
 	{
 		result = ft_exec(bin, str, env);
-		temp = ft_strsub(bin, 0, ft_strlen(bin) - ft_strlen(str[0]));
+		temp = ft_strsub(bin, 0, ft_strlen(bin) - ft_strlen(str[0]) - 1);
+		ft_putendl(temp);
+		ft_putendl(str[0]);
 		*table = ft_add_hash_to_tab(str[0], temp, *table, *env);
 		free(temp);
 		return (result);
