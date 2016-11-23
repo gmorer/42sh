@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/01 11:05:18 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/11/23 14:55:53 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ char		**ft_delemptystr(char **rslt)
 			rslt = ft_strstrdelone(i, rslt);
 		if (rslt[i])
 			rslt[i] = rmchar(rslt[i], '\\');
+		if (!rslt[i])
+			return (rslt);
 		i++;
 	}
 	return (rslt);
