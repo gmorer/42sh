@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/28 12:08:37 by gmorer            #+#    #+#             */
-/*   Updated: 2016/10/03 11:14:58 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/11/24 11:56:26 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,13 @@ static void		cont(int i)
 	 * things to do
 	 */
 	prompt(ft_save_env(NULL), 0);
-	//ioctl(0, TIOCSTI, &i);
+	ioctl(0, TIOCSTI, &i);
 }
 
 int				ft_signal(void)
 {
-	int		i;
-
-	i = 0;/*
-	signal(SIGWINCH, resize_draw);
-	signal(SIGTSTP, catch_kill);
-	ft_save_term(o, 1);*/
 	signal(SIGCONT, cont);
-	while (i < 32)
-	{
-		if (i != SIGCONT && i != SIGWINCH && i != SIGTTIN && i != SIGSEGV && i != SIGCHLD && i != SIGUSR2)
-			signal(i, catch_kill);
-		i++;
-	}
+	signal(SIGTSTP, catch_kill);
+	signal(SIGINT, catch_kill);	
 	return (1);
 }
