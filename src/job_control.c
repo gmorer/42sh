@@ -6,27 +6,16 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/25 11:01:46 by gmorer            #+#    #+#             */
-/*   Updated: 2016/11/25 16:51:49 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/11/25 17:07:19 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	format_job_info (job *j, const char *status)
+void	format_job_info (t_job *j, const char *status)
 {
 	fprintf (stderr, "%ld (%s): %s\n", (long)j->pgid, status, j->command);
 }
-
-void	update_status (void)
-{
-	int		status;
-	pid_t	pid;
-
-	pid = waitpid (WAIT_ANY, &status, WUNTRACED|WNOHANG);
-	while (!mark_process_status(pid, status));
-	pid = waitpid (WAIT_ANY, &status, WUNTRACED|WNOHANG);
-}
-
 
 t_job	*find_job(pid_t pgid, t_job *joblist)
 {
@@ -68,17 +57,6 @@ int		job_is_completed(t_job *j)
 		p = p->next;
 	}
 	return (1);
-}
-
-void	wait_for_job (job *j)
-{
-	int		status;
-	pid_t	pid;
-
-	pid = waitpid (WAIT_ANY, &status, WUNTRACED);
-	while (!mark_process_status(pid, status) && !job_is_stopped(j)
-			&& !job_is_completed(j));
-	pid = waitpid (WAIT_ANY, &status, WUNTRACED);
 }
 
 int		mark_process_status (pid_t pid, int status)
@@ -134,7 +112,28 @@ int		mark_process_status (pid_t pid, int status)
 	}
 }
 
-void	put_job_in_background (job *j, int cont)
+void	update_status (void)
+{
+	int		status;
+	pid_t	pid;
+
+	pid = waitpid (WAIT_ANY, &status, WUNTRACED|WNOHANG);
+	while (!mark_process_status(pid, status));
+	pid = waitpid (WAIT_ANY, &status, WUNTRACED|WNOHANG);
+}
+
+void	wait_for_job (t_job *j)
+{
+	int		status;
+	pid_t	pid;
+
+	pid = waitpid (WAIT_ANY, &status, WUNTRACED);
+	while (!mark_process_status(pid, status) && !job_is_stopped(j)
+			&& !job_is_completed(j));
+	pid = waitpid (WAIT_ANY, &status, WUNTRACED);
+}
+
+void	put_job_in_background (t_job *j, int cont)
 {
 	/* Send the job a continue signal, if necessary.  */
 	if (cont)
@@ -142,7 +141,7 @@ void	put_job_in_background (job *j, int cont)
 			ft_putendl_fd("kill (SIGCONT)", STDERR_FILENO);
 }
 
-void	put_job_in_foreground(job *j, int cont, t_shell *shell)
+void	put_job_in_foreground(t_job *j, int cont, t_shell *shell)
 {
 	/* Put the job into the foreground.  */
 	tcsetpgrp(shell->terminal, j->pgid);
@@ -255,7 +254,7 @@ void	launch_job(t_job *j, int foreground, t_shell *shell)
 	if (!shell->is_interactive)
 		wait_for_job(j);
 	else if (foreground)
-		put_job_in_foreground(j, 0);
+		put_job_in_foreground(j, 0, shell);
 	else
 		put_job_in_background(j, 0);
 }
@@ -314,11 +313,11 @@ void	mark_job_as_running (t_job *j)
 	j->notified = 0;
 }
 
-void	continue_job(t_job *j, int foreground)
+void	continue_job(t_job *j, int foreground, t_shell *shell)
 {
 	mark_job_as_running(j);
 	if (foreground)
-		put_job_in_foreground(j, 1);
+		put_job_in_foreground(j, 1, shell);
 	else
 		put_job_in_background(j, 1);
 }
