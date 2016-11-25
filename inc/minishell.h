@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2016/10/18 17:10:06 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/11/25 15:27:51 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <termios.h>
 # include <pwd.h>
 # include <stdio.h>
+# include <termios.h>
 # include "libft.h"
 # include "get_next_line.h"
 # define OSX_PATH "/etc/paths"
@@ -36,18 +37,51 @@
 #  define LINUX 1
 # endif
 
-typedef struct		s_data
+typedef struct	s_data
 {
 	char		*name;
 	char		*full_path;
 }			t_data;
 
-typedef struct		s_binary
+typedef struct	s_binary
 {
 	t_data		*data;
 	struct s_binary *next;
 }			t_binary;
 
+typedef struct	s_process
+{
+	struct s_process	*next;			/* next process in pipeline */
+	char				**argv;			/* for exec */
+	pid_t				pid;			/* process ID */
+	char				completed;		/* true if process has completed */
+	char				stopped;		/* true if process has stopped */
+	int					status;			/* reported status value */
+}				t_process;
+
+/* A job is a pipeline of processes.  */
+typedef struct	s_job
+{
+	struct s_job	*next;				/* next active job */
+	char			*command;			/* command line, used for messages */
+	t_process		*first_process;		/* list of processes in this job */
+	pid_t			pgid;				/* process group ID */
+	char			notified;			/* true if user told about stopped job */
+	struct termios	tmodes;				/* saved terminal modes */
+	int				stdin; 				/* standard i/o channels */
+	int				stdout;
+	int				stderr;
+}				t_job;
+
+typedef struct s_shell
+{
+	pid_t			pgid;
+	struct termios	tmodes;
+	int				terminal;
+	int				is_interactive;
+}				t_shell;
+
+t_shell		*init_mainprocess(void);
 t_binary	**ft_add_hash_to_tab(char *binary, char *path, t_binary **table, char **env);
 char	*toexec(char **env, char *argv);
 int		ft_count_binary(char **env);

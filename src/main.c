@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/11/07 17:07:29 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/11/25 11:46:05 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int		boucle(char **env, char **temp, int returnvalue, t_binary **table)
 		else
 			returnvalue = 0;
 	}
-	return (1);
+//	return (1);
 }
 
 int				main(int argc, char **argv, char **env)
@@ -78,6 +78,7 @@ int				main(int argc, char **argv, char **env)
 	t_binary	**table;
 
 	(void)env;
+	init_mainprocess();
 	temp = NULL;
 	bin = NULL;
 	returnvalue = 0;
