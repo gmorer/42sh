@@ -6,11 +6,13 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/11/25 11:46:05 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/01 12:15:30 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_shell		*shell;
 
 static void		returnvaluetoenv(int returnvalue, char ***env)
 {
@@ -50,17 +52,17 @@ static char		**getarg(char **env, int returnvalue)
 	return (temp);
 }
 
-static int		boucle(char **env, char **temp, int returnvalue, t_binary **table)
+static int		boucle(char **temp, int returnvalue, t_binary **table)
 {
 	while (42)
 	{
-		ft_save_env(env);
-		temp = getarg(env, returnvalue);
+		//ft_save_env(env);
+		temp = getarg(shell->env, returnvalue);
 		if (temp && temp[0] && temp[0][0])
 		{
-			returnvalue = ft_redirect(temp, &env, &table);
+			returnvalue = ft_redirect(temp, &(shell->env), &table, shell);
 			ft_strstrfree(temp);
-			returnvaluetoenv(returnvalue, &env);
+			returnvaluetoenv(returnvalue, &(shell->env));
 		}
 		else
 			returnvalue = 0;
@@ -71,24 +73,24 @@ static int		boucle(char **env, char **temp, int returnvalue, t_binary **table)
 int				main(int argc, char **argv, char **env)
 {
 	extern char	**environ;
-	char	**envdup;
 	char	**temp;
 	char	*bin;
 	int		returnvalue;
 	t_binary	**table;
 
 	(void)env;
-	init_mainprocess();
 	temp = NULL;
 	bin = NULL;
 	returnvalue = 0;
 	table = NULL;
-	envdup = ft_strstrdup(environ);
+	shell = NULL;
+	init_mainprocess();
+	shell->env = ft_strstrdup(environ);
 	//envdup = init(environ);
 	(void)argv;
 	(void)argc;
 	ft_signal();
-	table = ft_init_hash_table(&envdup);
-	boucle(envdup, temp, returnvalue, table);
+	table = ft_init_hash_table(&(shell->env));
+	boucle(temp, returnvalue, table);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/11/08 14:36:46 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/05 11:49:06 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ int			redirectfunction_builtin(char **argv, char ***env, t_binary ***table)
 		result = ft_show_hash_tab(*env, *table);
 	if (ft_strcmp("upper", argv[0]) == 0 && argv[1] && argv[2] && argv[3])
 		result = uppercase(argv[1], argv[2], argv[3]);
+	if (ft_strcmp("job", argv[0]) == 0)
+		result = ft_jobs(argv);
 	if (ft_strcmp("env", argv[0]) == 0)
 	{
 		result = 0;

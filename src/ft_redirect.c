@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/05 09:58:59 by gmorer            #+#    #+#             */
-/*   Updated: 2016/11/14 11:51:32 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/11/28 17:18:57 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int		ft_isin(char *str, char c)
 	return (0);
 }
 
-static int		folder(char **str, char ***env)
+static int		folder(char **str, char ***env, t_shell *shell)
 {
 	if (access(str[0], F_OK) == -1)
 	{
@@ -40,10 +40,10 @@ static int		folder(char **str, char ***env)
 		ft_putendl("str[0]");
 		return (1);
 	}
-	return (ft_exec(str[0], str, env));
+	return (ft_exec(str[0], str, env, shell));
 }
 
-int				ft_redirect(char **str, char ***env, t_binary ***table)
+int				ft_redirect(char **str, char ***env, t_binary ***table, t_shell *shell)
 {
 	char	*bin;
 	int		result;
@@ -53,7 +53,7 @@ int				ft_redirect(char **str, char ***env, t_binary ***table)
 	bin = NULL;
 	if (ft_isin(str[0], '/'))
 	{
-		result = folder(str, env);
+		result = folder(str, env, shell);
 		return (result);
 	}
 	if ((result = redirectfunction_builtin(str, env, table)) != -1)
@@ -61,13 +61,13 @@ int				ft_redirect(char **str, char ***env, t_binary ***table)
 	bin = ft_give_path(str[0], *table, *env);
 	if (bin)
 	{
-		result = ft_exec(bin, str, env);
+		result = ft_exec(bin, str, env, shell);
 		free(bin);
 		return (result);
 	}
 	else if ((bin = toexec(*env, str[0])) != NULL)
 	{
-		result = ft_exec(bin, str, env);
+		result = ft_exec(bin, str, env, shell);
 		temp = ft_strsub(bin, 0, ft_strlen(bin) - ft_strlen(str[0]) - 1);
 		ft_putendl(temp);
 		ft_putendl(str[0]);

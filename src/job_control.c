@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/25 11:01:46 by gmorer            #+#    #+#             */
-/*   Updated: 2016/11/25 17:07:19 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/11/30 12:30:06 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@ int		job_is_completed(t_job *j)
 	return (1);
 }
 
-int		mark_process_status (pid_t pid, int status)
+int		mark_process_status (pid_t pid, int status, t_shell *shell)
 {
 	t_job *j;
 	t_process *p;
 
 	if (pid > 0)
 	{
-		j = first_job;///////////////
+		j = shell->first_job;///////////////
 		/* Update the record for the process.  */
 		while (j)
 		{
@@ -112,25 +112,25 @@ int		mark_process_status (pid_t pid, int status)
 	}
 }
 
-void	update_status (void)
+void	update_status(t_shell *shell)
 {
 	int		status;
 	pid_t	pid;
 
 	pid = waitpid (WAIT_ANY, &status, WUNTRACED|WNOHANG);
-	while (!mark_process_status(pid, status));
-	pid = waitpid (WAIT_ANY, &status, WUNTRACED|WNOHANG);
+	while (!mark_process_status(pid, status, shell))
+		pid = waitpid (WAIT_ANY, &status, WUNTRACED|WNOHANG);
 }
 
-void	wait_for_job (t_job *j)
+void	wait_for_job (t_job *j, t_shell *shell)
 {
 	int		status;
 	pid_t	pid;
 
 	pid = waitpid (WAIT_ANY, &status, WUNTRACED);
-	while (!mark_process_status(pid, status) && !job_is_stopped(j)
-			&& !job_is_completed(j));
-	pid = waitpid (WAIT_ANY, &status, WUNTRACED);
+	while (!mark_process_status(pid, status, shell) && !job_is_stopped(j)
+			&& !job_is_completed(j))
+		pid = waitpid (WAIT_ANY, &status, WUNTRACED);
 }
 
 void	put_job_in_background (t_job *j, int cont)
@@ -153,7 +153,7 @@ void	put_job_in_foreground(t_job *j, int cont, t_shell *shell)
 			ft_putendl_fd("kill (SIGCONT)", STDERR_FILENO);
 	}
 	/* Wait for it to report.  */
-	wait_for_job(j);
+	wait_for_job(j, shell);
 	/* Put the shell back in the foreground.  */
 	tcsetpgrp(shell->terminal, shell->pgid);
 	/* Restore the shell’s terminal modes.  */
@@ -252,23 +252,29 @@ void	launch_job(t_job *j, int foreground, t_shell *shell)
 	}
 	format_job_info(j, "launched");
 	if (!shell->is_interactive)
-		wait_for_job(j);
+		wait_for_job(j, shell);
 	else if (foreground)
 		put_job_in_foreground(j, 0, shell);
 	else
 		put_job_in_background(j, 0);
 }
 
-void	do_job_notification(void)
+void	free_job(t_job *job)
+{
+	free(job->command);
+	//free all process
+	free(job);
+}
+
+void	do_job_notification(t_shell *shell)
 {
 	t_job		*j;
 	t_job		*jlast;
 	t_job		*jnext;
-	t_process	*p;
 
 	/* Update status information for child processes.  */
-	update_status();
-	j = first_job;///////////////////////
+	update_status(shell);
+	j = shell->first_job;///////////////////////
 	jlast = NULL;
 	while (j)
 	{
@@ -281,7 +287,7 @@ void	do_job_notification(void)
 			if (jlast)
 				jlast->next = jnext;
 			else
-				first_job = jnext;
+				shell->first_job = jnext;
 			free_job(j);
 		}
 

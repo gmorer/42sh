@@ -6,16 +6,16 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/25 11:29:11 by gmorer            #+#    #+#             */
-/*   Updated: 2016/11/25 15:28:36 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/01 12:22:07 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+t_shell		*shell;
+
 t_shell		*init_mainprocess(void)
 {
-	t_shell *shell;
-
 	if (!(shell = (t_shell*)malloc(sizeof(t_shell))))
 		return (NULL);
 	shell->terminal = STDIN_FILENO;
@@ -25,6 +25,7 @@ t_shell		*init_mainprocess(void)
 		ft_putendl_fd("shell isnt interactiv!", STDERR_FILENO);
 		return(NULL);
 	}
+	shell->first_job = NULL;
 	/* Loop until we are in the foreground.  */
 	while (tcgetpgrp (shell->terminal) != (shell->pgid = getpgrp ()))
 		kill (- shell->pgid, SIGTTIN);

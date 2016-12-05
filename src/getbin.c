@@ -6,11 +6,13 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/11/08 14:18:58 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/05 12:36:46 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_shell		*shell;
 
 static char	*getexec(char *path, char *file)
 {
@@ -91,12 +93,29 @@ char	*ft_give_path(char *name, t_binary **table, char **env)
 	return (NULL);
 }
 
-int			ft_exec(char *bin, char **temp, char ***env)
+void		lol(int i)
+{
+	t_job	*job;
+
+	(void)i;
+	ft_putendl("catch them all");
+	kill(shell->current_job->pgid, SIGTSTP);
+	job = shell->first_job;
+	while(job && job->next)
+	{
+		job = job->next;
+	}
+	if (!job)
+		shell->first_job = shell->current_job;
+	else
+		job->next = shell->current_job;
+}
+int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
 {
 	int		exit;
-	pid_t	pid;
 	int		i;
 
+	ft_putendl("COMMENCE LEXECUTION");
 	if ((exit = 1) && access(bin, F_OK) == -1)
 	{
 		ft_putstr(bin);
@@ -109,16 +128,60 @@ int			ft_exec(char *bin, char **temp, char ***env)
 		ft_putendl(": Permission denied.");
 		return (1);
 	}
-	pid = fork();
-	if (pid > 0)
-		waitpid(pid, &exit, 0);
-	if (pid == 0)
-		execve(bin, temp, *env);
+	if(!(shell->current_job = (t_job*)malloc(sizeof(t_job))))
+		return (1);
+	*(shell->current_job) = (t_job){NULL, ft_strdup(bin), NULL, 0, 0, 0, 0, 0};
+	shell->current_job->pgid = fork();
+	//signal(SIGCHLD, SIG_DFL);
+	signal(SIGTSTP, lol);
+	if (shell->current_job->pgid == 0)
+	{
+		free(shell->current_job);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		signal(SIGTSTP, SIG_DFL);
+		signal(SIGTTIN, SIG_DFL);
+		signal(SIGTTOU, SIG_DFL);
+		signal(SIGCHLD, SIG_DFL);
+		signal(SIGTSTP, lol);
+		//execve(bin, temp, *env);/*
+		if (execvp(bin, temp) == -1)
+		{
+			ft_putendl("exec error");
+			i = errno;
+			ft_putnbr(i);
+			ft_signal();
+			return (0);
+		}
+		ft_putendl("lolololol");
+	}
+	else if (shell->current_job->pgid < 0)
+	{
+		free(shell->current_job);
+		ft_putendl("error pgid");
+		ft_signal();
+		return(-1);
+	}
+	else if (shell->current_job->pgid > 0)
+		if(waitpid(shell->current_job->pgid, &exit, WUNTRACED) == -1)
+		{
+			ft_putendl("waitpid bug");
+			i = errno;
+			ft_putnbr(i);
+			free(shell->current_job);
+			ft_signal();
+			return(1);
+		}
+//		setpgid(pid, pid);
+//	tcsetpgrp(shell->terminal, shell->pgid);
+	ft_putendl("FINI LEXECUTION");
+	//free(shell->current_job);
 	i = casenofor(*env, "_=");
 	if (i > -1)
 	{
 		free((*env)[i]);
 	}
+	ft_signal();
 	if (i > -1)
 		(*env)[i] = ft_strjoin("_=", bin);
 	else
