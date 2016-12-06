@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2016/11/25 11:46:17 by gmorer           ###   ########.fr        #
+#    Updated: 2016/12/06 15:16:37 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,10 +37,13 @@ CFILES = main.c\
 			ft_signal.c\
 			init_env.c\
 			upper.c\
-			init_shell.c
+			init_shell.c\
+			jobbuiltin.c\
+			ft_fg.c
 
 OFILES = $(CFILES:.c=.o)
-HFILES = inc/minishell.h libft/libft.h
+HFILES = inc/minishell.h\
+		 libft/libft.h
 OBJ = $(addprefix $(OPATH), $(OFILES))
 
 .PHONY: all clean fclean re

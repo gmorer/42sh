@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/05 12:36:46 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/06 12:27:01 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*ft_give_path(char *name, t_binary **table, char **env)
 	}
 	return (NULL);
 }
-
+/*
 void		lol(int i)
 {
 	t_job	*job;
@@ -109,7 +109,8 @@ void		lol(int i)
 		shell->first_job = shell->current_job;
 	else
 		job->next = shell->current_job;
-}
+	shell->current_job = NULL;
+}*/
 int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
 {
 	int		exit;
@@ -133,18 +134,18 @@ int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
 	*(shell->current_job) = (t_job){NULL, ft_strdup(bin), NULL, 0, 0, 0, 0, 0};
 	shell->current_job->pgid = fork();
 	//signal(SIGCHLD, SIG_DFL);
-	signal(SIGTSTP, lol);
+	//signal(SIGTSTP, lol);
 	if (shell->current_job->pgid == 0)
 	{
 		free(shell->current_job);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		signal(SIGTSTP, SIG_DFL);
+		//signal(SIGTSTP, SIG_DFL);
 		signal(SIGTTIN, SIG_DFL);
 		signal(SIGTTOU, SIG_DFL);
 		signal(SIGCHLD, SIG_DFL);
-		signal(SIGTSTP, lol);
-		//execve(bin, temp, *env);/*
+		//signal(SIGTSTP, lol);
+		//if execve(bin, temp, *env) == -1);
 		if (execvp(bin, temp) == -1)
 		{
 			ft_putendl("exec error");
@@ -155,14 +156,14 @@ int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
 		}
 		ft_putendl("lolololol");
 	}
-	else if (shell->current_job->pgid < 0)
+	else if (shell->current_job && shell->current_job->pgid < 0)
 	{
 		free(shell->current_job);
 		ft_putendl("error pgid");
 		ft_signal();
 		return(-1);
 	}
-	else if (shell->current_job->pgid > 0)
+	else if (shell->current_job && shell->current_job->pgid > 0)
 		if(waitpid(shell->current_job->pgid, &exit, WUNTRACED) == -1)
 		{
 			ft_putendl("waitpid bug");
@@ -172,10 +173,14 @@ int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
 			ft_signal();
 			return(1);
 		}
+	if (shell->current_job == NULL)
+		return (146);
 //		setpgid(pid, pid);
 //	tcsetpgrp(shell->terminal, shell->pgid);
 	ft_putendl("FINI LEXECUTION");
-	//free(shell->current_job);
+	free(shell->current_job->command);
+	free(shell->current_job);
+	shell->current_job = NULL;
 	i = casenofor(*env, "_=");
 	if (i > -1)
 	{

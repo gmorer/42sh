@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/28 12:08:37 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/01 12:16:29 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/06 15:56:23 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,42 @@
 
 t_shell		*shell;
 
+void		ctrlz(int i)
+{
+	t_job	*job;
+	char	c;
+
+	c = 26;
+	if (shell->current_job == NULL)
+	{
+		return;
+	}
+	(void)i;
+	ft_putnbr(shell->current_job->pgid);
+	//ft_putendl("catch them all");
+	job = shell->first_job;
+	while(job && job->next)
+	{
+		job = job->next;
+	}
+	if (!job)
+		shell->first_job = shell->current_job;
+	else
+		job->next = shell->current_job;
+	ioctl(0, TIOCSTI, &c);
+	ioctl(0, TIOCSTI, "\n");
+	//kill(shell->current_job->pgid, SIGTSTP);
+	shell->current_job = NULL;
+}
+
 void			catch_kill(int i)
 {
-	struct termios	o;
-	char			c;
-
-	if(i == SIGTSTP)
-	{
-		tcgetattr(0, &o);
-		c = o.c_cc[VSUSP];
-		ioctl(0, TIOCSTI, &c);
-		signal(SIGTSTP, SIG_DFL);
-	}
-	else if(i == SIGINT)
+	if(i == SIGINT)
 	{
 		ft_putchar('\n');
 		prompt(shell->env, 1);
 	}
-	else if (i != SIGTSTP)
+	else
 	{
 		exit(1);
 	}
@@ -52,10 +70,9 @@ static void		cont(int i)
 int				ft_signal(void)
 {
 	signal(SIGCONT, cont);
-	signal(SIGTSTP, catch_kill);
+	signal(SIGTSTP, ctrlz);
 	signal(SIGINT, catch_kill);	
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGTSTP, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGTTOU, SIG_IGN);
 	signal(SIGCHLD, SIG_DFL);
