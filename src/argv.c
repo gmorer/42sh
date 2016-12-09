@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2016/11/23 14:55:53 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/07 11:58:34 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,10 @@ char		*charadd(char *str, char c)
 	size_t	len;
 
 	i = 0;
-	len = ft_strlen(str);
+	if (str == NULL)
+		len = 0;
+	else
+		len = ft_strlen(str);
 	rslt = ft_strnew(len + 1);
 	while (i < len)
 	{

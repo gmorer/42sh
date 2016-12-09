@@ -6,13 +6,13 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/05 09:58:59 by gmorer            #+#    #+#             */
-/*   Updated: 2016/11/28 17:18:57 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/07 12:04:19 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int		ft_isin(char *str, char c)
+int				ft_isin(char *str, char c)
 {
 	int i;
 

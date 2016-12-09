@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/06 15:17:05 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/08 11:59:31 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ typedef struct s_shell
 
 extern t_shell	*shell;
 
+int			ft_match(char **argv);
+int			ft_isin(char *s1, char c);
 int			ft_fg(char **argv);
 int			ft_jobs(char **argv);
 t_shell		*init_mainprocess(void);

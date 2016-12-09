@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/28 12:08:37 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/06 15:56:23 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/07 11:08:39 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ t_shell		*shell;
 void		ctrlz(int i)
 {
 	t_job	*job;
-	char	c;
+//	char	c;
 
-	c = 26;
+//	c = 26;
 	if (shell->current_job == NULL)
 	{
 		return;
@@ -36,9 +36,9 @@ void		ctrlz(int i)
 		shell->first_job = shell->current_job;
 	else
 		job->next = shell->current_job;
-	ioctl(0, TIOCSTI, &c);
+//	ioctl(0, TIOCSTI, &c);
 	ioctl(0, TIOCSTI, "\n");
-	//kill(shell->current_job->pgid, SIGTSTP);
+	kill(shell->current_job->pgid, SIGTSTP);
 	shell->current_job = NULL;
 }
 
