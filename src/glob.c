@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 11:47:27 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/09 16:18:28 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/12 04:44:38 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** s2 incomming string:
 ** * : ok
 ** ? : ok
-** [] : ko
+** [] : ok
 ** {} : ko
 */
 
@@ -58,11 +58,20 @@ int	block(char *s2, char c, int *len)
 	}
 	*len = i;
 	if (s2[1] == '^' && !ft_isin(result, c))
+	{
+		free(result);
 		return (1);
+	}
 	else if (s2[1] != '^' && ft_isin(result, c))
+	{
+		free(result);
 		return (1);
+	}
 	else
+	{
+		free(result);
 		return (0);
+	}
 }
 
 int	match(char *s1, char *s2)
