@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 11:47:27 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/12 04:44:38 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/15 17:08:47 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,10 @@ int	match(char *s1, char *s2)
 
 int	ft_match(char **argv)
 {
-	if (ft_strstrlen(argv) != 3)
+	if (ft_strstrlen(argv) != 2)
 		return (1);
-	ft_putnbr(match(argv[1], argv[2]));
-	ft_putchar('\n');
+//	ft_putnbr(match(argv[1], argv[2]));
+//	ft_putchar('\n');
+	ft_putmap(glob_result(argv));
 	return (0);
 }

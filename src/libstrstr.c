@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:58:14 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/06 15:53:49 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/12 17:29:18 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strstrlen(char **c)
 	size_t i;
 
 	i = 0;
+	if (!c)
+		return (i);
 	while (c[i] != NULL)
 		i++;
 	return (i);
