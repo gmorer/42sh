@@ -46,7 +46,7 @@ char	**glob_get_files(char *previous, char *matchvar, char *after)
 
 	ft_putstr("you are here with for previous: ");
 	ft_putendl(previous);
-	result = NULL;
+	result = ft_strstrnew(0);
 	if ((actualdir = opendir(previous)) == NULL)
 	{
 		ft_putstr("no matches found: ");
@@ -61,19 +61,28 @@ char	**glob_get_files(char *previous, char *matchvar, char *after)
 		ft_putstr(file->d_name);
 		ft_putstr(" et ");
 		ft_putendl(matchvar);
-		if (match(file->d_name, matchvar))
+		if (match(file->d_name, matchvar) && file->d_name[0] != '.')
 		{
 			ft_putstr("match for: ");
 			ft_putendl(file->d_name);
-			temp = ft_strjoin(previous, file->d_name);
+			temp1 = ft_strjoin("/", file->d_name);
+			temp = ft_strjoin(previous, temp1);
+			free(temp1);
+			ft_putstr("temp: ");
+			ft_putendl(temp);
 			temp1 = ft_strjoin(temp, after);
-			ft_putendl("test1");
 			free(temp);
 			ft_putendl("test1");
-			result = ft_strstradd(file->d_name, result);
+			ft_putstr("temp1 :");
+			ft_putendl(temp1);
+			ft_putendl("test1.5");
+			result = ft_strstradd(temp1, result);
 			ft_putendl("test2");
 		}
 	}
+	ft_putendl("return:");
+	ft_putmap(result);
+	ft_putendl("end return");
 	return (result);
 }
 
@@ -92,6 +101,11 @@ char	**resolve_glob(char **argv, int i)
 		if (need_glob_str(temp + 1))
 		{
 			ft_putendl("got it");
+			ft_putstr("temp: ");
+			ft_putendl(temp);
+			ft_putstr("argv: ");
+			ft_putmap(argv);
+			ft_putendl("test1");
 			ft_putnbr(ft_strlen(argv[i]) - ft_strlen(temp));
 			ft_putchar('\n');
 			previous = ft_strndup(argv[i], ft_strlen(argv[i]) - ft_strlen(temp));
@@ -99,15 +113,22 @@ char	**resolve_glob(char **argv, int i)
 			{
 				ft_putendl("you are tyhe last");
 				match = ft_strdup(temp + 1);
+				ft_putstr("matchvar: ");
+				ft_putendl(match);
 				after = NULL;
 			}
 			else
 			{
-				match = ft_strndup(temp, ft_strchr(temp, '/') - temp);
-				after = ft_strchr(temp, '/');
+				match = ft_strndup(temp + 1, ft_strlen(ft_strchr(temp + 1, '/') + 1));
+				ft_putstr("matchvar: ");
+				ft_putendl(match);
+				after = ft_strchr(temp + 1, '/');
 			}
 			argv = ft_strstrjoin(argv, glob_get_files(previous, match, after));
 			argv = ft_strstrdelone(i, argv);
+			ft_putendl("///////////////");
+			ft_putmap(argv);
+			ft_putendl("///////////////");
 			//free(previous);
 			//free(match);
 		}
