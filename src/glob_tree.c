@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 14:22:04 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/20 13:01:11 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/20 13:46:42 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char	**glob_get_files(char *previous, char *matchvar, char *after)
 	result = ft_strstrnew(0);
 	if ((actualdir = opendir(previous ? previous : "./")) == NULL)
 	{
+		ft_strstrfree(result);
 		return (NULL);
 	}
 	while ((file = readdir(actualdir)))
@@ -64,6 +65,7 @@ char	**glob_get_files(char *previous, char *matchvar, char *after)
 			result = ft_strstradd(temp1, result);
 		}
 	}
+	closedir(actualdir);
 	return (result);
 }
 
@@ -73,15 +75,20 @@ char	**resolve_glob(char **argv, int i)
 	char	*after;
 	char	*match;
 	char	*temp;
+	char	**temp2;
+	char *temp3;
 
-	temp = argv[i];
+	temp2 = NULL;
+	after = NULL;
+	temp = ft_strdup(argv[i]);
+	temp3 = temp;
 	if (need_glob_str(argv[i]))
 	{
 		if (!ft_strchr(argv[i], '/'))
 			match = ft_strdup(argv[i]);
 		else
 			match = ft_strndup(argv[i], ft_strlen(argv[i]) - ft_strlen(ft_strchr(argv[i], '/')));
-		argv = ft_strstrjoin(argv, glob_get_files(NULL, match, ft_strchr(argv[i], '/')));
+		argv = ft_strstrjoin(argv, (temp2 = glob_get_files(NULL, match, ft_strchr(argv[i], '/'))));
 		free(match);
 	}
 	while ((temp = ft_strchr(temp, '/')) != NULL)
@@ -102,12 +109,17 @@ char	**resolve_glob(char **argv, int i)
 			else
 			{
 				match = ft_strndup(temp + 1, ft_strlen(temp + 1) - ft_strlen(ft_strchr(temp + 1, '/') ));
-				after = ft_strchr(temp + 1, '/');
+				after = ft_strdup(ft_strchr(temp + 1, '/'));
 			}
-			argv = ft_strstrjoin(argv, glob_get_files(previous, match, after));
+			argv = ft_strstrjoin(argv, (temp2 = glob_get_files(previous, match, after)));
+			free(match);
+			free(previous);
+			if (after)
+				free(after);
 		}
 		temp++;
 	}
+	free(temp3);
 	argv = ft_strstrdelone(i, argv);
 	return (argv);
 }
