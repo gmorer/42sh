@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/01 12:15:30 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/21 12:14:29 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,13 @@ static char		**getarg(char **env, int returnvalue)
 	if( !test && i == -1)
 		ft_putchar('\n');
 	if (test && test[0] && (temp = argvsplit(test)))
+	{
 		temp = argvclean(temp, env);
+		temp = glob_result(temp);/*
+		ft_putendl("//////argv://////");
+		ft_putmap(temp);
+		ft_putendl("/////////////////");*/
+	}
 	free(test);
 	return (temp);
 }

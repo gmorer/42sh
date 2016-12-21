@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/07 11:58:34 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/21 14:24:33 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,29 +51,77 @@ char		**ft_delemptystr(char **rslt)
 char		**argvsplit(char *av)
 {
 	char	**rslt;
-	int		test;
+	int		test[2];
 	int		i;
 	int		start;
+	int		len;
 
+	len = 0;
 	i = 0;
-	test = 0;
+	test[0] = 0;
+	test[1] = 0;
 	rslt = ft_strstrnew(1);
-	while (i < (int)ft_strlen(av))
+	while (av[i])
 	{
-		while (i < (int)ft_strlen(av) && ft_isspace(av[i]) && av[i - 1] != '\\')
+		while (av[i] && ft_isspace(av[i]))
 			i++;
-		if (av[i] == '"' && test == 0 && (test = 1))
-			i++;
-		else if (av[i] == '"' && test == 1 && (test = 0))
-			i++;
-		start = i;
-		while (i < (int)ft_strlen(av) && (!ft_isspace(av[i]) || (test == 1 &&
-						ft_isspace(av[i])) || (ft_isspace(av[i]) && av[i - 1] ==
-						'\\' && test != 1)))
-			i++;
-		i = av[i - 1] == '\\' ? i += 1 : i;
+		if (av[i] == '\'' && test[0] == 1 && test[1] == 0)
+		{
+			if (i == 0 || (i > 0 && av[i - 1] != '\\'))
+			{
+				i++;
+				test[0] = 0;
+			}
+		}
+		else if (av[i] == '\'' && test[0] == 0 && test[1] == 0)
+		{
+			if (i == 0 || (i > 0 && av[i - 1] != '\\'))
+			{
+				start = i;
+				i++;
+				test[0] = 1;
+			}
+		}
+		else if (av[i] == '"' && test[1] == 1 && test[1] == 0)
+		{
+			if (i == 0 || (i > 0 && av[i - 1] != '\\'))
+			{
+				i++;
+				test[1] = 0;
+			}
+		}
+		else if (av[i] == '"' && test[1] == 0 && test[1] == 0)
+		{
+			if (i == 0 || (i > 0 && av[i - 1] != '\\'))
+			{
+				start = i;
+				i++;
+				test[1] = 1;
+			}
+		}
+		if (av[i] && !ft_isspace(av[i]) && test[0] == 0 && test[1] == 0)
+			if (i == 0 || (i > 0 && av[i - 1] != '\\'))
+				start = i;
+		while (av[i] && ((!ft_isspace(av[i]) || (ft_isspace(av[i]) && av[i - 1] == '\\')) || test[0] == 1 || test[1] == 1))
+		{
+			if (av[i] == '\'' && av[i - 1] != '\\' && test[0] == 1)
+			{
+				test[0] = 0;
+				//break;
+			}
+			else if (av[i] == '"' && av[i - 1] != '\\' && test[1] == 1)
+			{
+				test[1] = 0;
+				//break;
+			}
+			else
+				i++;
+		}
 		rslt = ft_strstradd(ft_strndup(av + start, i - start), rslt);
 	}
+	ft_putendl("////////argvsplit://///////");
+	ft_putmap(rslt);
+	ft_putendl("///////////////////////////");
 	return (ft_delemptystr(rslt));
 }
 
