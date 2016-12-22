@@ -6,109 +6,65 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/06 17:15:52 by gmorer            #+#    #+#             */
-/*   Updated: 2016/06/07 17:16:00 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/22 18:02:38 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*checkhomedir(char *str, char **env, int i, char *rslt)
+/*
+** type : 0 -> normal string
+**		: 1 -> 'string'
+**		: 2 -> "string"
+*/
+
+t_shell		*shell;
+
+char		*argv_type2(char *str)
 {
-	char	*temp;
-	char	*temp2;
-
-	temp = getenvline(env, "HOME=");
-	if ((str[i] && str[i] == '~' && i == 0) || (str[i] && str[i] == '~' &&
-				str[i - 1] != '\\'))
-	{
-		if (!temp)
-		{
-			ft_putendl("No $home variable set.");
-			return (ft_strdup(""));
-		}
-		temp2 = ft_strdup(rslt);
-		free(rslt);
-		rslt = ft_strjoin(temp2, temp);
-		free(temp2);
-	}
-	else
-		rslt = charadd(rslt, str[i]);
-	free(temp);
-	return (rslt);
-}
-
-static int	checkvar(char *temp, char *str, char **rslt, int i)
-{
-	char	*temp2;
-
-	free(*rslt);
-	if (temp == NULL)
-	{
-		ft_putendl("Undefined variable");
-		return (0);
-	}
-	temp2 = ft_strndup(str, (int)i);
-	*rslt = ft_strjoin(temp2, temp);
-	free(temp);
-	free(temp2);
-	return (1);
-}
-
-static int	withbracket(size_t *i, char **rslt, char **env, char *str)
-{
-	int		l;
-	char	*temp2;
-
-	l = 0;
-	while (str[*i + l] && str[*i + l] != ')')
-		l++;
-	temp2 = ft_strndup(str + (int)*i + 2, (int)l - 2);
-	if (checkvar(getenvline(env, temp2), str, rslt, *i) == 0)
-	{
-		free(temp2);
-		return (0);
-	}
-	free(temp2);
-	*i += l;
-	return (1);
-}
-
-char		*argvtest1(char *str, char **env, char *rslt, size_t i)
-{
-	char	*temp2;
-
-	while (++i < ft_strlen(str) && (rslt = checkhomedir(str, env, i, rslt)))
-		if ((i < 2 && str[i] == '$' && str[i + 1]) || (i > 1 && str[i] == '$' &&
-					str[i + 1] && str[i - 1] != '\\'))
-		{
-			if (str[i + 1] == '(')
-			{
-				if (withbracket(&i, &rslt, env, str) == 0)
-					return (NULL);
-			}
-			else
-			{
-				temp2 = ft_strndup(str + i + 1, (int)ft_strlen(str + i) - 1);
-				if (checkvar(getenvline(env, temp2), str, &rslt, i) == 0)
-				{
-					free(temp2);
-					return (NULL);
-				}
-				i += ft_strlen(str + i);
-				free(temp2);
-			}
-		}
-	return (rslt);
-}
-
-char		*argvtest(char *str, char **env)
-{
-	size_t	i;
-	size_t	l;
 	char	*rslt;
+	int		i;
+	//char	*temp;
+	//char	*temp1;
 
-	rslt = ft_strnew(1);
-	l = 0;
-	i = -1;
-	return (argvtest1(str, env, rslt, i));
+	i = 0;
+	rslt = ft_strdup(str);
+	while (rslt[i])
+	{
+		if (rslt[i] == '"' && (i == 0 || (i > 0 && rslt[i - 1] != '\\')))
+			rslt = rmno(rslt, i);/*
+		if (rslt[i] == '~' && (temp = getenvline(shell->env, "HOME=")))
+		{
+			temp1 = ft_strjoin(temp, rslt + i + 1);
+			free(temp);
+			temp = ft_strndup(rslt, i);
+			free(rslt);
+			rslt = ft_strjoin(temp, temp1);
+		}*///ne sert a rien
+		i++;
+	}
+	return (rslt);
+}
+
+char		*argvtest(char *str)
+{
+	int	type;
+	char	*result;
+
+	type = 0;
+	if (str[0] == '\'' && str[ft_strlen(str) - 1] == '\'')
+		type = 1;
+	else if (str[0] == '"' && str[ft_strlen(str) - 1] == '"')
+		type = 2;
+	if (type == 0)
+		return (argv_type2(str));
+	result = ft_strdup(str);
+	result = rmno(result, ft_strlen(str) - 1);
+	result = rmno(result, 0);
+	if (type == 1)
+		return (result);
+	else if (type == 2)
+		return (argv_type2(result));
+	ft_putendl("error");
+	return (ft_strdup(str));
 }

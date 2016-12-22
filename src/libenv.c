@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 10:52:08 by gmorer            #+#    #+#             */
-/*   Updated: 2016/10/10 15:39:58 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/22 13:04:14 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char			*getenvline(char **env, char *argv)
 	return (rslt);
 }
 
-static char		*rmno(char *str, int x)
+char		*rmno(char *str, int x)
 {
 	int i;
 

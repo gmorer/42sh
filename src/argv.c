@@ -6,11 +6,13 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/21 14:24:33 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/22 18:05:25 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_shell		*shell;
 
 char		**ft_strstradd(char *str, char **tab)
 {
@@ -39,8 +41,8 @@ char		**ft_delemptystr(char **rslt)
 	{
 		if (ft_strcmp(rslt[i], "") == 0)
 			rslt = ft_strstrdelone(i, rslt);
-		if (rslt[i])
-			rslt[i] = rmchar(rslt[i], '\\');
+		//if (rslt[i])
+		//	rslt[i] = rmchar(rslt[i], '\\');
 		if (!rslt[i])
 			return (rslt);
 		i++;
@@ -107,12 +109,10 @@ char		**argvsplit(char *av)
 			if (av[i] == '\'' && av[i - 1] != '\\' && test[0] == 1)
 			{
 				test[0] = 0;
-				//break;
 			}
 			else if (av[i] == '"' && av[i - 1] != '\\' && test[1] == 1)
 			{
 				test[1] = 0;
-				//break;
 			}
 			else
 				i++;
@@ -148,7 +148,7 @@ char		*charadd(char *str, char c)
 	return (rslt);
 }
 
-char		**argvclean(char **argv, char **env)
+char		**argvclean(char **argv)
 {
 	size_t	i;
 	size_t	len;
@@ -159,7 +159,13 @@ char		**argvclean(char **argv, char **env)
 	rslt = ft_strstrnew(len);
 	while (i < len)
 	{
-		rslt[i] = argvtest(argv[i], env);
+		if (ft_strcmp(argv[i], "~") == 0)
+		{
+			if (!(rslt[i] = getenvline(shell->env, "HOME=")))
+				rslt[i] = ft_strdup("");
+		}
+		else
+			rslt[i] = argvtest(argv[i]);
 		i++;
 	}
 	ft_strstrfree(argv);
