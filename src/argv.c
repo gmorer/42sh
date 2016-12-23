@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/23 13:22:37 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/23 14:02:50 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,15 +107,33 @@ char		**argvsplit(char *av)
 		while (av[i] && ((!ft_isspace(av[i]) || (ft_isspace(av[i]) && av[i - 1] == '\\')) || test[0] == 1 || test[1] == 1))
 		{
 			if (av[i] == '\'' && av[i - 1] != '\\' && test[0] == 1)
-			{
 				test[0] = 0;
-			}
 			else if (av[i] == '"' && av[i - 1] != '\\' && test[1] == 1)
-			{
 				test[1] = 0;
-			}
 			else
 				i++;
+		}
+		while (!av[i] && (test[0] == 1 || test[1] == 1))
+		{/*
+			ft_putstr("avant : ");
+			ft_putstr(av);
+			ft_putendl("<--");*/
+			av = ft_quote(av, test);
+			if (av[i] == '\'' || av[i] == '"')
+			{
+				if (i == 0 || (i > 0 && av[i - 1] != '\\'))
+				{
+					i++;
+					test[0] = 0;
+					test[1] = 0;
+				}
+			}
+			//av = ft_strjoin(av, ft_quote(av, test));
+			/*
+			ft_putstr("apres : ");
+			ft_putstr(av);
+			ft_putendl("<--");*/
+			i++;
 		}
 		rslt = ft_strstradd(ft_strndup(av + start, i - start), rslt);
 	}
