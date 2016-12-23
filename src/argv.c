@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/22 18:05:25 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/23 13:22:37 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,10 @@ char		**argvclean(char **argv)
 {
 	size_t	i;
 	size_t	len;
+	int		merge;
 	char	**rslt;
 
+	merge = 0;
 	i = 0;
 	len = ft_strstrlen(argv);
 	rslt = ft_strstrnew(len);
@@ -161,11 +163,11 @@ char		**argvclean(char **argv)
 	{
 		if (ft_strcmp(argv[i], "~") == 0)
 		{
-			if (!(rslt[i] = getenvline(shell->env, "HOME=")))
-				rslt[i] = ft_strdup("");
+			if (!(rslt[i - merge] = getenvline(shell->env, "HOME=")))
+				rslt[i - merge] = ft_strdup("");
 		}
-		else
-			rslt[i] = argvtest(argv[i]);
+		else if ((rslt[i - merge] = argvtest(argv[i])) == NULL)
+			merge++;
 		i++;
 	}
 	ft_strstrfree(argv);

@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/06 17:15:52 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/22 18:02:38 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/23 13:26:00 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,37 @@ char		*argv_type2(char *str)
 {
 	char	*rslt;
 	int		i;
-	//char	*temp;
-	//char	*temp1;
+	char	*temp;
+	char	*temp1;
 
 	i = 0;
 	rslt = ft_strdup(str);
 	while (rslt[i])
 	{
 		if (rslt[i] == '"' && (i == 0 || (i > 0 && rslt[i - 1] != '\\')))
-			rslt = rmno(rslt, i);/*
-		if (rslt[i] == '~' && (temp = getenvline(shell->env, "HOME=")))
+			rslt = rmno(rslt, i);
+		else if (rslt[i] == '$' && (i == 0 || (i > 0 && rslt[i - 1] != '\\'))
+				&& rslt[i + 1] && rslt[i + 1] != '(')
 		{
-			temp1 = ft_strjoin(temp, rslt + i + 1);
-			free(temp);
-			temp = ft_strndup(rslt, i);
-			free(rslt);
-			rslt = ft_strjoin(temp, temp1);
-		}*///ne sert a rien
+			if ((temp = getenvline(shell->env, rslt + i + 1)) != NULL)
+			{
+				temp1 = ft_strndup(rslt, i);
+				free(rslt);
+				rslt = ft_strjoin(temp1, temp);
+				free(temp);
+				free(temp1);
+			}
+			else
+			{
+				free(rslt);
+				return (NULL);
+			}
+		}
+		else if (rslt[i] == '$' && (i == 0 || (i > 0 && rslt[i - 1] != '\\'))
+				&& rslt[i + 1] && rslt[i + 1] == '(')
+		{
+			;
+		}
 		i++;
 	}
 	return (rslt);

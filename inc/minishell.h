@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/15 17:14:44 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/22 13:04:58 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_shell
 
 extern t_shell	*shell;
 
+char		*rmno(char *str, int x);
 int			match(char *s1, char *s2);
 char		**glob_result(char **argv);
 int			ft_match(char **argv);
@@ -107,7 +108,7 @@ int		ft_redirect(char **str, char ***env, t_binary ***table, t_shell *shell);
 char	**ft_shlvl(char **env);
 int		ft_echo(char **argv);
 char	*charadd(char *str, char c);
-char	*argvtest(char *str, char **env);
+char	*argvtest(char *str);
 void	prompt(char **env, int returnvalue);
 int		ft_setenv(char	**argv, char ***env, t_binary ***table);
 int		ft_cd(char **argv, char ***env);
@@ -115,7 +116,7 @@ char	**ft_strstrdelone(int i, char **str)	;
 char	**ft_strstradd(char *str, char **argv);
 char	**argvsplit(char *argv);
 char	*rmchar(char *str, char c);
-char	**argvclean(char **argv, char **env);
+char	**argvclean(char **argv);
 char	*getenvline(char **env, char *argv);
 char	**ft_save_env(char **env);
 int		casenofor(char **env, char *argv);
