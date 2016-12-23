@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/22 13:04:58 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/23 16:26:57 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_shell
 
 extern t_shell	*shell;
 
+char		*ft_quote(char *av, int test[2]);
 char		*rmno(char *str, int x);
 int			match(char *s1, char *s2);
 char		**glob_result(char **argv);

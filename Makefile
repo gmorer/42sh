@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2016/12/15 17:09:59 by gmorer           ###   ########.fr        #
+#    Updated: 2016/12/23 16:27:45 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,8 @@ CFILES = main.c\
 			jobbuiltin.c\
 			ft_fg.c\
 			glob.c\
-			glob_tree.c
+			glob_tree.c\
+			quote.c
 
 OFILES = $(CFILES:.c=.o)
 HFILES = inc/minishell.h\
