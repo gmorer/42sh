@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/23 14:02:50 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/28 13:05:24 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 t_shell		*shell;
 
-char		**ft_strstradd(char *str, char **tab)
+char		**ft_strstradd(char *str, char **table)
 {
 	char	**rslt;
 	int		i;
 
 	i = 0;
-	rslt = ft_strstrnew(ft_strstrlen(tab) + 1);
-	while (tab[i] != NULL)
+	rslt = ft_strstrnew(ft_strstrlen(table) + 1);
+	while (table[i] != NULL)
 	{
-		rslt[i] = (tab[i]);
+		rslt[i] = (table[i]);
 		i++;
 	}
 	rslt[i] = str;
 	rslt[i + 1] = NULL;
-	free(tab);
+	free(table);
 	return (rslt);
 }
 
@@ -56,9 +56,8 @@ char		**argvsplit(char *av)
 	int		test[2];
 	int		i;
 	int		start;
-	int		len;
 
-	len = 0;
+	start = 0;
 	i = 0;
 	test[0] = 0;
 	test[1] = 0;
@@ -135,7 +134,9 @@ char		**argvsplit(char *av)
 			ft_putendl("<--");*/
 			i++;
 		}
-		rslt = ft_strstradd(ft_strndup(av + start, i - start), rslt);
+		if (start != -1)
+			rslt = ft_strstradd(ft_strndup(av + start, i - start), rslt);
+		start = -1;
 	}
 	ft_putendl("////////argvsplit://///////");
 	ft_putmap(rslt);

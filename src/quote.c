@@ -6,17 +6,18 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 13:32:46 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/23 14:09:48 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/23 17:17:05 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+t_shell		*shell;
+
 char	*ft_quote(char *av, int test[2])
 {
 	char	*result;
 	char	*buff;
-	int		i;
 	char	*tmp;
 
 	tmp = NULL;
@@ -26,11 +27,11 @@ char	*ft_quote(char *av, int test[2])
 		ft_putstr("quote> ");
 	else
 		ft_putstr("dquote> ");
-	i = get_next_line(1, &buff);
+	edit_line(&buff, &(shell->hist));/*
 	if (i == 0)
 	{
 		return (av);
-	}
+	}*/
 	tmp = ft_strjoin(buff, "\n");
 	result = ft_strjoin(av, tmp);
 	free(tmp);

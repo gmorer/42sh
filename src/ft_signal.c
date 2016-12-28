@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/28 12:08:37 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/07 11:08:39 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/23 16:58:46 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void			catch_kill(int i)
 	if(i == SIGINT)
 	{
 		ft_putchar('\n');
-		prompt(shell->env, 1);
+		ft_prompt(shell->env, 1);
 	}
 	else
 	{
@@ -63,7 +63,7 @@ static void		cont(int i)
 	 * things to do
 	 */
 	//prompt(ft_save_env(NULL), 0);
-	prompt(shell->env, 0);
+	ft_prompt(shell->env, 0);
 	ioctl(0, TIOCSTI, &i);
 }
 

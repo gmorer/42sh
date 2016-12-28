@@ -1,34 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/10 13:29:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/23 17:20:21 by gmorer           ###   ########.fr       */
+/*   Created: 2016/02/16 14:46:58 by gmorer            #+#    #+#             */
+/*   Updated: 2016/05/20 15:03:21 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-char	*ft_strdup(const char *s1)
-{
-	char			*s2;
+# define BUFF_SIZE 456
 
-	if (!s1)
-		return (NULL);
-	if ((s2 = malloc(sizeof(char) * ft_strlen(s1) + 1)) == NULL)
-		return (NULL);
-	s2 = ft_strcpy(s2, s1);
-	return (s2);
-}
+# include "libft.h"
 
-char	*ft_strndup(char *s1, int n)
-{
-	char *s2;
+int		get_next_line(int const fd, char **line);
 
-	s2 = ft_strnew(n);
-	s2 = ft_strncpy(s2, s1, n);
-	return (s2);
-}
+#endif

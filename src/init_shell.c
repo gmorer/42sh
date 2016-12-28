@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/25 11:29:11 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/01 12:22:07 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/23 17:04:47 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_shell		*init_mainprocess(void)
 	}
 	/* Grab control of the terminal.  */
 	tcsetpgrp (shell->terminal, shell->pgid);
-
+	shell->hist = NULL;
 	/* Save default terminal attributes for shell.  */
 	tcgetattr (shell->terminal, &(shell->tmodes));
 	ft_putendl("initializing success");

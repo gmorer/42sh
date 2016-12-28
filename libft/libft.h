@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 18:17:49 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/16 11:52:20 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/23 17:00:44 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+int					ft_swap(int *a, int *b);
 int					ft_isfolder(char *path);
 int					ft_isspace(char c);
 char				*ft_strndup(char *s1, int n);

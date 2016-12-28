@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:58:14 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/20 13:34:20 by gmorer           ###   ########.fr       */
+/*   Updated: 2016/12/23 17:10:08 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,16 @@ char	**ft_strstrjoin(char **s1, char **s2)
 	return (rslt);
 }
 
-char	**ft_strstrdup(char **tab)
+char	**ft_strstrdup(char **table)
 {
 	char	**rslt;
 	int		i;
 
 	i = 0;
-	rslt = ft_strstrnew(ft_strstrlen(tab));
-	while (tab[i] != NULL)
+	rslt = ft_strstrnew(ft_strstrlen(table));
+	while (table[i] != NULL)
 	{
-		rslt[i] = ft_strdup(tab[i]);
+		rslt[i] = ft_strdup(table[i]);
 		i++;
 	}
 	rslt[i] = NULL;
