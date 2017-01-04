@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/03 09:53:34 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/04 17:00:41 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,21 @@ static char		**getarg(char **env, int returnvalue)
 {
 	char	**temp;
 	char	*test;
+	//int		i;
 
 	temp = NULL;
 	test = NULL;
 	ft_prompt(env, returnvalue);
-	edit_line(&test, &(shell->hist));/*
+	edit_line(&test, &(shell->hist));
+	/*
+	i = get_next_line(1, &test);
 	if (!test && i == 0)
 		ft_putendl("exit");
 	if (!test && i == 0)
 		exit(0);
 	if( !test && i == -1)
-		ft_putchar('\n');*/
-	ft_putendl(test);
+		ft_putchar('\n');
+		*/
 	if (test && test[0] && (temp = argvsplit(test)))
 	{
 		temp = argvclean(temp);

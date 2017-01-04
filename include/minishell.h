@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/03 09:54:18 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/04 17:46:00 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,11 @@ typedef struct	s_job
 
 typedef struct s_shell
 {
+	struct termios	cur_term;
+	struct termios	dfl_term;
 	t_job			*first_job;
 	t_job			*current_job;
 	pid_t			pgid;
-	struct termios	tmodes;
 	int				terminal;
 	int				prompt_len;
 	int				is_interactive;

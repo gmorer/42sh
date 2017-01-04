@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/04 14:41:30 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/04 17:48:48 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,12 @@ char	*ft_give_path(char *name, t_binary **table, char **env)
 	return (NULL);
 }
 
+void		ft_ctrlz(int i)
+{
+	(void)i;
+	ft_putendl("lol");
+}
+
 void		launch_process(char **argv, char *bin)
 {
 	pid_t pid;
@@ -100,9 +106,9 @@ void		launch_process(char **argv, char *bin)
 	pid = getpid();
 	setpgid(pid, pid);
 	shell->current_job->pgid = pid;
-	ft_putstr("binaire du programme : ");
-	ft_putstr(shell->current_job->command);
-	ft_putchar('\n');
+	//ft_putstr("binaire du programme : ");
+	//ft_putstr(shell->current_job->command);
+	//ft_putchar('\n');
 	if (tcsetpgrp(shell->terminal, getpid()) == -1)
 	{
 		ft_putendl("error lancement");
@@ -115,6 +121,7 @@ void		launch_process(char **argv, char *bin)
 		if (errno == EPERM)
 			ft_putendl("pgrp a une valeur légale, mais ce n'est pas l'ID d'un groupe de processus dans la même session que le processus appelant.");
 	}
+	tcsetattr(shell->terminal, TCSADRAIN, &(shell->dfl_term));
 	signal (SIGINT, SIG_DFL);
 	signal (SIGQUIT, SIG_DFL);
 	signal (SIGTSTP, SIG_DFL);
@@ -122,6 +129,7 @@ void		launch_process(char **argv, char *bin)
 	signal (SIGTTOU, SIG_DFL);
 	signal (SIGCHLD, SIG_DFL);
 	execve(bin, argv, shell->env);
+	exit (1);
 }
 
 int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
@@ -142,7 +150,6 @@ int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
 		ft_putendl(": Permission denied.");
 		return (1);
 	}
-	ft_putendl("COMMENCE LEXECUTION");
 	if(!(shell->current_job = (t_job*)malloc(sizeof(t_job))))
 		return (1);
 	*(shell->current_job) = (t_job){NULL, ft_strdup(bin), NULL, 0, 0, 0, 0, 0};
@@ -156,32 +163,22 @@ int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
 	}
 	else 
 	{
-		ft_putendl("yolo");
 		setpgid(pid, pid);
 		if(waitpid(pid, &exit, WUNTRACED) == -1)
 		{
 			ft_putendl("waitpid bug");
 			i = errno;
 			ft_putnbr(i);
-			//free(shell->current_job);
-			ft_signal();
-			return(1);
 		}
-		ft_putstr("fin du waitpid avec first_job pid = ");
 	}
 	if (shell->current_job == NULL)
 		return (146);
 	tcsetpgrp(shell->terminal, shell->pgid);
 	shell->current_job->pgid = pid;
 	shell->first_job = shell->current_job;
-	ft_putnbr(shell->current_job->pgid);
-	ft_putchar('\n');
-	ft_putendl("FINI LEXECUTION");
 	i = casenofor(*env, "_=");
 	if (i > -1)
-	{
 		free((*env)[i]);
-	}
 	ft_signal();
 	if (i > -1)
 		(*env)[i] = ft_strjoin("_=", bin);

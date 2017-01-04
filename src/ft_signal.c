@@ -6,41 +6,13 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/28 12:08:37 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/04 14:24:36 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/04 16:46:48 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_shell		*shell;
-
-void		ctrlz(int i)
-{
-	t_job	*job;
-//	char	c;
-
-//	c = 26;
-	if (shell->current_job == NULL)
-	{
-		return;
-	}
-	(void)i;
-	ft_putnbr(shell->current_job->pgid);
-	//ft_putendl("catch them all");
-	job = shell->first_job;
-	while(job && job->next)
-	{
-		job = job->next;
-	}
-	if (!job)
-		shell->first_job = shell->current_job;
-	else
-		job->next = shell->current_job;
-//	ioctl(0, TIOCSTI, &c);
-	ioctl(0, TIOCSTI, "\n");
-	kill(shell->current_job->pgid, SIGTSTP);
-	shell->current_job = NULL;
-}
 
 void			catch_kill(int i)
 {
@@ -49,11 +21,11 @@ void			catch_kill(int i)
 
 	j = 130;
 	temp = NULL;
+	ft_putendl("lol");
 	if(i == SIGINT)
 	{
 		ft_putchar('\n');
 		boucle(temp, j, shell->table);
-		ft_prompt(shell->env, 1);
 	}
 	else
 	{
@@ -76,7 +48,7 @@ static void		cont(int i)
 int				ft_signal(void)
 {
 	signal(SIGCONT, cont);
-//	signal(SIGTSTP, ctrlz);
+	signal(SIGTSTP, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGINT, catch_kill);	
 	signal(SIGQUIT, SIG_IGN);

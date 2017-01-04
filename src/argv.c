@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/04 13:32:09 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/04 16:17:25 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,9 @@ char		**argvsplit(char *av)
 			rslt = ft_strstradd(ft_strndup(av + start, i - start), rslt);
 		start = -1;
 	}
-	ft_putendl("////////argvsplit://///////");
-	ft_putmap(rslt);
-	ft_putendl("///////////////////////////");
+	//ft_putendl("////////argvsplit://///////");
+	//ft_putmap(rslt);
+	//ft_putendl("///////////////////////////");
 	return (ft_delemptystr(rslt));
 }
 

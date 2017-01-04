@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 12:15:36 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/04 14:20:40 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/04 17:50:34 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int			ft_fg(char **argv)
 	}
 	pid = waitpid(WAIT_ANY, &status, WUNTRACED);
 	tcsetpgrp(shell->terminal, shell->pgid);
+	tcsetattr(shell->terminal, TCSADRAIN, &(shell->dfl_term));
 	ft_signal();
 	boucle(temp, 0, shell->table);
 	return (0);

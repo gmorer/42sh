@@ -6,11 +6,14 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 13:05:51 by rvievill          #+#    #+#             */
-/*   Updated: 2016/11/22 18:17:01 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/04 17:39:58 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/edit_line.h"
+#include "minishell.h"
+
+t_shell			*shell;
 
 static void			init_cursor(t_cursor **cursor)
 {
@@ -49,6 +52,7 @@ int					init_term(struct termios *term, t_cursor **cur)
 	cur_term.c_lflag &= ~(ICANON | ECHO);
 	cur_term.c_cc[VMIN] = 1;
 	cur_term.c_cc[VTIME] = 0;
+	shell->cur_term = cur_term;
 	if (tcsetattr(0, TCSADRAIN, &cur_term))
 		return (1);
 	return (0);
