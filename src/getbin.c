@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/06 12:27:01 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/04 14:41:30 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,31 +92,44 @@ char	*ft_give_path(char *name, t_binary **table, char **env)
 	}
 	return (NULL);
 }
-/*
-void		lol(int i)
-{
-	t_job	*job;
 
-	(void)i;
-	ft_putendl("catch them all");
-	kill(shell->current_job->pgid, SIGTSTP);
-	job = shell->first_job;
-	while(job && job->next)
+void		launch_process(char **argv, char *bin)
+{
+	pid_t pid;
+
+	pid = getpid();
+	setpgid(pid, pid);
+	shell->current_job->pgid = pid;
+	ft_putstr("binaire du programme : ");
+	ft_putstr(shell->current_job->command);
+	ft_putchar('\n');
+	if (tcsetpgrp(shell->terminal, getpid()) == -1)
 	{
-		job = job->next;
+		ft_putendl("error lancement");
+		if (errno == EBADF)
+			ft_putendl("fd n'est pas un descripteur valide.");
+		if (errno == EINVAL)
+			ft_putendl("pgrp a une valeur illégale.");
+		if (errno == ENOTTY)
+			ft_putendl("Le processus appelant n'a pas de terminal de contrôle, ou il en a un mais ce n'est pas celui décrit par fd, ou, pour tcsetpgrp(), ce terminal de contrôle n'est plus associé avec la session du processus appelant.");
+		if (errno == EPERM)
+			ft_putendl("pgrp a une valeur légale, mais ce n'est pas l'ID d'un groupe de processus dans la même session que le processus appelant.");
 	}
-	if (!job)
-		shell->first_job = shell->current_job;
-	else
-		job->next = shell->current_job;
-	shell->current_job = NULL;
-}*/
+	signal (SIGINT, SIG_DFL);
+	signal (SIGQUIT, SIG_DFL);
+	signal (SIGTSTP, SIG_DFL);
+	signal (SIGTTIN, SIG_DFL);
+	signal (SIGTTOU, SIG_DFL);
+	signal (SIGCHLD, SIG_DFL);
+	execve(bin, argv, shell->env);
+}
+
 int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
 {
 	int		exit;
 	int		i;
+	pid_t	pid;
 
-	ft_putendl("COMMENCE LEXECUTION");
 	if ((exit = 1) && access(bin, F_OK) == -1)
 	{
 		ft_putstr(bin);
@@ -129,58 +142,41 @@ int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
 		ft_putendl(": Permission denied.");
 		return (1);
 	}
+	ft_putendl("COMMENCE LEXECUTION");
 	if(!(shell->current_job = (t_job*)malloc(sizeof(t_job))))
 		return (1);
 	*(shell->current_job) = (t_job){NULL, ft_strdup(bin), NULL, 0, 0, 0, 0, 0};
-	shell->current_job->pgid = fork();
-	//signal(SIGCHLD, SIG_DFL);
-	//signal(SIGTSTP, lol);
-	if (shell->current_job->pgid == 0)
+	pid = fork();
+	if (pid == 0)
+		launch_process(temp, bin);
+	else if (pid < 0)
 	{
-		free(shell->current_job);
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		//signal(SIGTSTP, SIG_DFL);
-		signal(SIGTTIN, SIG_DFL);
-		signal(SIGTTOU, SIG_DFL);
-		signal(SIGCHLD, SIG_DFL);
-		//signal(SIGTSTP, lol);
-		//if execve(bin, temp, *env) == -1);
-		if (execvp(bin, temp) == -1)
-		{
-			ft_putendl("exec error");
-			i = errno;
-			ft_putnbr(i);
-			ft_signal();
-			return (0);
-		}
-		ft_putendl("lolololol");
-	}
-	else if (shell->current_job && shell->current_job->pgid < 0)
-	{
-		free(shell->current_job);
-		ft_putendl("error pgid");
-		ft_signal();
+		perror("perror");
 		return(-1);
 	}
-	else if (shell->current_job && shell->current_job->pgid > 0)
-		if(waitpid(shell->current_job->pgid, &exit, WUNTRACED) == -1)
+	else 
+	{
+		ft_putendl("yolo");
+		setpgid(pid, pid);
+		if(waitpid(pid, &exit, WUNTRACED) == -1)
 		{
 			ft_putendl("waitpid bug");
 			i = errno;
 			ft_putnbr(i);
-			free(shell->current_job);
+			//free(shell->current_job);
 			ft_signal();
 			return(1);
 		}
+		ft_putstr("fin du waitpid avec first_job pid = ");
+	}
 	if (shell->current_job == NULL)
 		return (146);
-//		setpgid(pid, pid);
-//	tcsetpgrp(shell->terminal, shell->pgid);
+	tcsetpgrp(shell->terminal, shell->pgid);
+	shell->current_job->pgid = pid;
+	shell->first_job = shell->current_job;
+	ft_putnbr(shell->current_job->pgid);
+	ft_putchar('\n');
 	ft_putendl("FINI LEXECUTION");
-	free(shell->current_job->command);
-	free(shell->current_job);
-	shell->current_job = NULL;
 	i = casenofor(*env, "_=");
 	if (i > -1)
 	{

@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/28 11:42:10 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/03 09:54:18 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,12 @@ typedef struct s_shell
 	int				is_interactive;
 	char			**env;
 	t_hist			*hist;
+	t_binary		**table;
 }				t_shell;
 
 extern t_shell	*shell;
 
+int			boucle(char **temp, int returnvalue, t_binary **table);
 char		*ft_quote(char *av, int test[2]);
 char		*rmno(char *str, int x);
 int			match(char *s1, char *s2);

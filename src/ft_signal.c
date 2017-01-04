@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/28 12:08:37 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/23 16:58:46 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/04 14:24:36 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,15 @@ void		ctrlz(int i)
 
 void			catch_kill(int i)
 {
+	char	**temp;
+	int		j;
+
+	j = 130;
+	temp = NULL;
 	if(i == SIGINT)
 	{
 		ft_putchar('\n');
+		boucle(temp, j, shell->table);
 		ft_prompt(shell->env, 1);
 	}
 	else
@@ -70,7 +76,8 @@ static void		cont(int i)
 int				ft_signal(void)
 {
 	signal(SIGCONT, cont);
-	signal(SIGTSTP, ctrlz);
+//	signal(SIGTSTP, ctrlz);
+	signal(SIGTSTP, SIG_IGN);
 	signal(SIGINT, catch_kill);	
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);

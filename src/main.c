@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/28 15:25:12 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/03 09:53:34 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char		**getarg(char **env, int returnvalue)
 	return (temp);
 }
 
-static int		boucle(char **temp, int returnvalue, t_binary **table)
+int			boucle(char **temp, int returnvalue, t_binary **table)
 {
 	while (42)
 	{
@@ -82,13 +82,11 @@ int				main(int argc, char **argv, char **env)
 	char	**temp;
 	char	*bin;
 	int		returnvalue;
-	t_binary	**table;
 
 	(void)env;
 	temp = NULL;
 	bin = NULL;
 	returnvalue = 0;
-	table = NULL;
 	shell = NULL;
 	init_mainprocess();
 	shell->env = ft_strstrdup(environ);
@@ -96,7 +94,7 @@ int				main(int argc, char **argv, char **env)
 	(void)argv;
 	(void)argc;
 	ft_signal();
-	table = ft_init_hash_table(&(shell->env));
-	boucle(temp, returnvalue, table);
+	shell->table = ft_init_hash_table(&(shell->env));
+	boucle(temp, returnvalue, shell->table);
 	return (0);
 }
