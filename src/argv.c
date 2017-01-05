@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/04 16:17:25 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 17:29:19 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char		**ft_strstradd(char *str, char **table)
 	return (rslt);
 }
 
-char		**ft_delemptystr(char **rslt)
+static char		**ft_delemptystr(char **rslt)
 {
 	int i;
 
@@ -172,7 +172,7 @@ char		**argvclean(char **argv)
 {
 	size_t	i;
 	size_t	len;
-	int		merge;
+	size_t	merge;
 	char	**rslt;
 
 	merge = 0;

@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/06 15:23:40 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/28 15:24:25 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 17:31:58 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*promptinit(char **env, int returnvalue, char **temp1, char **temp2)
 	char	*temp;
 
 	temp = ft_itoa(returnvalue);
-	ft_putstr("\x1b[34m[\e[1m");
+	ft_putstr("\x1b[34m[[1m");
 	ft_putstr(temp);
 	shell->prompt_len += 6 + ft_strlen(temp);
 	free(temp);

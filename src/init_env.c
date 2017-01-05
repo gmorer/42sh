@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/30 11:17:30 by gmorer            #+#    #+#             */
-/*   Updated: 2016/10/03 11:23:58 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 17:35:46 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static char		*ft_read_pathosx(char *path)
 	char	*temp3;
 	int		fd;
 
+	result = NULL;
 	fd = 1;
 	temp2 = ft_strnew(1);
 	if((fd = open(path, O_RDONLY)) == -1)

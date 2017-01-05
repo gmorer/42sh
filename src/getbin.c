@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/04 17:48:48 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 17:28:20 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,19 +93,13 @@ char	*ft_give_path(char *name, t_binary **table, char **env)
 	return (NULL);
 }
 
-void		ft_ctrlz(int i)
-{
-	(void)i;
-	ft_putendl("lol");
-}
-
-void		launch_process(char **argv, char *bin)
+static void	launch_process(char **argv, char *bin, t_job *current_job)
 {
 	pid_t pid;
 
 	pid = getpid();
 	setpgid(pid, pid);
-	shell->current_job->pgid = pid;
+	current_job->pgid = pid;
 	//ft_putstr("binaire du programme : ");
 	//ft_putstr(shell->current_job->command);
 	//ft_putchar('\n');
@@ -132,13 +126,14 @@ void		launch_process(char **argv, char *bin)
 	exit (1);
 }
 
-int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
+int			ft_exec(char *bin, char **temp, char ***env)
 {
-	int		exit;
+	int		status;
 	int		i;
 	pid_t	pid;
+	t_job	*current_job;
 
-	if ((exit = 1) && access(bin, F_OK) == -1)
+	if ((status = 1) && access(bin, F_OK) == -1)
 	{
 		ft_putstr(bin);
 		ft_putendl(": Command not found.");
@@ -150,12 +145,16 @@ int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
 		ft_putendl(": Permission denied.");
 		return (1);
 	}
-	if(!(shell->current_job = (t_job*)malloc(sizeof(t_job))))
+	if(!(current_job = (t_job*)malloc(sizeof(t_job))))
 		return (1);
-	*(shell->current_job) = (t_job){NULL, ft_strdup(bin), NULL, 0, 0, 0, 0, 0};
+	current_job->next = NULL;
+	current_job->command = ft_strdup(bin);
+	current_job->stdin = 0;
+	current_job->stdout = 0;
+	current_job->stderr = 0;
 	pid = fork();
 	if (pid == 0)
-		launch_process(temp, bin);
+		launch_process(temp, bin, current_job);
 	else if (pid < 0)
 	{
 		perror("perror");
@@ -164,18 +163,14 @@ int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
 	else 
 	{
 		setpgid(pid, pid);
-		if(waitpid(pid, &exit, WUNTRACED) == -1)
-		{
-			ft_putendl("waitpid bug");
-			i = errno;
-			ft_putnbr(i);
-		}
+		current_job->next = NULL;
+		current_job->pgid = pid;
+		wait_for_job(current_job);
 	}
-	if (shell->current_job == NULL)
+	if (current_job == NULL)
 		return (146);
 	tcsetpgrp(shell->terminal, shell->pgid);
-	shell->current_job->pgid = pid;
-	shell->first_job = shell->current_job;
+	tcsetattr(shell->terminal, TCSADRAIN, &(shell->dfl_term));
 	i = casenofor(*env, "_=");
 	if (i > -1)
 		free((*env)[i]);
@@ -184,7 +179,7 @@ int			ft_exec(char *bin, char **temp, char ***env, t_shell *shell)
 		(*env)[i] = ft_strjoin("_=", bin);
 	else
 		*env = ft_strstradd(ft_strjoin("_=", bin), *env);
-	if (WIFEXITED(exit))
-		return (WEXITSTATUS(exit));
-	return (WIFSIGNALED(exit) ? WTERMSIG(exit) : exit);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (WIFSIGNALED(status) ? WTERMSIG(status) : status);
 }

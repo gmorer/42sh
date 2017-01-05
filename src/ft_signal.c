@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/28 12:08:37 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/04 16:46:48 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 17:36:17 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_shell		*shell;
 
-void			catch_kill(int i)
+static void		catch_kill(int i)
 {
 	char	**temp;
 	int		j;

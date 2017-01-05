@@ -6,13 +6,13 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2016/12/23 17:02:21 by gmorer           ###   ########.fr        #
+#    Updated: 2017/01/05 17:15:18 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = clang
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Weverything
 CPATH = src/
 OPATH = obj/
 HPATH = include/ libft/
@@ -43,6 +43,7 @@ CFILES = main.c\
 		 glob.c\
 		 glob_tree.c\
 		 quote.c\
+		 controller.c\
 		edit_line/init_term.c \
 		edit_line/prompt.c \
 		edit_line/add_char.c \
@@ -90,7 +91,7 @@ debug: $(OBJ)
 	$(CC) -g  $(CFLAGS) $(OBJ) libft/libft.a -o $(NAME)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
-	mkdir -p $(OPATH)/edit_line
+	@mkdir -p $(OPATH)edit_line
 	$(CC) $(CFLAGS) $(INC) $< -c -o $@
 
 

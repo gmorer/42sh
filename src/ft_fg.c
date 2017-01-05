@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 12:15:36 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/04 17:50:34 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 15:26:01 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,27 @@ t_shell		 *shell;
 
 int			ft_fg(char **argv)
 {
-	pid_t	pid;
-	int		status;
+	//int		status;
 	char	**temp;
+	t_job	*job;
+
 
 	temp = NULL;
 	(void)argv;
+	job = shell->first_job;
+	if (!job)
+	{
+		ft_putendl("fg: no currentjob");
+		return (1);
+	}
+	while (job->next)
+		job = job->next;
 	ft_putstr("relaunch de : ");
-	ft_putnbr(shell->first_job->pgid);
+	ft_putnbr(job->pgid);
 	ft_putchar('\n');
-	if (kill(- shell->first_job->pgid, SIGCONT) < 0)
+	if (kill(- job->pgid, SIGCONT) < 0)
 		perror("kill error");
-	if (tcsetpgrp(shell->terminal, shell->first_job->pgid) == -1)
+	if (tcsetpgrp(shell->terminal, job->pgid) == -1)
 	{
 		ft_putendl("error fg");
 		if (errno == EBADF)
@@ -40,7 +49,8 @@ int			ft_fg(char **argv)
 			ft_putendl("pgrp a une valeur légale, mais ce n'est pas l'ID d'un groupe de processus dans la même session que le processus appelant.");
 		perror("tcsetpgrp");
 	}
-	pid = waitpid(WAIT_ANY, &status, WUNTRACED);
+	wait_for_job(job);
+	//waitpid(WAIT_ANY, &status, WUNTRACED);
 	tcsetpgrp(shell->terminal, shell->pgid);
 	tcsetattr(shell->terminal, TCSADRAIN, &(shell->dfl_term));
 	ft_signal();

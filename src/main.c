@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/04 17:00:41 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 15:11:25 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			boucle(char **temp, int returnvalue, t_binary **table)
 		temp = getarg(shell->env, returnvalue);
 		if (temp && temp[0] && temp[0][0])
 		{
-			returnvalue = ft_redirect(temp, &(shell->env), &table, shell);
+			returnvalue = ft_redirect(temp, &(shell->env), &table);
 			ft_strstrfree(temp);
 			returnvaluetoenv(returnvalue, &(shell->env));
 		}

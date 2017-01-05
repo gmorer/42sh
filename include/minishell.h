@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/04 17:46:00 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 17:35:12 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,12 @@ typedef struct	s_binary
 	struct s_binary *next;
 }			t_binary;
 
-typedef struct	s_process
-{
-	struct s_process	*next;			/* next process in pipeline */
-	char				**argv;			/* for exec */
-	pid_t				pid;			/* process ID */
-	char				completed;		/* true if process has completed */
-	char				stopped;		/* true if process has stopped */
-	int					status;			/* reported status value */
-}				t_process;
-
 /* A job is a pipeline of processes.  */
 typedef struct	s_job
 {
 	struct s_job	*next;				/* next active job */
 	char			*command;			/* command line, used for messages */
-	t_process		*first_process;		/* list of processes in this job */
 	pid_t			pgid;				/* process group ID */
-	char			notified;			/* true if user told about stopped job */
 	//struct termios	tmodes;				/* saved terminal modes */
 	int				stdin; 				/* standard i/o channels */
 	int				stdout;
@@ -92,6 +80,7 @@ typedef struct s_shell
 
 extern t_shell	*shell;
 
+void		wait_for_job(t_job *job);
 int			boucle(char **temp, int returnvalue, t_binary **table);
 char		*ft_quote(char *av, int test[2]);
 char		*rmno(char *str, int x);
@@ -111,7 +100,7 @@ int		ft_show_hash_tab(char **env, t_binary **table);
 t_binary	**ft_init_hash_table(char ***env);
 int		ft_hash_algo(char *str, char **env);
 int		ft_checklink(char *path);
-int		ft_redirect(char **str, char ***env, t_binary ***table, t_shell *shell);
+int		ft_redirect(char **str, char ***env, t_binary ***table);
 char	**ft_shlvl(char **env);
 int		ft_echo(char **argv);
 char	*charadd(char *str, char c);
@@ -129,13 +118,13 @@ char	**ft_save_env(char **env);
 int		casenofor(char **env, char *argv);
 int		redirectfunction_builtin(char **argv, char ***env, t_binary ***table);
 void	ft_strstrfree(char **str);
-int		ft_exec(char *bin, char **temp, char ***env, t_shell *shell);
+int		ft_exec(char *bin, char **temp, char ***env);
 char	*toexec(char **env, char *argv);
 size_t	ft_strstrlen(char **c);
 char	**ft_strstrnew(size_t i);
 char	**ft_strstrjoin(char **s1, char **s2);
 char	**ft_strstrdup(char **yolo);
-int		ft_signal();
+int		ft_signal(void);
 char	**init(char **oldenv);
 int		uppercase(char *argv1, char *argv2, char *argv3);
 #endif

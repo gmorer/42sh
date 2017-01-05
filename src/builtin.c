@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/08 11:58:36 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 11:59:30 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static int	ft_exit(char **argv, t_binary ***table, char **env)
 	if (ft_strstrlen(argv) == 1)
 	{
 		ft_free_hash_tab(env, table);
+		tcsetattr(shell->terminal, TCSADRAIN, &(shell->dfl_term));
 		exit(0);
 	}
 	i = ft_atoi(argv[1]);
@@ -85,6 +86,7 @@ static int	ft_exit(char **argv, t_binary ***table, char **env)
 		return (1);
 	}
 	ft_free_hash_tab(env, table);
+	tcsetattr(shell->terminal, TCSADRAIN, &(shell->dfl_term));
 	exit(i);
 }
 

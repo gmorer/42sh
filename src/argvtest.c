@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/06 17:15:52 by gmorer            #+#    #+#             */
-/*   Updated: 2016/12/23 13:27:14 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 17:33:40 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 t_shell		*shell;
 
-char		*argv_type2(char *str)
+static char		*argv_type2(char *str)
 {
 	char	*rslt;
 	int		i;
@@ -73,7 +73,7 @@ char		*argvtest(char *str)
 	if (type == 0)
 		return (argv_type2(str));
 	result = ft_strdup(str);
-	result = rmno(result, ft_strlen(str) - 1);
+	result = rmno(result, (int)ft_strlen(str) - 1);
 	result = rmno(result, 0);
 	if (type == 1)
 		return (result);

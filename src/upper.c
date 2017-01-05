@@ -6,13 +6,11 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/03 14:47:06 by gmorer            #+#    #+#             */
-/*   Updated: 2016/10/05 01:31:02 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 17:37:14 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-#define BUFF_SIZE_UPPER 1
 
 int			uppercase(char *argv1, char *argv2, char *argv3)
 {
