@@ -6,13 +6,38 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 14:40:09 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/05 20:12:48 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/06 14:39:13 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 t_shell		*shell;
+
+static int			delet_job(t_job *job)
+{
+	t_job	*prev;
+	t_job	*temp;
+
+	prev = NULL;
+	temp = shell->first_job;
+	while(temp)
+	{
+		if (temp == job)
+		{
+			if (prev)
+				prev->next = job->next;
+			else
+				shell->first_job = job->next;
+			free(job->command);
+			free(job);
+			return (1);
+		}
+		prev = temp;
+		temp = temp->next;
+	}
+	return (0);
+}
 
 static int			job_is_in(t_job *job)
 {
@@ -57,8 +82,8 @@ static void		add_process(pid_t pid, int status, t_job *job)
 	{
 		if (job_is_in(job))
 		{
-			free(job->command);
-			free(job);
+			//free(job->command);
+			//free(job);
 			return ;
 		}
 		add_job(job);
@@ -66,13 +91,19 @@ static void		add_process(pid_t pid, int status, t_job *job)
 	}
 	else
 	{
-		free(job->command);
-		free(job);
+		if (job_is_in(job))
+			delet_job(job);
+		else
+		{
+			free(job->command);
+			free(job);
+		}
 		if (WIFSIGNALED(status))
 		{
 			ft_putnbr((int)pid);
 			ft_putstr(" : Terminated by signal ");
 			ft_putnbr(WTERMSIG(status));
+			ft_putchar('\n');
 		}
 		return ;
 	}
