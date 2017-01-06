@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/05 17:35:12 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/06 17:21:25 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct	s_job
 {
 	struct s_job	*next;				/* next active job */
 	char			*command;			/* command line, used for messages */
+	char			*name;				/* command line, used for messages */
 	pid_t			pgid;				/* process group ID */
 	//struct termios	tmodes;				/* saved terminal modes */
 	int				stdin; 				/* standard i/o channels */
