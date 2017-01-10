@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/05 17:28:20 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/10 18:07:06 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ int			ft_exec(char *bin, char **temp, char ***env)
 		return (1);
 	current_job->next = NULL;
 	current_job->command = ft_strdup(bin);
+	current_job->name = ft_strdup(temp[0]);
 	current_job->stdin = 0;
 	current_job->stdout = 0;
 	current_job->stderr = 0;

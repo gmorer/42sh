@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 12:15:36 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/06 17:45:57 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/10 18:07:04 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,31 @@
 
 t_shell		 *shell;
 
-t_job		*find_job_name(char *str)
+t_job		*find_job_by_id(char *str, int *find)
+{
+	t_job		*job;
+	int			id;
+	int			i;
+
+	*find = 1;
+	i = 1;
+	job = shell->first_job;
+	id = ft_atoi(str);
+	while (job)
+	{
+		if (i == id)
+			return (job);
+		i++;
+		job = job->next;
+	}
+	return (NULL);
+}
+
+t_job		*find_job_by_name(char *str, int *find)
 {
 	t_job	*job;
 	t_job	*temp;
-	int		find;
 
-	find = 0;
 	job = NULL;
 	temp = shell->first_job;
 	while (temp)
@@ -28,14 +46,32 @@ t_job		*find_job_name(char *str)
 		if (ft_strcmp(temp->name, str) == 0)
 		{
 			job = temp;
-			find++;
+			(*find)++;
 		}
-
 		temp = temp->next;
+	}
+	return (job);
+}
+
+t_job		*find_job_fg(char *str)
+{
+	t_job	*job;
+	int		find;
+
+	find = 0;
+	if (str && str[0] != '%')
+		job = find_job_by_name(str, &find);
+	else
+	{
+		if (ft_strisdigit(str + 1))
+			job = find_job_by_id(str + 1, &find);
+		else
+			job = find_job_by_name(str + 1, &find);
+
 	}
 	if (find > 1)
 		ft_triplestr("42sh: fg: ", str, ": ambiguous job spec\n");
-	if (find == 0)
+	if (find == 0 || job == NULL)
 		ft_triplestr("42sh: fg: ", str, ": no such job\n");
 	if (find == 1)
 		return (job);
@@ -59,6 +95,10 @@ int			ft_fg(char **argv)
 		while (job->next)
 			job = job->next;
 	}
+	else
+		job = find_job_fg(argv[1]);
+	if (!job)
+		return (1);
 	if (kill(- job->pgid, SIGCONT) < 0)
 		perror("kill error");
 	tcsetpgrp(shell->terminal, job->pgid);
