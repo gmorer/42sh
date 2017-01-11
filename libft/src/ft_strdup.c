@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putmap.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/22 15:18:50 by gmorer            #+#    #+#             */
-/*   Updated: 2016/04/12 12:40:58 by gmorer           ###   ########.fr       */
+/*   Created: 2015/12/10 13:29:44 by gmorer            #+#    #+#             */
+/*   Updated: 2016/01/04 16:18:46 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putmap(char **c)
+char	*ft_strdup(const char *s1)
 {
-	int y;
+	char			*s2;
 
-	y = 0;
-	while (c[y])
-	{
-		ft_putstr(c[y]);
-		ft_putchar('\n');
-		y++;
-	}
+	if ((s2 = malloc(sizeof(char) * ft_strlen(s1) + 1)) == NULL)
+		return (NULL);
+	s2 = ft_strcpy(s2, s1);
+	return (s2);
 }

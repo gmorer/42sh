@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_triplestr.c                                     :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/09 11:16:34 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/10 17:57:48 by gmorer           ###   ########.fr       */
+/*   Created: 2015/11/27 11:01:42 by gmorer            #+#    #+#             */
+/*   Updated: 2017/01/11 11:09:21 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void		ft_triplestr(char *str1, char *str2, char *str3)
+void	ft_putstr(char const *s)
 {
-	ft_putstr(str1);
-	ft_putstr(str2);
-	ft_putstr(str3);
-	return ;
+	write(1, s, ft_strlen(s));
 }

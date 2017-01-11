@@ -1,26 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strisdigit.c                                    :+:      :+:    :+:   */
+/*   ft_putendl.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/09 13:11:11 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/10 17:52:35 by gmorer           ###   ########.fr       */
+/*   Created: 2015/11/27 11:01:42 by gmorer            #+#    #+#             */
+/*   Updated: 2017/01/11 11:14:10 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_strisdigit(char	*str)
+void	ft_putendl(char const *s)
 {
-	if(!str)
-		return (0);
-	while (*str)
-	{
-		if (!ft_isdigit(*str) && *str != '\n')
-			return (0);
-		str++;
-	}
-	return (1);
+	write(1, s, ft_strlen(s));
+	write(1, "\n", 1);
 }

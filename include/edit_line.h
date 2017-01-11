@@ -6,7 +6,7 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 12:25:01 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/28 15:22:03 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/11 11:17:12 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <sys/ioctl.h>
 # include <dirent.h>
 # include <sys/stat.h>
-# include "../libft/libft.h"
+# include "libft.h"
 
 # include <stdio.h>
 

@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/06 12:15:36 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/10 18:07:04 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/11 11:31:33 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_shell		 *shell;
 
-t_job		*find_job_by_id(char *str, int *find)
+static t_job		*find_job_by_id(char *str, int *find)
 {
 	t_job		*job;
 	int			id;
@@ -34,7 +34,7 @@ t_job		*find_job_by_id(char *str, int *find)
 	return (NULL);
 }
 
-t_job		*find_job_by_name(char *str, int *find)
+static t_job		*find_job_by_name(char *str, int *find)
 {
 	t_job	*job;
 	t_job	*temp;
@@ -53,7 +53,7 @@ t_job		*find_job_by_name(char *str, int *find)
 	return (job);
 }
 
-t_job		*find_job_fg(char *str)
+static t_job		*find_job_fg(char *str)
 {
 	t_job	*job;
 	int		find;
@@ -77,6 +77,31 @@ t_job		*find_job_fg(char *str)
 		return (job);
 	else
 		return (NULL);
+}
+
+int			ft_bg(char **argv)
+{
+	t_job	*job;
+
+
+	job = shell->first_job;
+	if (!job)
+	{
+		ft_putendl("fg: no currentjob");
+		return (1);
+	}
+	if (argv[1] == NULL)
+	{
+		while (job->next)
+			job = job->next;
+	}
+	else
+		job = find_job_fg(argv[1]);
+	if (!job)
+		return (1);
+	if (kill(- job->pgid, SIGCONT) < 0)
+		perror("kill error");
+	return (0);
 }
 
 int			ft_fg(char **argv)

@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2017/01/06 14:01:40 by gmorer           ###   ########.fr        #
+#    Updated: 2017/01/11 11:16:47 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC = clang
 CFLAGS = -Werror -Wextra -Wall  -g
 CPATH = src/
 OPATH = obj/
-HPATH = include/ libft/
+HPATH = include/ libft/inc
 INC = $(addprefix -I , $(HPATH))
 CFILES = main.c\
 		 libstrstr.c\
@@ -75,7 +75,7 @@ CFILES = main.c\
 
 OFILES = $(CFILES:.c=.o)
 HFILES = include/minishell.h\
-			 libft/libft.h
+			 libft/inc/libft.h
 OBJ = $(addprefix $(OPATH), $(OFILES))
 
 .PHONY: all clean fclean re

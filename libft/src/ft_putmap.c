@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isfolder.c                                      :+:      :+:    :+:   */
+/*   ft_putmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/16 11:35:21 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/16 12:11:08 by gmorer           ###   ########.fr       */
+/*   Created: 2015/12/22 15:18:50 by gmorer            #+#    #+#             */
+/*   Updated: 2016/04/18 10:38:44 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_isfolder(char *path)
+void	ft_putmap(char **c)
 {
-	struct stat file;
+	int y;
 
-	if ((stat(path, &file)) == -1)
-		return (-1);
-	if (S_ISREG(file.st_mode) == 1)
-		return (0);
-	return (1);
+	y = 0;
+	while (c[y])
+	{
+		ft_putstr(c[y]);
+		y++;
+		ft_putchar('\n');
+	}
 }

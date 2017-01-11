@@ -6,17 +6,17 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 18:17:49 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/09 13:21:13 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/11 11:28:56 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include <sys/stat.h>
 # include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <sys/stat.h>
 
 typedef struct		s_list
 {
@@ -25,12 +25,9 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
-int					ft_strisdigit(char *str);
+void				ft_swap(int *a, int *b);
 void				ft_triplestr(char *str1, char *str2, char *str3);
-int					ft_swap(int *a, int *b);
-int					ft_isfolder(char *path);
-int					ft_isspace(char c);
-char				*ft_strndup(char *s1, int n);
+int					ft_strisdigit(char	*str);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 void				ft_lstadd(t_list **alst, t_list *niew);
@@ -51,6 +48,8 @@ int					ft_isalpha(int c);
 int					ft_isascii(int c);
 int					ft_isdigit(int c);
 int					ft_isprint(int c);
+int					ft_isspace(char c);
+int					ft_isfolder(char *path);
 void				*ft_memalloc(size_t size);
 void				*ft_memccpy(void *dst, const void *src, int c, size_t n);
 void				*ft_memchr(const void *s, int c, size_t n);
@@ -69,6 +68,7 @@ void				ft_strclr(char *s);
 int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strcpy(char *dst, const char *src);
 char				*ft_strdup(const char *s1);
+char				*ft_strndup(const char *s1, int n);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);
 size_t				ft_strlen(const char *s);
 char				*ft_strncat(char *s1, const char *s2, size_t n);

@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnew.c                                        :+:      :+:    :+:   */
+/*   ft_triplestr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/02 11:41:42 by gmorer            #+#    #+#             */
-/*   Updated: 2016/03/25 13:07:49 by gmorer           ###   ########.fr       */
+/*   Created: 2017/01/11 11:25:08 by gmorer            #+#    #+#             */
+/*   Updated: 2017/01/11 11:25:24 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnew(size_t size)
+void		ft_triplestr(char *str1, char *str2, char *str3)
 {
-	char	*n;
-
-	if ((n = malloc(sizeof(*n) * (size + 1))) == NULL)
-		return (NULL);
-	ft_bzero(n, size + 1);
-	return (n);
+	ft_putstr(str1);
+	ft_putstr(str2);
+	ft_putstr(str3);
+	return ;
 }

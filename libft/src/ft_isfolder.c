@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   ft_isfolder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/01 10:57:24 by gmorer            #+#    #+#             */
-/*   Updated: 2016/09/01 11:03:17 by gmorer           ###   ########.fr       */
+/*   Created: 2017/01/11 11:21:36 by gmorer            #+#    #+#             */
+/*   Updated: 2017/01/11 11:21:43 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "libft.h"
 
-int		ft_isspace(char c)
+int		ft_isfolder(char *path)
 {
-	if (c == '\t' || c == ' ')
-		return (1);
-	else
+	struct stat file;
+
+	if ((stat(path, &file)) == -1)
+		return (-1);
+	if (S_ISREG(file.st_mode) == 1)
 		return (0);
+	return (1);
 }

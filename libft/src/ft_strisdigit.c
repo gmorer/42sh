@@ -1,38 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsplit.c                                      :+:      :+:    :+:   */
+/*   ft_strisdigit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/02 14:59:23 by gmorer            #+#    #+#             */
-/*   Updated: 2015/12/02 15:44:04 by gmorer           ###   ########.fr       */
+/*   Created: 2017/01/11 11:23:25 by gmorer            #+#    #+#             */
+/*   Updated: 2017/01/11 11:23:48 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int			mafunctiontropsbien(char const *s, char c)
+int		ft_strisdigit(char	*str)
 {
-	unsigned int	i;
-	unsigned int	x;
-
-	x = 0;
-	i = 0;
-	while (s[i] != '\0')
+	if(!str)
+		return (0);
+	while (*str)
 	{
-		if (s[i] == c)
-			x++;
-		i++;
+		if (!ft_isdigit(*str) && *str != '\n')
+			return (0);
+		str++;
 	}
-	return (x);
-}
-
-
-char	**ft_strsplit(char const *s, char c)
-{
-	char	**x;
-
-	**x = malloc(mafunctiontropsbien(s, c));
-	return (**x);
+	return (1);
 }
