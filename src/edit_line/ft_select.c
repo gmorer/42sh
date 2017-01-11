@@ -6,22 +6,20 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/08 11:55:53 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/03 10:26:34 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 13:21:38 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 int						action_select(t_info *info, char buff[5])
 {
 	int					i;
-	//const t_key_select	key[5] = {
-	//	{LEFT, &s_left}, {RIGHT, &s_right}, {SPACE, &space}};
-	const t_key_select	key[6] = {
-		{LEFT, &s_left}, {RIGHT, &s_right}, {SPACE, &space}, {TAB, &s_right}};
+	const t_key_select	key[5] = {
+		{LEFT, &s_left}, {RIGHT, &s_right}, {SPACE, &space}};
 
 	i = 0;
-	while (i < 6)
+	while (i < 5)
 	{
 		if (BUFF == key[i].key)
 		{

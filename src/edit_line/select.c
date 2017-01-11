@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 15:36:17 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/27 12:18:59 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:25:26 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 void			check_select(t_cursor *cursor, char buff[5])
 {

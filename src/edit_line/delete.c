@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/09 17:52:51 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/22 13:28:25 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:21:01 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 /*
 ** recupere la position actuelle du curseur, ensuite decale la chaine de 1

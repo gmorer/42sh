@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/09 17:16:27 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/22 13:32:58 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:21:09 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 /*
 ** remet les marge a 0 et augment le nb de ligne puis place le cursuer a la
@@ -56,7 +56,7 @@ void			display(t_cursor *cur, int i)
 }
 
 /*
-** recoit la chaine a l'index ou l'affichage dois se faire 
+** recoit la chaine a l'index ou l'affichage dois se faire
 */
 
 void			putstr_cmd(t_cursor *curs, int i)

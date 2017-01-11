@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 17:05:45 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/27 14:29:16 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:20:45 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 /*
 ** recupere le troncon de chaine copie grace a 2 valeur, ensuite place ce

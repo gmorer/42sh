@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/18 13:47:38 by rvievill          #+#    #+#             */
-/*   Updated: 2016/11/24 15:40:56 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:23:57 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 void			paste(t_cursor *cursor, t_hist **hist)
 {

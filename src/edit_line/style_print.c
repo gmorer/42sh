@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/08 12:28:52 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/08 14:08:42 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:25:47 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 static void			underline(char *arg)
 {

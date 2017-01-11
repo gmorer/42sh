@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 12:02:08 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/15 12:02:12 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:23:17 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 int					lstlen(t_arg *arg)
 {

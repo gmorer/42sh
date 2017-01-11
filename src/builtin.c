@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/06 14:36:14 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/11 11:37:39 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ int			redirectfunction_builtin(char **argv, char ***env, t_binary ***table)
 	if (ft_strcmp("jobs", argv[0]) == 0)
 		result = ft_jobs(argv);
 	if (ft_strcmp("fg", argv[0]) == 0)
+		result = ft_fg(argv);
+	if (ft_strcmp("bg", argv[0]) == 0)
 		result = ft_fg(argv);
 	if (ft_strcmp("match", argv[0]) == 0)
 		result = ft_match(argv);

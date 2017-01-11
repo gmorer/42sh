@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/08 15:11:12 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/14 19:47:47 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:23:08 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 int				my_putchar(int c)
 {

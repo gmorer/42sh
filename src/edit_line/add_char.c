@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/08 16:38:20 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/04 16:43:31 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 13:20:04 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 /*
 ** verifie si le caractere envoyer est dans la table ascii puis place cette

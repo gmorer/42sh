@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 18:29:48 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/22 13:26:58 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:20:25 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 /*
 ** fonction pour selectioner un element pendant la completion

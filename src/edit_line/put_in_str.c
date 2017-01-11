@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 14:56:47 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/27 14:19:52 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:25:12 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 static int		nb_selected(t_arg *arg)
 {
@@ -67,7 +67,7 @@ void			put_in_str(t_cursor *cur, t_info *info)
 	nb_select = nb_selected(info->arg);
 	i = cur->cur_col - 3 + cur->max_col * (cur->cur_line - 1);
 	size = ft_strlen(info->dir);
-	if (info->dir[size - 1] != '/' && opendir(info->dir))
+	if (size > 0 && info->dir[size - 1] != '/' && opendir(info->dir))
 		info->dir = ft_strjoin(info->dir, "/");
 	i -= size;
 	if (info->arg->selected == 1)

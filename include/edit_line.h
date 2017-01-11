@@ -6,7 +6,7 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 12:25:01 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/11 11:17:12 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/11 17:07:08 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,38 +21,38 @@
 # include <sys/ioctl.h>
 # include <dirent.h>
 # include <sys/stat.h>
-# include "libft.h"
+# include "../libft/inc/libft.h"
 
 # include <stdio.h>
 
 # define BUFF *(int *)buff
-# define YELLOW  "\x1b[1;33m"
-# define RED "\x1b[1;31m"
-# define GREEN "\x1b[1;32m"
+# define YELLOW  "\033[3;33m"
+# define RED "\033[3;31m"
+# define GREEN "\033[3;32m"
 # define DFL "\033[3;0m"
 
-typedef struct		s_arg
+typedef struct			s_arg
 {
-	int				start;
-	char			*name;
-	int				selected;
-	int				current;
-	struct s_arg	*next;
-	struct s_arg	*prev;
-}					t_arg;
+	int					start;
+	char				*name;
+	int					selected;
+	int					current;
+	struct s_arg		*next;
+	struct s_arg		*prev;
+}						t_arg;
 
-typedef struct		s_info
+typedef struct			s_info
 {
-	t_arg			*arg;
-	size_t			len_arg;
-	char			*dir;
-	int				fd;
-	int				enter;
-	int				line;
-	int				column;
-	int				len;
-	int				nb_param;
-}					t_info;
+	t_arg				*arg;
+	size_t				len_arg;
+	char				*dir;
+	int					fd;
+	int					enter;
+	int					line;
+	int					column;
+	int					len;
+	int					nb_param;
+}						t_info;
 
 typedef struct			s_hist
 {
@@ -65,6 +65,7 @@ typedef struct			s_cursor
 {
 	char				*line;
 	char				*str_cpy;
+	struct termios		term;
 	int					buff_size;
 	int					l_marge;
 	int					r_marge;
@@ -126,8 +127,8 @@ void					edit_line(char **line, t_hist **hist);
 /*
 ** init_term.c
 */
-int						init_term(struct termios *term, t_cursor **cursor);
-int						term_dfl(struct termios *term);
+int						init_term(t_cursor **cursor);
+int						term_dfl(t_cursor *cur);
 /*
 ** prompt.c
 */
@@ -219,7 +220,7 @@ void					create_lst(char *av, t_info *info);
 */
 int						lstlen(t_arg *arg);
 void					fill_info_size(t_info *info, int ac);
-void					stoc(t_info *info);	
+void					stoc(t_info *info);
 void					clear_line(t_cursor *cur, int start, int end, int col);
 /*
 ** select_dir.c

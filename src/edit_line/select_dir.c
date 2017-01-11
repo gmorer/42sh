@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/02 12:56:41 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/03 10:58:18 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/05 13:25:34 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 static void			specific_dir(t_info *inf, char *file)
 {
@@ -19,9 +19,6 @@ static void			specific_dir(t_info *inf, char *file)
 	int				i;
 	int				size_file;
 
-	ft_putstr("file : ");
-	ft_putendl(file);
-	ft_putendl("yolo");
 	i = 0;
 	size_file = 0;
 	if (file)

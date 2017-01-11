@@ -6,14 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 13:05:51 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/04 17:39:58 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/10 16:33:25 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
-#include "minishell.h"
-
-t_shell			*shell;
+#include "edit_line.h"
 
 static void			init_cursor(t_cursor **cursor)
 {
@@ -36,7 +33,7 @@ static void			init_cursor(t_cursor **cursor)
 	}
 }
 
-int					init_term(struct termios *term, t_cursor **cur)
+int					init_term(t_cursor **cur)
 {
 	char			*name;
 	struct termios	cur_term;
@@ -46,21 +43,24 @@ int					init_term(struct termios *term, t_cursor **cur)
 		return (1);
 	if ((tgetent(NULL, name) == ERR))
 		return (1);
-	if (tcgetattr(0, &cur_term) == -1)
+	if (tcgetattr(0, &((*cur)->term)) == -1)
 		return (1);
-	term = &cur_term;
+	cur_term = (*cur)->term;
 	cur_term.c_lflag &= ~(ICANON | ECHO);
 	cur_term.c_cc[VMIN] = 1;
 	cur_term.c_cc[VTIME] = 0;
-	shell->cur_term = cur_term;
 	if (tcsetattr(0, TCSADRAIN, &cur_term))
 		return (1);
 	return (0);
 }
 
-int					term_dfl(struct termios *term)
+int					term_dfl(t_cursor *cur)
 {
-	if (tcsetattr(0, TCSADRAIN, term) == -1)
-		return (1);
+	if (tcgetattr(0, &(cur->term)) == -1)
+		return (-1);
+	cur->term.c_lflag |= (ICANON | ECHO);
+	if (tcsetattr(0, 0, &cur->term) == -1)
+		return (-1);
+	tputs(tgetstr("ve", 0), 1, my_putchar);
 	return (0);
 }

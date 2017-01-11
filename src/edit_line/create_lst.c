@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/01 11:31:44 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/22 13:28:13 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:20:53 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 /*
 ** petite fonction pour placer un element de la liste chainee en debut de liste

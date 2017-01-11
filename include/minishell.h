@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/01 14:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/06 17:21:25 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/11 11:36:49 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_shell
 
 extern t_shell	*shell;
 
+int			ft_bg(char **argv);
 void		wait_for_job(t_job *job);
 int			boucle(char **temp, int returnvalue, t_binary **table);
 char		*ft_quote(char *av, int test[2]);

@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/27 17:03:56 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/19 15:58:41 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:22:01 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 static int			alpha_is_present(char *line)
 {

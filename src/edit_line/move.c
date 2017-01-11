@@ -6,11 +6,11 @@
 /*   By: acottier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/08 15:06:39 by acottier          #+#    #+#             */
-/*   Updated: 2016/12/17 17:10:56 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:23:29 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 void	right(t_cursor *cursor, t_hist **hist)
 {

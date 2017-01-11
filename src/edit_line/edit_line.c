@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   edit_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/19 12:22:37 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/28 15:24:48 by gmorer           ###   ########.fr       */
+/*   Created: 2017/01/05 13:34:49 by rvievill          #+#    #+#             */
+/*   Updated: 2017/01/10 16:33:30 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 /*
 ** retourne en 0 ; 0 par rapport au prompt et non a shell
@@ -70,16 +70,14 @@ static int			catch_key(t_cursor *curs, char buff[5], t_hist **hist)
 
 void				edit_line(char **line, t_hist **hist)
 {
-	struct termios	*term;
 	t_cursor		*cursor;
 	char			buff[5];
 
-	term = NULL;
 	cursor = NULL;
 	BUFF = 0;
-	if (init_term(term, &cursor))
+	if (init_term(&cursor))
 		return ;
-	//prompt(cursor);
+	prompt(cursor);
 	while (BUFF != 10)
 	{
 		BUFF = 0;
@@ -89,6 +87,7 @@ void				edit_line(char **line, t_hist **hist)
 			add_char(buff, cursor);
 		tputs(tgetstr("vi", 0), 1, my_putchar);
 	}
+	term_dfl(cursor);
 	*line = ft_strsub(cursor->line, 0, ft_strlen(cursor->line));
 	create_hist(hist, line);
 	go_start(ft_strlen(cursor->line) % cursor->max_col + 3, cursor);

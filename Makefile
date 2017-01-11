@@ -6,13 +6,13 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2017/01/11 11:16:47 by gmorer           ###   ########.fr        #
+#    Updated: 2017/01/11 14:36:08 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = clang
-CFLAGS = -Werror -Wextra -Wall  -g
+CFLAGS =  -g
 CPATH = src/
 OPATH = obj/
 HPATH = include/ libft/inc

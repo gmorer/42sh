@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 11:15:05 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/22 13:27:08 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:20:35 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 /*
 ** debut de la completion, check si la completion ets faisable puis appelle les

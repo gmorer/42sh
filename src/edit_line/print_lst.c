@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/08 12:06:59 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/14 13:51:28 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:24:43 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 static void		alligne(int len, int size)
 {

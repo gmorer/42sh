@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/10 18:07:06 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/11 15:52:20 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,6 @@ static void	launch_process(char **argv, char *bin, t_job *current_job)
 	pid = getpid();
 	setpgid(pid, pid);
 	current_job->pgid = pid;
-	//ft_putstr("binaire du programme : ");
-	//ft_putstr(shell->current_job->command);
-	//ft_putchar('\n');
 	if (tcsetpgrp(shell->terminal, getpid()) == -1)
 	{
 		ft_putendl("error lancement");
@@ -123,6 +120,7 @@ static void	launch_process(char **argv, char *bin, t_job *current_job)
 	signal (SIGTTOU, SIG_DFL);
 	signal (SIGCHLD, SIG_DFL);
 	execve(bin, argv, shell->env);
+	ft_putendl("test2");
 	exit (1);
 }
 

@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/09 11:30:41 by rvievill          #+#    #+#             */
-/*   Updated: 2016/11/14 18:55:18 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:22:24 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 void			home(t_cursor *cursor, t_hist **hist)
 {

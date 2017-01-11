@@ -6,11 +6,11 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 11:59:18 by rvievill          #+#    #+#             */
-/*   Updated: 2016/12/23 16:00:44 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/05 13:21:25 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/edit_line.h"
+#include "edit_line.h"
 
 /*
 ** recupere le chemin au mooment de la completion
