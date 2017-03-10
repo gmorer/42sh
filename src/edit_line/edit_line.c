@@ -6,7 +6,7 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 13:34:49 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/10 16:33:30 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/03/02 15:33:26 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int			catch_key(t_cursor *curs, char buff[5], t_hist **hist)
 ** et affectation de la ligne a envoyer au lexer.
 */
 
-void				edit_line(char **line, t_hist **hist)
+int					edit_line(char **line, t_hist **hist)
 {
 	t_cursor		*cursor;
 	char			buff[5];
@@ -76,8 +76,7 @@ void				edit_line(char **line, t_hist **hist)
 	cursor = NULL;
 	BUFF = 0;
 	if (init_term(&cursor))
-		return ;
-	prompt(cursor);
+		return (-1);
 	while (BUFF != 10)
 	{
 		BUFF = 0;
@@ -87,10 +86,9 @@ void				edit_line(char **line, t_hist **hist)
 			add_char(buff, cursor);
 		tputs(tgetstr("vi", 0), 1, my_putchar);
 	}
-	term_dfl(cursor);
 	*line = ft_strsub(cursor->line, 0, ft_strlen(cursor->line));
 	create_hist(hist, line);
 	go_start(ft_strlen(cursor->line) % cursor->max_col + 3, cursor);
-	free(cursor->line);
-	free(cursor);
+	term_dfl(cursor);
+	return (0);
 }

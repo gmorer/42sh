@@ -6,7 +6,7 @@
 /*   By: acottier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/08 15:06:39 by acottier          #+#    #+#             */
-/*   Updated: 2017/01/05 13:23:29 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/03/07 13:23:23 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,18 @@ void	right(t_cursor *cursor, t_hist **hist)
 		(cursor->cur_col)++;
 		tputs(tgetstr("nd", 0), 1, my_putchar);
 	}
-	else if (cursor->nb_line > cursor->cur_line)
-	{
-		(cursor->cur_line)++;
-		tputs(tgetstr("do", 0), 1, my_putchar);
+	//else if (cursor->nb_line > cursor->cur_line)
+	//{
+	//	(cursor->cur_line)++;
+	//	tputs(tgetstr("do", 0), 1, my_putchar);
 		set_marge(cursor);
-		while (cursor->cur_col > cursor->l_marge)
-		{
-			(cursor->cur_col)--;
-			tputs(tgetstr("le", 0), 1, my_putchar);
-		}
-	}
+	//	while (cursor->cur_col > cursor->l_marge)
+	//	{
+	//		(cursor->cur_col)--;
+	//		tputs(tgetstr("le", 0), 1, my_putchar);
+	//	}
+	//}
+	//printf("line = %d\ncol = %d\n", cursor->cur_line, cursor->cur_col);
 }
 
 void	left(t_cursor *cursor, t_hist **hist)

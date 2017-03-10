@@ -1,0 +1,17 @@
+/* ************************************************************************** *\
+*                                                                              *
+*                          Edition de ligne                                    *
+*                                                                              *
+\* ************************************************************************** */
+
+------------------------------------------------------------------------------->
+               le principe de base de l'edition de ligne
+<-------------------------------------------------------------------------------
+
+-> L'edition de ligne est basee sur un buffer malloc a 50 de base.
+
+-> A chaque touche presse je regarde si elle est liee a une action grace a un
+tableau de struct qui contient un pointeur sur fonction liee a une touche, si
+la touche n'a pas de fonction attribue alors je la place dans le buffer.
+
+-> Une fois le buffer rempli je double sa taille.

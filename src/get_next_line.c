@@ -6,11 +6,13 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/04 16:56:57 by gmorer            #+#    #+#             */
-/*   Updated: 2016/10/03 11:20:28 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/01/11 14:16:53 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "env.h"
+
+#define BUFF_SIZE 0x00ff
 
 int			get_next_line(int fd, char **line)
 {

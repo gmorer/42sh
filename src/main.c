@@ -3,101 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: lvalenti <lvalenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/20 11:43:44 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/11 14:13:46 by gmorer           ###   ########.fr       */
+/*   Created: 2017/03/09 10:35:54 by lvalenti          #+#    #+#             */
+/*   Updated: 2017/03/09 17:17:18 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "edit_line.h"
+#include "lex_par_ast.h"
+#include "shell.h"
+#include "env.h"
+#include "hashtab.h"
+#include "split.h"
+#include <stdio.h>
+#include "errno.h"
 
-t_shell		*shell;
+t_shell		*g_shell;
 
-static void		returnvaluetoenv(int returnvalue, char ***env)
+void			loop(void)
 {
-	char	**temp;
+	char		*line;
+	t_hist		*hist;
+	t_node		*tree;
 
-	temp = ft_strstrnew(3);
-	temp[0] = ft_strdup("setenv");
-	temp[1] = ft_strdup("?");
-	temp[2] = ft_itoa(returnvalue);
-	temp[3] = NULL;
-	ft_setenv(temp, env, NULL);
-	free(temp[0]);
-	free(temp[1]);
-	free(temp[2]);
-	free(temp);
-}
-
-static char		**getarg(char **env, int returnvalue)
-{
-	char	**temp;
-	char	*test;
-	int		i;
-
-	temp = NULL;
-	test = NULL;
-	ft_prompt(env, returnvalue);
-//	edit_line(&test, &(shell->hist));
-	
-	i = get_next_line(1, &test);
-	if (!test && i == 0)
-		ft_putendl("exit");
-	if (!test && i == 0)
-		exit(0);
-	if( !test && i == -1)
-		ft_putchar('\n');
-		
-	if (test && test[0] && (temp = argvsplit(test)))
+	tree = NULL;
+	hist = NULL;
+	while (1)
 	{
-		temp = argvclean(temp);
-		temp = glob_result(temp);/*
-		ft_putendl("//////argv://////");
-		ft_putmap(temp);
-		ft_putendl("/////////////////");*/
-	}
-	free(test);
-	return (temp);
-}
-
-int			boucle(char **temp, int returnvalue, t_binary **table)
-{
-	while (42)
-	{
-		//ft_save_env(env);
-		temp = getarg(shell->env, returnvalue);
-		if (temp && temp[0] && temp[0][0])
-		{
-			returnvalue = ft_redirect(temp, &(shell->env), &table);
-			ft_strstrfree(temp);
-			returnvaluetoenv(returnvalue, &(shell->env));
-		}
+		job_quit(9);
+		line = NULL;
+		prompt();
+		edit_line(&line, &hist);
+		line = ft_quote(line);
+		if (line != NULL)
+			tree = mktree(parser(lexer(line, line, 0)));
 		else
-			returnvalue = 0;
+		{
+			if (get_next_line(0, &line) == 0)
+				exit(0);
+			line = ft_quote(line);
+			tree = mktree(parser(lexer(ft_strdup(line), line, 0)));
+		}
+		while ((tree = walkthrough(tree)))
+			tree->ret_cmd = prep_exec(tree, g_shell->env);
 	}
-//	return (1);
+	free(line);
 }
 
-int				main(int argc, char **argv, char **env)
+int				main(int ac, char **av)
 {
 	extern char	**environ;
-	char	**temp;
-	char	*bin;
-	int		returnvalue;
 
-	(void)env;
-	temp = NULL;
-	bin = NULL;
-	returnvalue = 0;
-	shell = NULL;
+	(void)ac;
+	(void)av;
 	init_mainprocess();
-	shell->env = ft_strstrdup(environ);
-	//envdup = init(environ);
-	(void)argv;
-	(void)argc;
-	ft_signal();
-	shell->table = ft_init_hash_table(&(shell->env));
-	boucle(temp, returnvalue, shell->table);
+	g_shell->env = init_env(environ);
+	g_shell->table = ft_init_hash_table();
+	loop();
 	return (0);
 }

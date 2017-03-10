@@ -1,0 +1,176 @@
+#################################  LEXER  #####################################
+
+-------------- LEXER.C
+
+
+t_lex	*lexer(char *line)
+
+Parcourt (char *)line, appelle get_expr() en boucle pour creer des maillons avec
+add_link().
+(Schema de la liste t_lex : maillon commandes - maillon separateur - maillon commandes, etc.
+Les elements des maillons commandes sont separes par le caractere '\a' (7) dans la chaine.)
+
+
+int		get_expr(char **line, int *i, t_lex **res)
+
+(Prend l'adresse de (char **)line et de (int *)i pour pouvoir les incrementer correctement 
+dans le cas de l'ajout de plusieurs tokens en un seul appel.)
+S'il y a un >, >>, <, << ou | dans le token, appelle redirection().
+Sinon, incremente i jusqu'au prochain espace/separateur.
+
+
+int		redirection(char **line, t_lex **res)
+
+Ajoute successivement au maillon commande actuel :
+1/ ce qui precede l'ensemble de la redir (appel de agreg_suffix(), redirection.c),
+2/ le prefixe de la redir (1, 2, etc)
+3/ la redir en soi (>, >>, <, <<)
+4/ le suffixe de la redir (toto, &toto, etc).
+Les elements 2, 3 et 4 sont separes par des espaces.
+
+Fait avancer directement (char **)line a chaque ajout (appel de advance_pos(), misc_lexer.c).
+
+
+int		target(char *str, int type)
+
+Parcourt (char *)str et retourne l'index actuel quand il croise un caractere correspondant
+a ceux definis par (int)type. Utilise un peu partout dans le lexer.
+
+
+t_lex	*add_link(char *str, t_lex *prev)
+
+Ajoute un nouveau maillon ou complete le maillon commande actuel contenant
+le token (char *)str a la liste, en tant que next de (t_lex *prev).
+
+
+-------------- REDIRECTION.C
+
+
+char	*agreg_suffix(char *expr)
+
+S'il y a un espace apres la redirection, ne stocke que la redirection dans la chaine.
+Sinon, stocke la redirection + le mot suivant, en le decoupant au premier espace/redirection/separateur.
+
+
+--------------  MISC_LEXER.C
+
+
+int		redir_in_scope(char *line, int scope)
+
+Appele par get_expr() (lexer.c) pour chercher une redirection dans (char *)line.
+Recupere l'index des prochains < et > entre line[0] et line[scope], et renvoie le plus proche.
+
+
+void	advance_pos(char **line, int length)
+
+Avance le pointeur de (char **)line de (int)length.
+
+
+int		quote_scope(char *line, char quote, int i)
+
+Cherche la quote fermante correspondant a (char)quote dans (char *)line, en cherchant depuis line(i).
+
+
+int		is_sep(char *str)
+
+Renvoie 1 si char *str correspond a "&", "&&", "||" ou ";", sinon 0.
+
+
+
+
+#################################  PARSER  #####################################
+
+
+--------------  PARSER.C
+
+
+void	parser(t_lex *lst)
+
+Parcourt la t_lex *lst, appelant str_to_lst (chain.c) sur chaque maillon commande
+pour creer la sous-liste detaillee des commnades, stockee dans ->lst.
+___________________________           ______________        ___________________
+|        (t_lex)          |           |   (t_lex)  |        |      (t_lex)     |
+|    Pack de commandes    |-----------| Separateur |--------| Pack de commandes|
+|_________________________|           |____________|        |__________________|
+            |                                                         |
+      ------------                                               ------------
+      |(t_detail)|                                               |(t_detail)|
+      | Commande |                                               | Commande |
+      |__________|                                               |__________|
+           |                                                          |
+      ------------                                               ------------
+      |(t_detail)|                                               |(t_detail)|
+      | Commande |                                               | Commande |
+      |__________|                                               |__________|
+
+t_lex : liste principale, t_detail : sous-liste
+
+- Appel de assign_redir() sur chaque t_detail;
+- Appel de check_cmd_syntax() sur chaque t_detail;
+- Si 0 erreur de syntaxe dans les t_detail, appel de check_sep_syntax() sur la t_lex.
+Ensuite, on appelle check_cmd_syntax() (parser.c) sur toute la sous-liste t_detail pour verifier sa syntaxe.
+Si on a parcouru toute la t_lex sans trouver d'erreur dans aucune des sous-listes t_detail, on verifie la syntaxe des separateurs
+avec check_sep_syntax() (parser.c), puis on envoie la t_lex.
+
+
+void	assign_redir(t_detail *link, char *file)
+
+On cherche dans tous les maillons crees si une redirection existe (char **redir_str non-NULL). Si oui, on remplit 
+int *redir avec le type de redir correspondant a chaque redirection de char **redir_str (assign_redir(), parser.c).
+(Types de redir : S_L = '<', DB_L = '<<', S_R = '>', DB_R = '>>')
+
+
+t_lex	free_all(t_lex *main_lst)
+
+Si t'as vraiment besoin de la doc pour ca...
+
+
+t_lex	check_sep_syntax(t_lex *lex)
+
+Parcourt la t_lex en verifiant la syntaxe maillons-separateurs.
+
+
+####################################  AST  #####################################
+
+
+--------------  MKTREE.C
+
+
+t_node	mktree(t_lex *lex)
+
+Appelle build_branch() sur le premier maillon de la t_lex, free la t_lex,
+puis renvoie la racine de l'arbre t_node *tree.
+
+
+void	build_branch(t_node **tree, t_lex *lex)
+
+S'il reste un separateur dans la t_lex, cree le le node separateur correspondant (mknode_sep, misc_ast.c), le node de commande qui le precede (mknode_simple(), misc_ast.c),
+et se rappelle recursivement.
+Sinon, ajoute un node de commande a t_node *tree (mknode_simple(), misc_ast.c).
+
+
+void	free_list(t_lex *lex)
+
+Si tu as besoin d'une description en detail pour cette fonction, sache que je ne veux plus faire le 42sh avec toi.
+
+
+--------------  MISC_AST.C
+
+void	node_init(t_node **node, t_lex *lex)
+
+Initialise le nouveau node a ses valeurs par defaut (que le node soit simple ou redir).
+
+
+t_node	*mknode_simple(t_node **tree, t_lex *lex, t_node *prev)
+
+Cree et renvoie un nouveau node simple (left et right mis a NULL) si le token correspondant n'a pas deja ete place.
+
+
+void	mknode_sep(t_node **tree, t_lex *lex)
+
+Cree et lie a tree un nouveau node de redirection (left pointant forcement sur une commande, right sur une redir ou une commande si c'est la derniere).
+
+
+t_lex	*get_sep_link(t_lex *lex)
+
+Descend la liste t_lex a la recherche du prochain maillon comportant un separateur.

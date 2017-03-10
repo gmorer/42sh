@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   select_dir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/02 12:56:41 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/05 13:25:34 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/03/09 10:59:53 by lvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void			specific_dir(t_info *inf, char *file)
 	{
 		while ((d = readdir(dirp)))
 		{
-			if (ft_strncmp(file, d->d_name, size_file) == 0
+			if (file && ft_strncmp(file, d->d_name, size_file) == 0
 			&& size_file != (int)ft_strlen(d->d_name)
 			&& ft_strcmp(d->d_name, ".") && ft_strcmp(d->d_name, "..") && ++i)
 				create_lst(d->d_name, inf);
@@ -37,6 +37,7 @@ static void			specific_dir(t_info *inf, char *file)
 			stoc(inf);
 			fill_info_size(inf, i);
 		}
+		closedir(dirp);
 	}
 }
 
@@ -67,9 +68,9 @@ static void			cur_dir(t_info *inf)
 static char			*find_path(char *dir)
 {
 	char			*path;
-	int				i;
 
-	i = 0;
+	if (ft_strcmp(dir, "/") == 0)
+		return (ft_strdup(dir));
 	if (dir[0] == '/' && dir[1] != '.' && opendir(dir))
 		return (NULL);
 	else

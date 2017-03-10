@@ -6,7 +6,7 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/13 14:56:47 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/05 13:25:12 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/02/21 12:43:36 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,10 @@ void			put_in_str(t_cursor *cur, t_info *info)
 	int			i;
 	int			size;
 	int			nb_select;
+	int			nb;
 
 	nb_select = nb_selected(info->arg);
+	nb = nb_select;
 	i = cur->cur_col - 3 + cur->max_col * (cur->cur_line - 1);
 	size = ft_strlen(info->dir);
 	if (size > 0 && info->dir[size - 1] != '/' && opendir(info->dir))
@@ -81,6 +83,6 @@ void			put_in_str(t_cursor *cur, t_info *info)
 	}
 	go_pos(cur, 1, 3);
 	putstr_cmd(cur, 0);
-	go_pos(cur, cur->cur_line, i + 3 - cur->max_col * (cur->cur_line - 1));
+	go_pos(cur, cur->cur_line, nb > 0 ? i + 3 : i + 4);
 	set_marge(cur);
 }

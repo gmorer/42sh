@@ -6,7 +6,7 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/09 11:30:41 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/05 13:22:24 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/02/25 17:07:23 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void			home(t_cursor *cursor, t_hist **hist)
 {
 	(void)hist;
 	go_home(cursor);
+	set_marge(cursor);
 	while (cursor->cur_col < 3)
 	{
 		tputs(tgetstr("nd", 0), 1, my_putchar);

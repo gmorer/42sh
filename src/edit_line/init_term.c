@@ -6,16 +6,21 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 13:05:51 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/10 16:33:25 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/03/08 13:52:59 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "edit_line.h"
+#include "shell.h"
+#include <errno.h>
+
+t_shell	*g_shell;
 
 static void			init_cursor(t_cursor **cursor)
 {
 	struct winsize	win;
 
+	errno = 0;
 	ioctl(0, TIOCGWINSZ, &win);
 	if ((*cursor = (t_cursor *)malloc(sizeof(t_cursor))))
 	{
@@ -38,7 +43,9 @@ int					init_term(t_cursor **cur)
 	char			*name;
 	struct termios	cur_term;
 
+	errno = 0;
 	init_cursor(cur);
+	g_shell->cursor = *cur;
 	if ((name = getenv("TERM")) == NULL)
 		return (1);
 	if ((tgetent(NULL, name) == ERR))
@@ -61,6 +68,8 @@ int					term_dfl(t_cursor *cur)
 	cur->term.c_lflag |= (ICANON | ECHO);
 	if (tcsetattr(0, 0, &cur->term) == -1)
 		return (-1);
+	free(cur->line);
+	free(cur);
 	tputs(tgetstr("ve", 0), 1, my_putchar);
 	return (0);
 }

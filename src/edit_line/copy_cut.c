@@ -55,6 +55,7 @@ void			cut(t_cursor *cur, t_hist **hist)
 	int			len;
 
 	(void)hist;
+	(void)i;
 	if (cur->beg_select != -1 && cur->end_select != -1)
 	{
 		i = cur->cur_col - 3 + cur->max_col * (cur->cur_line - 1);

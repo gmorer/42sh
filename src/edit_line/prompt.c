@@ -3,19 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 16:10:32 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/11 17:09:02 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/03/08 13:04:23 by lvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "edit_line.h"
 #include <time.h>
-#include "minishell.h"
+#include "env.h"
 #include <sys/utsname.h>
-
-t_shell		*shell;
 
 void				path(void)
 {
@@ -28,17 +26,21 @@ void				path(void)
 	new_path = NULL;
 	home = NULL;
 	tmp = NULL;
-	pwd = getcwd(pwd, sizeof(pwd));
+	pwd = getcwd(pwd, 0);
+	pwd = pwd ? pwd : "no_where";
 	ft_putstr(GREEN);
-	if (!(home = getenvline(shell->env, "HOME=")))
+	if (pwd && !(home = getenvline("HOME=")))
 		ft_putstr(pwd);
-	else if ((tmp = ft_strstr(pwd, home)))
-		new_path = ft_strjoin("~", tmp + ft_strlen(home));
+	else if (home && pwd && (tmp = ft_strstr(pwd, home)))
+		ft_putstr(new_path = ft_strjoin("~", tmp + ft_strlen(home)));
+	else if (pwd)
+		ft_putstr(new_path = ft_strdup(ft_strrchr(pwd, '/')));
 	else
-			new_path = ft_strdup(ft_strrchr(pwd, '/'));
-	ft_putstr(new_path);
-	free(tmp);
-	free(home);
+		ft_putstr(new_path = ft_strdup("no_where"));
+	if (tmp)
+		free(tmp);
+	if (home)
+		free(home);
 	free(new_path);
 	ft_putstr(RED);
 	ft_putendl(" ]");
@@ -55,13 +57,18 @@ void				user(void)
 	ft_putstr(RED);
 	ft_putstr("[ ");
 	ft_putstr(GREEN);
-	if (!(user = getenv("LOGNAME")))
+	if (!(user = getenvline("USER")))
 		ft_putstr("Anonymous");
-	ft_putstr(user);
+	else
+	{
+		ft_putstr(user);
+		free(user);
+	}
 	ft_putchar('@');
 	uname(&post);
-	tmp = ft_strchr(post.nodename, '.');
-	p = ft_strsub(post.nodename, 0, (int)ft_strlen(tmp));
+	if ((tmp = ft_strchr(post.nodename, '.')))
+		*tmp = '\0';
+	p = ft_strdup(post.nodename);
 	ft_putstr(p);
 	ft_putstr(": ");
 	free(p);
@@ -92,9 +99,8 @@ void				ft_time(void)
 	free(time_cur);
 }
 
-void				prompt(t_cursor *cur)
+void				prompt(void)
 {
-	(void)cur;
 	ft_time();
 	user();
 	path();

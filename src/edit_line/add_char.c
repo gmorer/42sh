@@ -6,7 +6,7 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/08 16:38:20 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/05 13:20:04 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/01/18 14:27:11 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ void			add_char(char buff[5], t_cursor *cursor)
 	int			line;
 	int			col;
 
+	if ((BUFF == -1 || BUFF == 4) && ft_strlen(cursor->line) == 0)
+	{
+		ft_putendl("exit");
+		exit(0);
+	}
 	if (BUFF >= ' ' && BUFF < 127)
 	{
 		cursor->r_marge++;
