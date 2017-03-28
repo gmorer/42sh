@@ -71,9 +71,7 @@ static int	ft_cdtest(char *path)
 static char	*ft_cd_find(char **argv, int option_len)
 {
 	char	*temp;
-	int		test;
 
-	test = 0;
 	if ((ft_strcmp(argv[option_len], "-") == 0))
 	{
 		temp = getenvline("OLDPWD=");
@@ -102,7 +100,6 @@ static char	*ft_cd_find(char **argv, int option_len)
 		temp = getenvline("HOME=");
 		if (temp)
 		{
-			test = ft_cdtest(temp);
 			return (temp);
 		}
 		else

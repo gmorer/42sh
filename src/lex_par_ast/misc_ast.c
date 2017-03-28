@@ -20,9 +20,6 @@
 
 void		free_tree(t_node *tree)
 {
-	t_detail	*tmp;
-
-	tmp = NULL;
 	if (!tree)
 		return ;
 	free_tree(tree->left);
