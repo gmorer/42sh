@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   error_message_pars.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:53:43 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/02 12:28:40 by acottier         ###   ########.fr       */
+/*   Updated: 2017/03/23 10:44:01 by lvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lex_par_ast.h"
-
-/*
-** Choix du message d'erreur selon le code renvoye
-** (parsing de sous_liste/commandes)
-*/
 
 t_detail		*cmd_pars_error(t_detail *cursor, int err)
 {
@@ -38,12 +33,7 @@ t_detail		*cmd_pars_error(t_detail *cursor, int err)
 	return (cursor);
 }
 
-/*
-** Choix du message d'erreur selon le code renvoye
-** (parsing des separateurs)
-*/
-
-t_lex		*sep_pars_error(t_lex *cursor, int err)
+t_lex			*sep_pars_error(t_lex *cursor, int err)
 {
 	if (err == 0)
 		ft_putendl("Invalid null command.");

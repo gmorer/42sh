@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/20 14:06:19 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/07 13:14:02 by lvalenti         ###   ########.fr       */
+/*   Updated: 2017/04/03 18:21:52 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ int		builtin(t_detail *node)
 		{"cd", &ft_cd},
 		{"setenv", &ft_setenv},
 		{"unsetenv", &ft_unsetenv},
-		{"jobs", &ft_jobs},
+		{"hashtab", &ft_hashtab},
 		{"fg", &ft_fg},
 		{"bg", &ft_bg},
-		{"hashtab", &ft_hashtab},
+		{"jobs", &ft_jobs},
 		{"env", &ft_env},
 		{"echo", &ft_echo},
 		{"exit", &ft_exit}
 	};
 
 	i = 0;
-	while (i < 10)
+	while (i < 10 && node->argv)
 	{
 		if (ft_strcmp(node->argv[0], tab[i].name) == 0)
 		{

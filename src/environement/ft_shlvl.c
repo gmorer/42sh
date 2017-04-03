@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/29 10:31:39 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/18 14:50:03 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/03/20 10:50:38 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**ft_shlvl(char **env)
 		env = ft_strstradd(ft_strdup("SHLVL=1"), env);
 		return (env);
 	}
-	i = casenofor("SHLVL=");
+	i = casenofor("SHLVL");
 	free(env[i]);
 	temp = ft_itoa(ft_atoi(line) + 1);
 	env[i] = ft_strjoin("SHLVL=", temp);

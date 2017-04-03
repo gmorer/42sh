@@ -6,7 +6,7 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/28 12:42:11 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/05 14:41:13 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/03/28 17:12:25 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void		cl(t_cursor *cursor)
 
 void			up_hist(t_cursor *cursor, t_hist **hist)
 {
-	if (*hist)
+	if (hist && *hist)
 	{
 		cl(cursor);
 		free(cursor->line);
@@ -46,7 +46,7 @@ void			up_hist(t_cursor *cursor, t_hist **hist)
 
 void			down_hist(t_cursor *cursor, t_hist **hist)
 {
-	if (*hist)
+	if (hist && *hist)
 	{
 		cl(cursor);
 		ft_bzero(cursor->line, cursor->buff_size);

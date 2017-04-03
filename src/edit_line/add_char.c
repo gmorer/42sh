@@ -6,7 +6,7 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/08 16:38:20 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/18 14:27:11 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/03/23 14:12:11 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,23 @@
 ** lettre dans le buffer
 */
 
-void			add_char(char buff[5], t_cursor *cursor)
+void			add_char(char buff[5], t_cursor *cur)
 {
 	int			i;
 	int			line;
 	int			col;
 
-	if ((BUFF == -1 || BUFF == 4) && ft_strlen(cursor->line) == 0)
-	{
-		ft_putendl("exit");
-		exit(0);
-	}
 	if (BUFF >= ' ' && BUFF < 127)
 	{
-		cursor->r_marge++;
-		i = cursor->cur_col - 3 + (cursor->max_col * (cursor->cur_line - 1));
-		if ((int)ft_strlen(cursor->line) + 1 >= cursor->buff_size)
-			extend_str(cursor);
-		move_str(&cursor->line, i, 1, cursor->buff_size);
-		cursor->line[i] = BUFF;
-		set_pos(cursor, i + 1, &line, &col);
-		putstr_cmd(cursor, i);
-		go_pos(cursor, line, col);
-		set_marge(cursor);
+		cur->r_marge++;
+		i = cur->cur_col - 3 + (cur->max_col * (cur->cur_line - 1));
+		if ((int)ft_strlen(cur->line) + 1 >= cur->buff_size)
+			extend_str(cur);
+		move_str(&cur->line, i, 1, cur->buff_size);
+		cur->line[i] = BUFF;
+		set_pos(cur, i + 1, &line, &col);
+		putstr_cmd(cur, i);
+		go_pos(cur, line, col);
+		set_marge(cur);
 	}
 }

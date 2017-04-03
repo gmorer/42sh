@@ -6,7 +6,7 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/08 11:55:53 by rvievill          #+#    #+#             */
-/*   Updated: 2017/02/21 12:43:38 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/03/25 17:43:19 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int						action_select(t_info *info, char buff[5])
 {
 	int					i;
-	const t_key_select	key[5] = {
-		{LEFT, &s_left}, {RIGHT, &s_right}, {SPACE, &space}};
+	const t_key_select	key[6] = {
+		{LEFT, &s_left}, {RIGHT, &s_right}, {SPACE, &space}, {TAB, &s_right}};
 
 	i = 0;
-	while (i < 5)
+	while (i < 6)
 	{
 		if (BUFF == key[i].key)
 		{
@@ -72,4 +72,5 @@ void					ft_select(t_info *info, t_cursor *cur)
 	else
 		info->arg->selected = 1;
 	put_in_str(cur, info);
+	free_arg_list(info->arg);
 }

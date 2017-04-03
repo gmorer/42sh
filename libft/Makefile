@@ -6,7 +6,7 @@
 #    By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/01 11:36:51 by gmorer            #+#    #+#              #
-#    Updated: 2017/03/08 14:02:27 by gmorer           ###   ########.fr        #
+#    Updated: 2017/03/25 17:26:35 by acottier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,6 +84,7 @@ SRC =	ft_abs.c\
 		ft_smallest.c\
 		ft_strlenchr.c\
 		libstrstr.c\
+		ft_freejoin.c\
 		ft_strstrlen.c
 
 OBJS = $(SRC:.c=.o)

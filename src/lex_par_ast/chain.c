@@ -6,7 +6,7 @@
 /*   By: lvalenti <lvalenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/17 14:29:40 by lvalenti          #+#    #+#             */
-/*   Updated: 2017/03/09 10:37:58 by lvalenti         ###   ########.fr       */
+/*   Updated: 2017/04/03 12:40:08 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,15 @@ t_shell		*g_shell;
 
 static t_detail	*add_detail(t_detail *list, t_detail *new)
 {
-	t_detail *temp;
+	t_detail	*temp;
+	int			i;
 
+	i = 0;
+	while (new && new->argv && new->argv[i])
+	{
+		new->argv[i] = argvtest(new->argv[i]);
+		i++;
+	}
 	if (list == NULL)
 		return (new);
 	temp = list;
@@ -31,15 +38,10 @@ static t_detail	*add_detail(t_detail *list, t_detail *new)
 	return (list);
 }
 
-/* return 0 if you are in quote and 1 if not */
-
 int				is_not_quote(char *str, int i)
 {
 	int		j;
-	//int		quote[2];
 
-	//quote[0] = 0;
-	//quote[1] = 0;
 	j = 0;
 	while (str[j] && j < i)
 	{
@@ -65,11 +67,11 @@ int				get_redir_line(int start, int end, char **str)
 		return (-1);
 	while (start < end)
 	{
-		if (((temp = (ft_strstr(str[start], ">"))) ||
-		(temp = (ft_strstr(str[start], "<")))) &&
-		is_not_quote(str[start], temp - str[start]))
+		if ((temp = (ft_strstr(str[start], ">"))) ||
+		(temp = (ft_strstr(str[start], "<"))))
 		{
-			return (start);
+			if (is_reachable(str[start], temp - str[start]))
+				return (start);
 		}
 		start++;
 	}
@@ -80,13 +82,10 @@ static t_detail	*remp_detail(int start, int *end, char ***str, t_detail *list)
 {
 	t_detail	*new;
 	int			i;
-	int			j;
-	size_t		len;
 
 	new = (t_detail*)malloc(sizeof(t_detail));
 	*new = (t_detail){NULL, NULL, 0, NULL, NULL, NULL, {0, 0}, NULL, NULL};
-	j = start;
-	while ((i = get_redir_line(j, *end, *str)) != -1)
+	while ((i = get_redir_line(start, *end, *str)) != -1)
 	{
 		new->redir_str = ft_strstradd(ft_strdup((*str)[i]), new->redir_str);
 		*str = ft_strstrdelone(i, *str);
@@ -94,17 +93,17 @@ static t_detail	*remp_detail(int start, int *end, char ***str, t_detail *list)
 	}
 	i = start - 1;
 	new->pipe = (ft_strcmp((*str)[*end], "|") == 0 ? 1 : 0);
-	new->argv = (char**)malloc(sizeof(char*) * (*end - start + 1));
+	new->argv = *end - start + 1 > 1 ?
+		(char**)malloc(sizeof(char*) * (*end - start + 1)) : NULL;
 	new->redir = (int*)malloc(sizeof(int) * ft_strstrlen(new->redir_str));
 	ft_bzero(new->redir, ft_strstrlen(new->redir_str));
-	while (++i < *end)
+	while (++i < *end && new->argv)
 		new->argv[i - start] = ft_strdup((*str)[i]);
-	new->argv[i - start] = NULL;
-	len = ft_strstrlen(new->redir_str);
-	new->fd_std = (int *)malloc(sizeof(int) * len);
-	new->fd_file = (int *)malloc(sizeof(int) * len);
-	ft_memset(new->fd_std, -1, len);
-	ft_memset(new->fd_file, -1, len);
+	new->argv ? new->argv[i - start] = NULL : NULL;
+	new->fd_std = (int *)malloc(sizeof(int) * ft_strstrlen(new->redir_str));
+	new->fd_file = (int *)malloc(sizeof(int) * ft_strstrlen(new->redir_str));
+	ft_memset(new->fd_std, -1, ft_strstrlen(new->redir_str));
+	ft_memset(new->fd_file, -1, ft_strstrlen(new->redir_str));
 	return (add_detail(list, new));
 }
 
@@ -115,13 +114,10 @@ t_detail		*str_to_lst(char *str)
 	int			start;
 	int			i;
 
-	if (!str)
+	if (!str || !(temp = argvsplit(str, 7)))
 		return (NULL);
 	i = 0;
 	list = NULL;
-	temp = argvsplit(str, 7);
-	if (!temp)
-		return (NULL);
 	while (temp[i])
 	{
 		start = i;
@@ -135,5 +131,6 @@ t_detail		*str_to_lst(char *str)
 		}
 		i++;
 	}
+	ft_strstrfree(temp);
 	return (list);
 }

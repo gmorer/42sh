@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/06 15:34:32 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/09 11:14:42 by lvalenti         ###   ########.fr       */
+/*   Updated: 2017/03/21 15:39:20 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,19 @@ static char	**ft_setenvcheck(char **argv)
 	temp2 = ft_strsplit(argv[1], '=');
 	if (ft_strstrlen(temp2) != 2)
 	{
-		free(temp2);
-		free(temp1);
+		ft_strstrfree(temp2);
+		ft_strstrfree(temp1);
 		return (ft_strstrdup(argv));
 	}
 	temp3 = ft_strstrjoin(temp1, temp2);
 	return (temp3);
 }
 
-int			ft_setenv(char **argv)
+static int	setenv_ok(char **argvtemp, char *temp, int i)
 {
-	int		i;
-	char	*temp;
-	char	**argvtemp;
-
-	temp = NULL;
-	argvtemp = ft_setenvcheck(argv);
-	if (argvtemp[1])
-		temp = ft_strjoin(argvtemp[1], "=");
-	if (ft_strstrlen(argvtemp) != 3)
-	{
-		ft_putendl("setenv: bad usage");
-		ft_strstrfree(argvtemp);
-		return (1);
-	}
 	if ((i = casenofor(argvtemp[1])) == -1)
-		g_shell->env = ft_strstradd(ft_strjoin(temp, argvtemp[2]), g_shell->env);
+		g_shell->env = ft_strstradd(ft_strjoin(temp, argvtemp[2]),
+				g_shell->env);
 	else
 	{
 		if (g_shell->table && ft_strcmp(temp, "BINARY_LEN=") == 0)
@@ -78,5 +65,27 @@ int			ft_setenv(char **argv)
 	}
 	ft_strstrfree(argvtemp);
 	free(temp);
+	return (0);
+}
+
+int			ft_setenv(char **argv)
+{
+	int		i;
+	char	*temp;
+	char	**argvtemp;
+
+	i = 0;
+	temp = NULL;
+	argvtemp = ft_setenvcheck(argv);
+	if (argvtemp[1])
+		temp = ft_strjoin(argvtemp[1], "=");
+	if (ft_strstrlen(argvtemp) != 3)
+	{
+		ft_putendl("setenv: bad usage");
+		ft_strstrfree(argvtemp);
+		free(temp);
+		return (1);
+	}
+	setenv_ok(argvtemp, temp, i);
 	return (0);
 }

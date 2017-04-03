@@ -6,11 +6,12 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/06 10:58:14 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/08 14:03:07 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/03/29 18:43:55 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 void	ft_strstrfree(char **str)
 {

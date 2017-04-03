@@ -6,7 +6,7 @@
 /*   By: acottier <acottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/29 16:39:40 by acottier          #+#    #+#             */
-/*   Updated: 2017/03/09 15:48:20 by acottier         ###   ########.fr       */
+/*   Updated: 2017/03/23 13:20:30 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static void		free_list(t_lex *lex)
 {
 	if (!lex)
 		return ;
-	if (lex->prev)
-		free_list(lex->prev);
+	if (lex->next)
+		free_list(lex->next);
 	free(lex->str);
 	free(lex);
 }

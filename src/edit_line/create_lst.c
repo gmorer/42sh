@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_lst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/01 11:31:44 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/05 13:20:53 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/03/16 11:42:38 by lvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void		new_node(char *av, t_info *info)
 }
 
 /*
-** initialise le premioer maillon avec les bonne valeur
+** initialise le premier maillon avec les bonne valeur
 */
 
 static void		init_node(char *av, t_info *info)

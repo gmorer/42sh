@@ -6,7 +6,7 @@
 /*   By: lvalenti <lvalenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 13:16:22 by lvalenti          #+#    #+#             */
-/*   Updated: 2017/03/08 16:53:29 by lvalenti         ###   ########.fr       */
+/*   Updated: 2017/04/03 16:27:16 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,6 @@ static int		recup_opt(char **argv, int i, int j, t_option *comp)
 {
 	if (argv[i][j] == 'i')
 		comp->opt_i = 1;
-	else if (argv[i][j] == 'P')
-		comp->opt_p = 1;
-	else if (argv[i][j] == 'S')
-		comp->opt_s = 1;
 	else if (argv[i][j] == 'u')
 		comp->opt_u = 1;
 	else if (argv[i][j] == 'v')
@@ -70,26 +66,24 @@ int				exec_env(char **argv, t_option comp, int i)
 	t_detail	*node;
 
 	node = (t_detail *)ft_memalloc(sizeof(t_detail));
-	if (i == 1 && ft_strstr(argv[i], "=") == NULL)
-	{
-		no_option(argv, node);
-		free_detail(node);
-		return (0);
-	}
-	if (i == 1 && ft_strstr(argv[i], "=") != NULL)
+	if (ft_strstr(argv[i], "=") == NULL)
+		no_option(argv, node, i);
+	else if (ft_strstr(argv[i], "=") && ft_strncmp(argv[i], "=", 1) != 0)
 	{
 		show_env();
-		ft_putendl(argv[i]);
-		return (0);
+		while (argv[i])
+		{
+			ft_putendl(argv[i]);
+			i++;
+		}
 	}
-	if (comp.opt_i)
-	{
+	else if (comp.opt_i)
 		option_i(argv, node);
+	else if (exec_opt_uv(argv, comp, i, node) == 1)
+	{
 		free_detail(node);
-		return (0);
-	}
-	if (exec_opt_uv(argv, comp, i, node) == 1)
 		return (1);
+	}
 	free_detail(node);
 	return (0);
 }
@@ -125,8 +119,8 @@ int				ft_env(char **argv)
 {
 	int			i;
 	t_option	comp;
+	int			j;
 
-	i = 0;
 	i = ft_strstrlen(argv);
 	if (i < 2)
 		show_env();
@@ -135,6 +129,15 @@ int				ft_env(char **argv)
 		comp = (t_option) {0, 0, 0, 0, 0};
 		if ((i = env_option(argv, &comp)) == -1)
 			return (1);
+		j = i - 1;
+		while (argv[++j])
+		{
+			if (argv[j] && !ft_strstr(argv[j], "="))
+			{
+				exec_env(argv, comp, j);
+				return (0);
+			}
+		}
 		exec_env(argv, comp, i);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/15 12:57:25 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/07 13:36:20 by lvalenti         ###   ########.fr       */
+/*   Updated: 2017/03/23 15:34:49 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int	ft_hashtab(char **argv)
 			while ((bin) && (bin->data))
 			{
 				ft_putnbr(i);
-				ft_putstr("---------");
+				ft_putstr("----------");
 				ft_putstr(bin->data->name);
-				ft_putstr("---------");
+				ft_putstr("----------");
 				ft_putendl(bin->data->full_path);
 				bin = bin->next;
 			}

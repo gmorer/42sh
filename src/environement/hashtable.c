@@ -49,6 +49,7 @@ int					ft_free_hash_tab(void)
 {
 	int			i;
 	t_binary	*bin;
+	t_binary	*bin2;
 
 	if (!(i = 0) && !g_shell->table)
 		return (0);
@@ -57,6 +58,7 @@ int					ft_free_hash_tab(void)
 		bin = g_shell->table[i];
 		if ((bin))
 		{
+			bin2 = bin;
 			if (bin->data)
 				while ((bin))
 				{

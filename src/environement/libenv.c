@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 10:52:08 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/07 13:48:38 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/04/01 15:27:06 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ int				casenofor(char *argv)
 	n = ft_strlen(argv);
 	rslt = 0;
 	while (g_shell->env[rslt] &&
-			ft_strnstr(g_shell->env[rslt], argv, n) == NULL)
+			(ft_strchr(g_shell->env[rslt], '=') - g_shell->env[rslt] != (int)n
+			|| ft_strncmp(g_shell->env[rslt], argv, n) != 0))
 	{
 		rslt++;
 	}

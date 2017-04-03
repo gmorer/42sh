@@ -6,7 +6,7 @@
 /*   By: lvalenti <lvalenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 10:49:51 by lvalenti          #+#    #+#             */
-/*   Updated: 2017/03/09 15:45:07 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/04/03 18:40:16 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ char				*find_bin(char *arg, int error)
 	char			*temp;
 	struct stat		statvar;
 
-	temp = NULL;
 	bin = (ft_isin(arg, '/') ? ft_strdup(arg) : give_path(arg, g_shell->table));
 	if (!arg)
 		return (NULL);
@@ -55,7 +54,7 @@ void				exec_basic_cmd(t_detail *node, char **env, int fg)
 	char		*bin;
 	pid_t		pid;
 
-	if ((bin = find_bin(*(node->argv), 1)))
+	if (node->argv && (bin = find_bin(*(node->argv), 1)))
 	{
 		pid = getpid();
 		linkio(node);
@@ -79,9 +78,11 @@ void				exec_basic_cmd(t_detail *node, char **env, int fg)
 void				exec_pipe(t_detail *node, char **env, int fg)
 {
 	int			pfd[2];
+	pid_t		pid;
+	int			status;
 
 	pipe(pfd);
-	if (fork() == 0)
+	if ((pid = fork()) == 0)
 	{
 		close(pfd[0]);
 		dup2(pfd[1], STDOUT_FILENO);
@@ -89,6 +90,8 @@ void				exec_pipe(t_detail *node, char **env, int fg)
 	}
 	else
 	{
+		if (!find_bin(node->argv[0], 0))
+			waitpid(pid, &status, WUNTRACED);
 		close(pfd[1]);
 		dup2(pfd[0], STDIN_FILENO);
 		if (node->next->next)
@@ -97,21 +100,23 @@ void				exec_pipe(t_detail *node, char **env, int fg)
 	}
 }
 
-int				exec_cmd(t_node *tree, char **env, t_job *current_job)
+int					exec_cmd(t_node *tree, char **env, t_job *current_job)
 {
 	pid_t		pid;
 	int			status;
 	char		*temp;
 
 	status = 0;
-	if ((temp = find_bin(*(tree->lst->argv), 0)))
+	if (tree->lst && tree->lst->argv
+			&& (temp = find_bin(*(tree->lst->argv), 0)))
 		free(temp);
 	if ((pid = fork()) == 0)
 	{
-		if (tree->lst->pipe)
+		if (tree && tree->lst && tree->lst->pipe)
 			exec_pipe(tree->lst, env, tree->fg);
-		else
+		else if (tree && tree->lst)
 			exec_basic_cmd(tree->lst, env, tree->fg);
+		exit(1);
 	}
 	else
 	{
@@ -136,11 +141,13 @@ int				exec_cmd(t_node *tree, char **env, t_job *current_job)
 	return (status);
 }
 
-int				prep_exec(t_node *tree, char **env)
+int					prep_exec(t_node *tree, char **env)
 {
 	int			status;
 	t_job		*current_job;
 
+	if (!tree || !tree->lst)
+		return (0);
 	if (select_redir(tree))
 		return (1);
 	if (tree->lst && !tree->lst->next

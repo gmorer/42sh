@@ -6,11 +6,12 @@
 /*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/02 12:56:41 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/09 10:59:53 by lvalenti         ###   ########.fr       */
+/*   Updated: 2017/03/27 14:42:35 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "edit_line.h"
+#include "env.h"
 
 static void			specific_dir(t_info *inf, char *file)
 {
@@ -27,9 +28,9 @@ static void			specific_dir(t_info *inf, char *file)
 	{
 		while ((d = readdir(dirp)))
 		{
-			if (file && ft_strncmp(file, d->d_name, size_file) == 0
+			if ((!file || (ft_strncmp(file, d->d_name, size_file) == 0
 			&& size_file != (int)ft_strlen(d->d_name)
-			&& ft_strcmp(d->d_name, ".") && ft_strcmp(d->d_name, "..") && ++i)
+			&& ft_strcmp(d->d_name, ".") && ft_strcmp(d->d_name, ".."))) && ++i)
 				create_lst(d->d_name, inf);
 		}
 		if (inf->arg)
@@ -62,21 +63,25 @@ static void			cur_dir(t_info *inf)
 			stoc(inf);
 			fill_info_size(inf, i);
 		}
+		closedir(dirp);
 	}
 }
 
-static char			*find_path(char *dir)
+static void			find_path(char **dir, char **file)
 {
-	char			*path;
+	char	*pathend;
+	char	*path;
 
-	if (ft_strcmp(dir, "/") == 0)
-		return (ft_strdup(dir));
-	if (dir[0] == '/' && dir[1] != '.' && opendir(dir))
-		return (NULL);
-	else
+	pathend = ft_strrchr(*dir, '/');
+	if (pathend)
 	{
-		path = ft_strdup(ft_strchr(dir, '/'));
-		return (path);
+		if (*(pathend + 1))
+		{
+			*file = ft_strdup(pathend + 1);
+			path = ft_strndup(*dir, ft_strlen(*dir) - ft_strlen(pathend) + 1);
+			free(*dir);
+			*dir = path;
+		}
 	}
 }
 
@@ -84,22 +89,18 @@ void				select_dir(t_info *info)
 {
 	DIR				*dirp;
 	char			*file;
-	char			*tmp;
-	int				size;
 
-	file = find_path(info->dir);
+	file = NULL;
+	dirp = NULL;
+	find_path(&info->dir, &file);
+	info->size = ft_strlen(file);
 	info->arg = NULL;
-	if (file != NULL)
-	{
-		size = ft_strlen(info->dir);
-		tmp = ft_strdup(info->dir);
-		free(info->dir);
-		info->dir = ft_strsub(tmp, 0, size - ft_strlen(file) + 1);
-		free(tmp);
-	}
 	if (ft_strcmp(info->dir, ".") == 0 || (dirp = opendir(info->dir)) == NULL)
 		cur_dir(info);
 	else
-		specific_dir(info, file ? file + 1 : file);
+	{
+		closedir(dirp);
+		specific_dir(info, file);
+	}
 	ft_strdel(&file);
 }

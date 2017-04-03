@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 13:32:46 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/08 15:18:02 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/04/03 12:46:38 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,11 @@ char	*ft_quote_add(char *av)
 		ft_putstr("\"> ");
 	else
 		ft_putstr("\\> ");
-	if (edit_line(&buff, &(g_shell->hist)) == -1)
+	if (edit_line(&buff, &(g_shell->hist), 0) == -1)
 		if (get_next_line(0, &buff) == 0)
-			return (av);
+			return (ft_strdup(av));
 	tmp = ft_strjoin("\n", buff);
+	buff ? free(buff) : NULL;
 	result = ft_strjoin(av, tmp);
 	g_shell->av = result;
 	free(tmp);
@@ -68,7 +69,8 @@ char	*ft_quote_add(char *av)
 
 char	*ft_quote(char *av)
 {
-	int i;
+	int		i;
+	char	*temp;
 
 	if (!av)
 		return (NULL);
@@ -76,6 +78,10 @@ char	*ft_quote(char *av)
 	g_shell->quote[0] = 0;
 	g_shell->quote[1] = 0;
 	while ((i = ft_strlen(av)) && !is_reachable(av, i))
-		av = ft_quote_add(av);
+	{
+		temp = ft_quote_add(av);
+		av ? free(av) : NULL;
+		av = temp;
+	}
 	return (av);
 }

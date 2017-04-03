@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/01 18:17:49 by gmorer            #+#    #+#             */
-/*   Updated: 2017/02/24 14:26:45 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/03/25 17:26:06 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,6 @@ char				**ft_strstrnew(size_t i);
 size_t				ft_strstrlen(char **c);
 void				ft_strstrfree(char **str);
 char				**ft_strstrdelone(int i, char **str);
+char				*ft_freejoin(char const *s1, char const *s2);
 
 #endif

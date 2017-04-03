@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acottier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: acottier <acottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/14 17:34:10 by acottier          #+#    #+#             */
-/*   Updated: 2017/03/08 18:20:55 by acottier         ###   ########.fr       */
+/*   Updated: 2017/04/03 14:28:00 by lvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	*trijoin(char *str1, char *str2, int merge)
 	if (merge == 2)
 	{
 		i = ft_strlen(str1) - 1;
-		while (str1[i] && str1[i] != ' ' && str1[i] != 7)
+		while (i >= 0 && str1 && str1[i] && str1[i] != ' ' && str1[i] != 7)
 		{
 			if (ft_isdigit(str1[i]) == 0)
 				swap[0] = 7;
@@ -56,11 +56,11 @@ t_lex		*add_link(char *str, t_lex *prev, int add, int merge)
 	char	*tmp;
 
 	res = NULL;
-	if (ft_strlen(str) == 0)
+	if (ft_strlen(str) == 0 || !str)
 		return (prev);
 	if (add)
 	{
-		res = (t_lex *)malloc(sizeof(t_lex));
+		res = (t_lex *)ft_memalloc(sizeof(t_lex));
 		res->str = ft_strdup(str);
 		res->placed = 0;
 		res->prev = prev;
@@ -70,12 +70,12 @@ t_lex		*add_link(char *str, t_lex *prev, int add, int merge)
 	else
 	{
 		if (!prev)
-			prev = add_link(ft_strdup("\a"), NULL, 1, 0);
+			prev = add_link("\a", NULL, 1, 0);
 		tmp = prev->str;
 		prev->str = trijoin(tmp, str, merge);
-		free(tmp);
+		ft_strdel(&tmp);
 	}
-	free(str);
+	ft_strcmp(str, "\a") ? ft_strdel(&str) : 0;
 	return (res ? res : prev);
 }
 
@@ -98,7 +98,8 @@ static int	get_expr(char **line, int *i, t_lex **res)
 	if ((*i) == 0)
 	{
 		while ((*line)[*i] && (*line)[*i] != '|' && (*line)[*i] != '&'
-			&& (*line)[*i] != ';' && (*line)[*i] != ' ' && (*line)[*i] != '\n')
+			&& (*line)[*i] != ';' && (*line)[*i] != ' ' && (*line)[*i] != '\n'
+			&& (*line)[*i] != '\t')
 		{
 			if (((*line)[*i] == '\'' || (*line)[*i] == '\"')
 					&& (is_reachable(*line, *i)))
@@ -113,20 +114,20 @@ static int	get_expr(char **line, int *i, t_lex **res)
 ** Creation de la liste contenant tous les tokens
 */
 
-t_lex		*lexer(char *line, char *cursor, int i)
+t_lex		*lexer(char **line, char *cursor, int i)
 {
 	char		*swap;
 	t_lex		*res;
 
 	res = NULL;
-	if (!line)
+	if (!(*line))
 		return (res);
 	while (*cursor)
 	{
 		i = 0;
-		while (*cursor == ' ' || *cursor == '\n')
+		while (*cursor == ' ' || *cursor == '\n' || *cursor == '\t')
 			cursor++;
-		if (get_expr(&cursor, &i, &res) == 0)
+		if (get_expr(&cursor, &i, &res) == 0 && i > 0)
 		{
 			swap = ft_strndup(cursor, i);
 			if (res && is_sep(res->str))
@@ -136,6 +137,7 @@ t_lex		*lexer(char *line, char *cursor, int i)
 		}
 		cursor += i;
 	}
-	free(line);
+	free((*line));
+	*line = NULL;
 	return (to_start(res));
 }

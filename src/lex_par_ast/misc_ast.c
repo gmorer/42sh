@@ -6,7 +6,7 @@
 /*   By: acottier <acottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/29 16:41:24 by acottier          #+#    #+#             */
-/*   Updated: 2017/03/09 10:28:11 by lvalenti         ###   ########.fr       */
+/*   Updated: 2017/03/22 17:39:24 by lvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 
 void		free_tree(t_node *tree)
 {
+	t_detail	*tmp;
+
+	tmp = NULL;
 	if (!tree)
 		return ;
 	free_tree(tree->left);

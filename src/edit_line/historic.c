@@ -6,7 +6,7 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/27 17:03:56 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/14 14:31:52 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/03/24 12:27:40 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void			add_node(t_hist **hist, char **line)
 
 void				create_hist(t_hist **hist, char **line)
 {
-	if (line && alpha_is_present(*line))
+	if (hist && line && alpha_is_present(*line))
 	{
 		if (*hist == NULL)
 			init_hist(hist, line);

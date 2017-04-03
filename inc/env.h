@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 18:23:34 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/07 13:47:38 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/04/01 11:45:40 by lvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ char			*getenvline(char *argv);
 int				option_i(char **argv, t_detail *node);
 int				option_u(char **argv);
 int				option_v(char **argv, t_detail *node, int i);
-int				no_option(char **argv, t_detail *node);
+int				no_option(char **argv, t_detail *node, int j);
 void			show_env(void);
+int				free_hist(t_hist *hist);
+int				free_shell(t_shell **g_shell);
+int				free_cursor(t_cursor *cursor);
 
 #endif

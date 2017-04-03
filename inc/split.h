@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 18:10:16 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/07 12:54:32 by lvalenti         ###   ########.fr       */
+/*   Updated: 2017/03/21 10:53:12 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 # include <string.h>
 # include "libft.h"
 
+char	**glob_get_files(char *previous, char *matchvar, char *after, int *i);
+int		need_glob_str(char *str);
+int		get_pass(char ***argv, int i, char **tp, char **temp3);
+char	*trace_road(char ***argv, char *tp, int *ret, int i);
 int		is_reachable(char *str, int i);
 int		is_not_quote(char *str, int i);
 char	**resolve_bracket(char **str);

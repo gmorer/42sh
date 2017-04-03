@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/10 19:19:14 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/09 10:40:59 by lvalenti         ###   ########.fr       */
+/*   Created: 2017/03/28 14:44:19 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/03 12:02:55 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char			*get_file(char *str)
 	int					i;
 
 	i = ft_strlen(str);
-	while (str[i - 1] != '&' && str[i - 1] != ' ')
+	while (i > 0 && str[i - 1] != '&' && str[i - 1] != ' ')
 		i--;
 	return (str[i] ? ft_strdup(&str[i]) : NULL);
 }
@@ -40,7 +40,8 @@ int				redir_right(t_detail *node, int type, char *arg, int i)
 		node->fd_std[i] = ft_atoi(node->redir_str[i]);
 	if (ft_strisdigit(arg) || !ft_strcmp(arg, "-"))
 	{
-		ft_strisdigit(arg) ? node->fd_file[i] = ft_atoi(arg) : close(node->fd_std[i]);
+		ft_strisdigit(arg) ? node->fd_file[i] = ft_atoi(arg) :
+			close(node->fd_std[i]);
 		return (0);
 	}
 	else if ((lstat(arg, &file)) == -1)
@@ -84,30 +85,29 @@ int				sl_redir(t_detail *node, int type, char *file, int i)
 int				heredoc(t_detail *node, int type, char *end, int i)
 {
 	char				*line;
-	char				*name;
-	int					fd;
 
 	(void)type;
 	line = NULL;
+	g_shell->heredoc = 1;
 	node->fd_std[i] = STDIN_FILENO;
 	if (node->redir_str[i][0] != '<' && node->redir_str[i][0] != ' ')
 		node->fd_std[i] = ft_atoi(node->redir_str[i]);
-	name = ttyname(0);
-	fd = name ? open(name, O_WRONLY) : -1;
 	if (pipe(node->pfd) == -1)
 		return (1);
 	while (1)
 	{
-		ft_putstr_fd("h> ", fd);
-		edit_line(&line, &g_shell->hist);
+		ft_putstr_fd("h> ", 2);
+		if (edit_line(&line, NULL, 1) == -1)
+			if (get_next_line(0, &line) < 0)
+				return (1);
 		if (!line || ft_strcmp(line, end) == 0)
 			break ;
-		write(node->pfd[1], line, ft_strlen(line));
-		write(node->pfd[1], "\n", 1);
-		free(line);
+		ft_putendl_fd(line, node->pfd[1]);
+		ft_strdel(&line);
 	}
+	ft_strdel(&line);
 	close(node->pfd[1]);
-	return (0);
+	return (!g_shell->heredoc ? 1 : 0);
 }
 
 int				select_redir(t_node *tree)

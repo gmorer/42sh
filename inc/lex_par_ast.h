@@ -6,7 +6,7 @@
 /*   By: acottier <acottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/07/07 19:18:19 by acottier          #+#    #+#             */
-/*   Updated: 2017/03/08 14:08:02 by acottier         ###   ########.fr       */
+/*   Updated: 2017/04/03 12:08:40 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 # include "../libft/libft.h"
 # include <stdio.h>
 
+/*
+** Structure de la sous-liste de commande
+** (comprend tout ce qui est situe entre 2 separateurs)
+*/
 typedef struct		s_detail
 {
 	char			**redir_str;
@@ -29,6 +33,9 @@ typedef struct		s_detail
 	struct s_detail *prev;
 }					t_detail;
 
+/*
+** Structure temporaire du lexer/parser
+*/
 typedef struct		s_lex
 {
 	char			*str;
@@ -38,6 +45,9 @@ typedef struct		s_lex
 	struct s_lex	*next;
 }					t_lex;
 
+/*
+** Structure de l'AST
+*/
 typedef struct		s_node
 {
 	char			*str;
@@ -52,6 +62,9 @@ typedef struct		s_node
 	struct s_node	*prev;
 }					t_node;
 
+/*
+** Types de redirections
+*/
 enum				e_type
 {
 	DB_R,
@@ -63,7 +76,7 @@ enum				e_type
 /*
 ** LEXER.C
 */
-t_lex				*lexer(char *line, char *cursor, int i);
+t_lex				*lexer(char **line, char *cursor, int i);
 int					target(char *str, int type);
 t_lex				*add_link(char *str, t_lex *prev, int add, int merge);
 
@@ -99,6 +112,7 @@ int					target(char *str, int type);
 t_lex				*to_start(t_lex *lst);
 t_lex				*pars_next_sep(t_lex *lex);
 int					check_redir_tab(char **redir_str);
+char				*cur_lex_str(t_lex *lst);
 
 /*
 ** MKTREE.C

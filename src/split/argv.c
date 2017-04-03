@@ -6,15 +6,39 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/01 15:43:27 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/03/31 17:54:58 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/types.h>
+#include <pwd.h>
+#include <uuid/uuid.h>
 #include "split.h"
 #include "env.h"
 #include "shell.h"
 
 t_shell		*g_shell;
+
+static char	*tilde(char *str)
+{
+	char			*rslt;
+	char			*temp;
+	struct passwd	*pw;
+
+	if ((temp = getenvline("HOME")))
+	{
+		rslt = ft_strjoin(temp, str + 1);
+		free(str);
+		ft_strdel(&temp);
+		return (rslt);
+	}
+	pw = getpwuid(getuid());
+	if (!pw)
+		return (str);
+	rslt = ft_strjoin(pw->pw_name, str + 1);
+	free(str);
+	return (rslt);
+}
 
 char		**ft_strstradd(char *str, char **table)
 {
@@ -98,13 +122,9 @@ char		**argvclean(char **argv)
 	rslt = ft_strstrnew(len);
 	while (i < len)
 	{
-		if (ft_strcmp(argv[i], "~") == 0)
-		{
-			if (!(rslt[i - merge] = getenvline("HOME=")))
-				rslt[i - merge] = ft_strdup("");
-		}
-		else if ((rslt[i - merge] = argvtest(argv[i])) == NULL)
-			merge++;
+		if (argv[i][0] == '~' && argv[i][1] != '~')
+			argv[i] = tilde(argv[i]);
+		rslt[i - merge] = ft_strdup(argv[i]);
 		i++;
 	}
 	ft_strstrfree(argv);

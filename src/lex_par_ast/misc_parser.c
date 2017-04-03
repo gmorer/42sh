@@ -6,11 +6,12 @@
 /*   By: acottier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/20 17:38:59 by acottier          #+#    #+#             */
-/*   Updated: 2017/03/06 12:31:38 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/03/31 17:57:52 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lex_par_ast.h"
+#include "split.h"
 
 /*
 ** Verifie si les redir_str contiennent bien une expression
@@ -33,7 +34,7 @@ int			check_redir_tab(char **redir_str)
 			cursor++;
 		if (cursor && *cursor == ' ')
 			cursor++;
-		if (!cursor)
+		if (!(*cursor))
 			return (1);
 		i++;
 	}
@@ -64,28 +65,18 @@ t_lex		*pars_next_sep(t_lex *lex)
 
 int			target(char *str, int type)
 {
-	int		i;
+	static const char	*tab[8] = {"&|;", "<>", "<> \n\t", "&|;", " \n\t",
+									"", "|;"};
+	int					i;
 
 	i = -1;
 	while (str[++i])
 	{
-		if (type == 0 && (str[i] == '&' || str[i] == '|' || str[i] == ';'))
-			return (i);
-		else if (type == 1 && (str[i] == '<' || str[i] == '>'))
-			return (i);
-		else if (type == 2 && (str[i] == '<' || str[i] == '>' || str[i] == ' '
-					|| str[i] == '\n'))
-			return (i);
-		else if (type == 3 && (str[i] == '&' || str[i] == '|' || str[i] == ';')
-				&& str[i + 1] && str[i + 1] == str[i])
-			return (i);
-		else if (type == 4 && (str[i] == ' ' || str[i] == '\n'))
-			return (i);
-		else if (type == 5)
+		if (type == 5)
 			return (str[i] == str[i + 1] ? 2 : 1);
-		else if (type == 6 && (str[i] == '|' || str[i] == ';'))
+		if (type == 7 && (str[i] != ' ' && str[i] != '\n' && str[i] != '\t'))
 			return (i);
-		else if (type == 7 && (str[i] != ' ' && str[i] != '\n'))
+		else if (ft_strchr(tab[type], str[i]) && is_reachable(str, i))
 			return (i);
 	}
 	return (i);
@@ -102,4 +93,15 @@ t_lex		*to_start(t_lex *lst)
 	while (lst->prev)
 		lst = lst->prev;
 	return (lst);
+}
+
+/*
+** Renvoie la chaine du maillon t_lex precedent
+*/
+
+char		*cur_lex_str(t_lex *lst)
+{
+	if (!lst || !lst->prev)
+		return (NULL);
+	return (lst->str);
 }

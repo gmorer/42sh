@@ -6,13 +6,13 @@
 #    By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/05 12:45:55 by rvievill          #+#    #+#              #
-#    Updated: 2017/03/09 15:54:08 by gmorer           ###   ########.fr        #
+#    Updated: 2017/04/03 18:14:53 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC= gcc
 NAME= 21sh
-CFLAGS= -g -Wall -Werror -Wextra -fsanitize=address
+CFLAGS= -g -Wall -Werror -Wextra
 CPATH= src/
 OPATH= obj/
 HPATH= inc/ libft/
@@ -37,6 +37,7 @@ CFILES= main.c \
 		edit_line/manage_line.c \
 		edit_line/misc.c \
 		edit_line/misc_completion.c \
+		edit_line/free_arg_list.c \
 		edit_line/move.c \
 		edit_line/navig_hist.c \
 		edit_line/paste.c \
@@ -59,6 +60,7 @@ CFILES= main.c \
 		split/argv.c \
 		split/argvtest.c \
 		split/glob.c \
+		split/glob2ez.c \
 		split/glob_tree.c \
 		split/quote.c \
 		split/bracket.c \
@@ -68,6 +70,7 @@ CFILES= main.c \
 		environement/init_shell.c \
 		environement/init_env.c \
 		environement/ft_shlvl.c \
+		environement/free_env.c \
 		exec/controller.c \
 		exec/exec_cmd.c \
 		exec/linkio.c \
@@ -80,13 +83,13 @@ CFILES= main.c \
 		exec/free_detail.c \
 		builtin/ft_cd.c \
 		builtin/ft_echo.c \
+		builtin/ft_fg.c \
+		builtin/jobbuiltin.c \
 		builtin/exit.c \
 		builtin/find_builtin.c \
-		builtin/ft_fg.c \
 		builtin/ft_setenv.c \
 		builtin/hashtab.c \
 		builtin/unsetenv.c \
-		builtin/jobbuiltin.c \
 		builtin/ft_env.c \
 		builtin/env_opt.c
 

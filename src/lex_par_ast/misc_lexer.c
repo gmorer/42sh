@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   misc_lexer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acottier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: acottier <acottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/15 20:23:55 by acottier          #+#    #+#             */
-/*   Updated: 2017/03/02 14:55:48 by acottier         ###   ########.fr       */
+/*   Updated: 2017/04/03 11:33:27 by lvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			redir_in_scope(char *line, int scope)
 		fres = ft_smallest(res1, res2);
 	else
 		fres = ft_biggest(res1, res2);
-	if (ft_strnchr(line, 34, fres) != 0 || ft_strnchr(line, 39, fres) != 0)
+	if (!is_reachable(line, fres))
 		return (0);
 	return (fres);
 }
@@ -80,8 +80,9 @@ int			redir_in_scope(char *line, int scope)
 
 int			is_sep(char *str)
 {
-	if (!ft_strcmp(str, "&&") || !ft_strcmp(str, "||") || !ft_strcmp(str, ";")
-			|| !ft_strcmp(str, "&"))
+	if (!str)
+		return (0);
+	if (!ft_strcmp(str, "&&") || !ft_strcmp(str, "||") || !ft_strcmp(str, ";"))
 		return (1);
 	return (0);
 }

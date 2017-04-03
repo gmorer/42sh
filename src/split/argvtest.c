@@ -6,7 +6,7 @@
 /*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/06/06 17:15:52 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/01 16:29:09 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/04/01 15:33:30 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static char		*env_var(char *str, int i)
 	}
 	else
 	{
+		free(str);
 		return (NULL);
 	}
 	return (str);
@@ -38,21 +39,22 @@ static char		*env_var(char *str, int i)
 static char		*rm_bs(char *str)
 {
 	int		i;
+	char	*temp3;
 
 	i = ft_strlen(str);
 	while (i >= 0 && str)
 	{
-		if (str[i] == '"' && (is_reachable(str, i) || g_shell->quote[1]))
-			rmno(str, i);
+		temp3 = str;
+		if (str[i] == '"' && (is_reachable(str, i) || (g_shell->quote[1] &&
+						(i > 0 ? str[i - 1] != '\\' : 1))))
+			(temp3 = ft_strdup(rmno(str, i))) ? free(str) : 0;
 		else if (str[i] == '\'' && (is_reachable(str, i) || g_shell->quote[0]))
-			rmno(str, i);
+			(temp3 = ft_strdup(rmno(str, i))) ? free(str) : 0;
 		else if (str[i] == '$' && is_reachable(str, i))
-			str = env_var(str, i);
+			(temp3 = env_var(str, i)) ? free(str) : 0;
 		else if (str[i] == '\\' && is_reachable(str, i))
-		{
-			rmno(str, i);
-			i--;
-		}
+			(temp3 = ft_strdup(rmno(str, i))) ? free(str) : 0;
+		str = temp3;
 		i--;
 	}
 	return (str);
@@ -60,5 +62,8 @@ static char		*rm_bs(char *str)
 
 char			*argvtest(char *str)
 {
-	return (ft_strdup(rm_bs(str)));
+	char	*res;
+
+	res = rm_bs(str);
+	return (res);
 }

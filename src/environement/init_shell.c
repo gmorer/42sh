@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/25 11:29:11 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/09 17:20:05 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/04/03 18:34:36 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,16 @@ void		job_quit(int sig)
 	}
 }
 
-void		sig(int i)
+static void	reset_cursor(void)
 {
 	struct winsize	win;
 
-	ft_putchar('\n');
-	while (g_shell->cursor->nb_line != 1)
-	{
-		ft_putchar('\n');
-		g_shell->cursor->nb_line--;
-	}
 	ioctl(0, TIOCGWINSZ, &win);
-	(void)i;
 	ft_bzero(g_shell->cursor->line, ft_strlen(g_shell->cursor->line));
 	ft_bzero(g_shell->av, ft_strlen(g_shell->av));
 	g_shell->quote[0] = 0;
 	g_shell->quote[1] = 0;
+	g_shell->heredoc = 0;
 	g_shell->cursor->l_marge = 3;
 	g_shell->cursor->cur_line = 1;
 	g_shell->cursor->nb_line = 1;
@@ -72,11 +66,40 @@ void		sig(int i)
 	g_shell->cursor->beg_select = -1;
 	g_shell->cursor->end_select = -1;
 	g_shell->cursor->str_cpy = NULL;
-	prompt();
+}
+
+void		sig(int i)
+{
+	char			c;
+
+	(void)i;
+	c = 27;
+	if (g_shell->exec)
+		return ;
+	ft_putchar('\n');
+	if (g_shell->comp)
+	{
+		while (g_shell->info->line-- > 0)
+			ft_putchar('\n');
+		go_pos(g_shell->cursor, 0, 0);
+		prompt();
+		g_shell->comp = 0;
+		ioctl(0, TIOCSTI, &c);
+		return ;
+	}
+	if (g_shell->heredoc)
+	{
+		g_shell->heredoc = 0;
+		ioctl(0, TIOCSTI, &c);
+	}
+	else
+		prompt();
+	reset_cursor();
 }
 
 t_shell		*init_mainprocess(void)
 {
+	g_shell = NULL;
 	signal(SIGCHLD, job_quit);
 	signal(SIGINT, sig);
 	signal(SIGQUIT, SIG_IGN);
@@ -99,6 +122,8 @@ t_shell		*init_mainprocess(void)
 		ft_putendl("error");
 	g_shell->hist = NULL;
 	g_shell->table = NULL;
+	g_shell->comp = 0;
+	ft_bzero(g_shell->quote, sizeof(int) * 2);
 	if (tcgetattr(1, &(g_shell->dfl_term)) == -1)
 		ft_putendl("error");
 	return (g_shell);

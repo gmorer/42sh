@@ -6,12 +6,13 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/26 13:05:51 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/08 13:52:59 by rvievill         ###   ########.fr       */
+/*   Updated: 2017/04/03 16:34:32 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "edit_line.h"
 #include "shell.h"
+#include "env.h"
 #include <errno.h>
 
 t_shell	*g_shell;
@@ -46,10 +47,14 @@ int					init_term(t_cursor **cur)
 	errno = 0;
 	init_cursor(cur);
 	g_shell->cursor = *cur;
-	if ((name = getenv("TERM")) == NULL)
+	if ((name = getenvline("TERM")) == NULL)
 		return (1);
 	if ((tgetent(NULL, name) == ERR))
+	{
+		free(name);
 		return (1);
+	}
+	free(name);
 	if (tcgetattr(0, &((*cur)->term)) == -1)
 		return (1);
 	cur_term = (*cur)->term;
@@ -68,8 +73,6 @@ int					term_dfl(t_cursor *cur)
 	cur->term.c_lflag |= (ICANON | ECHO);
 	if (tcsetattr(0, 0, &cur->term) == -1)
 		return (-1);
-	free(cur->line);
-	free(cur);
 	tputs(tgetstr("ve", 0), 1, my_putchar);
 	return (0);
 }

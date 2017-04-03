@@ -6,34 +6,30 @@
 /*   By: lvalenti <lvalenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/08 10:56:38 by lvalenti          #+#    #+#             */
-/*   Updated: 2017/03/08 16:44:09 by lvalenti         ###   ########.fr       */
+/*   Updated: 2017/04/03 12:40:16 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int		free_detail(t_detail *node)
+void	free_detail(t_detail *node)
 {
-	if (node)
+	t_detail	*tmp;
+
+	while (node)
 	{
 		if (node->redir_str)
-		{
 			ft_strstrfree(node->redir_str);
-			node->redir_str = NULL;
-		}
 		if (node->argv)
-		{
 			ft_strstrfree(node->argv);
-			node->argv = NULL;
-		}
 		if (node->redir)
 			free(node->redir);
-		if (node->fd_file)
-			free(node->fd_file);
 		if (node->fd_std)
 			free(node->fd_std);
+		if (node->fd_file)
+			free(node->fd_file);
+		tmp = node->next;
 		free(node);
-		return (0);
+		node = tmp;
 	}
-	return (1);
 }

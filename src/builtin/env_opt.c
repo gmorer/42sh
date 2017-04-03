@@ -6,7 +6,7 @@
 /*   By: lvalenti <lvalenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 13:20:51 by lvalenti          #+#    #+#             */
-/*   Updated: 2017/03/08 17:50:12 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/04/03 18:27:33 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	show_env(void)
 	}
 }
 
-int		no_option(char **argv, t_detail *node)
+int		no_option(char **argv, t_detail *node, int j)
 {
 	pid_t		child;
 	int			status;
@@ -37,14 +37,12 @@ int		no_option(char **argv, t_detail *node)
 	child = fork();
 	if (child == 0)
 	{
-		node->argv = argv + 1;
+		node->argv = argv + j;
 		exec_basic_cmd(node, g_shell->env, 1);
 		exit(0);
 	}
 	else if (child > 0)
 		waitpid(WAIT_ANY, &status, WUNTRACED);
-	tcsetpgrp(1, g_shell->pgid);
-	tcsetattr(1, TCSADRAIN, &(g_shell->dfl_term));
 	return (0);
 }
 
@@ -67,8 +65,6 @@ int		option_v(char **argv, t_detail *node, int i)
 	}
 	else if (child > 0)
 		waitpid(WAIT_ANY, &status, WUNTRACED);
-	tcsetpgrp(1, g_shell->pgid);
-	tcsetattr(1, TCSADRAIN, &(g_shell->dfl_term));
 	return (0);
 }
 
@@ -86,8 +82,6 @@ int		option_i(char **argv, t_detail *node)
 	}
 	else if (child > 0)
 		waitpid(WAIT_ANY, &status, WUNTRACED);
-	tcsetpgrp(1, g_shell->pgid);
-	tcsetattr(1, TCSADRAIN, &(g_shell->dfl_term));
 	return (0);
 }
 

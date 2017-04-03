@@ -6,12 +6,13 @@
 /*   By: acottier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 16:11:01 by acottier          #+#    #+#             */
-/*   Updated: 2017/03/08 14:18:33 by acottier         ###   ########.fr       */
+/*   Updated: 2017/04/03 12:40:08 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lex_par_ast.h"
 #include "exec.h"
+#include "split.h"
 
 /*
 ** Verifie la syntaxe des maillons de la liste principale
@@ -24,12 +25,18 @@ static t_lex	*check_sep_syntax(t_lex *lex)
 
 	if (!lex)
 		return (NULL);
-	if (lex->lst)
-		return (NULL);
-	if ((ft_strcmp(lex->str, ";") || ft_strcmp(lex->str, "&")) && !lex->next)
-		return (sep_pars_error(lex, 0));
-	if ((lex->prev && !lex->prev->lst) || (lex->next && !lex->next->lst))
-		return (sep_pars_error(lex, 1));
+	if (!lex->lst)
+	{
+		if ((ft_strcmp(lex->str, ";") && !lex->next))
+			return (sep_pars_error(lex, 0));
+		if ((lex->prev && !lex->prev->lst) || (lex->next && !lex->next->lst))
+			return (sep_pars_error(lex, 1));
+		if (!lex->prev
+				&& (ft_strcmp(lex->str, "&&") || ft_strcmp(lex->str, "||")))
+			return (sep_pars_error(lex, 1));
+		if (pars_next_sep(lex) == lex->next)
+			return (sep_pars_error(lex, 1));
+	}
 	if ((error = check_sep_syntax(pars_next_sep(lex))))
 		return (error);
 	return (NULL);
@@ -41,25 +48,12 @@ static t_lex	*check_sep_syntax(t_lex *lex)
 
 static t_lex	*free_all(t_lex *main_lst)
 {
-	t_detail	*cursor;
-	t_detail	*tmp;
 	t_lex		*main_tmp;
 
 	while (main_lst)
 	{
-		cursor = main_lst->lst;
-		while (cursor)
-		{
-			if (cursor->redir_str)
-				free(cursor->redir_str);
-			if (cursor->argv)
-				ft_strstrfree(cursor->argv);
-			tmp = cursor->next;
-			free(cursor);
-			cursor = tmp;
-		}
-		if (main_lst->str)
-			free(main_lst->str);
+		ft_strdel(&main_lst->str);
+		free_detail(main_lst->lst);
 		main_tmp = main_lst->next;
 		free(main_lst);
 		main_lst = main_tmp;
@@ -72,14 +66,14 @@ static t_lex	*free_all(t_lex *main_lst)
 ** d'un maillon comprenant une redirection (parcours recursif)
 */
 
-static void		assign_redir(t_detail *link, char *file)
+static void		assign_redir(t_detail *link, char *file, t_detail **error)
 {
-	int			i;
+	int		i;
 
-	i = 0;
+	i = -1;
 	if (!link)
 		return ;
-	while (link->redir_str && link->redir_str[i])
+	while (link->redir_str && link->redir_str[++i])
 	{
 		if (ft_strstr(link->redir_str[i], ">>"))
 			link->redir[i] = DB_R;
@@ -87,7 +81,8 @@ static void		assign_redir(t_detail *link, char *file)
 		{
 			link->redir[i] = DB_L;
 			file = get_file(link->redir_str[i]);
-			heredoc(link, DB_L, file, i);
+			if (heredoc(link, DB_L, file, i))
+				*error = link;
 		}
 		else if (ft_strstr(link->redir_str[i], ">"))
 			link->redir[i] = S_R;
@@ -95,10 +90,9 @@ static void		assign_redir(t_detail *link, char *file)
 			link->redir[i] = S_L;
 		else
 			link->redir[i] = -1;
-		i++;
+		ft_strdel(&file);
 	}
-	assign_redir(link->next, NULL);
-	return (file ? free(file) : 0);
+	!error ? assign_redir(link->next, NULL, error) : 0;
 }
 
 /*
@@ -113,7 +107,8 @@ static t_detail	*check_cmd_syntax(t_detail *link)
 		return (NULL);
 	if (link->redir_str && check_redir_tab(link->redir_str))
 		return (cmd_pars_error(link, 4));
-	if (link->pipe && (!link->next || (link->next && !link->next->argv)))
+	if (link->pipe && (!link->next || (link->next && !link->next->argv)
+				|| !link->argv))
 		return (cmd_pars_error(link, 5));
 	if ((error = check_cmd_syntax(link->next)))
 		return (error);
@@ -139,9 +134,11 @@ t_lex			*parser(t_lex *lex)
 	{
 		if (!is_sep(cursor->str))
 		{
-			cursor->lst = str_to_lst(cursor->str);
-			assign_redir(cursor->lst, NULL);
+			if ((cursor->lst = str_to_lst(cursor->str)) == NULL)
+				return (free_all(lex));
 			det_error = check_cmd_syntax(cursor->lst);
+			if (!det_error)
+				assign_redir(cursor->lst, NULL, &det_error);
 		}
 		else
 			cursor->lst = NULL;

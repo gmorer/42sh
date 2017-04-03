@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   glob_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/12 14:22:04 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/08 16:49:16 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/03/27 12:45:18 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,63 +63,33 @@ char	**glob_get_files(char *previous, char *matchvar, char *after, int *i)
 	return (result);
 }
 
-char	**resolve_glob(char **argv, int i)
+char	**resolve_glob(char **argv, int i, int ret)
 {
-	char	*previous;
 	char	*after;
-	char	*match;
-	char	*temp;
-	char	**temp2;
+	char	*tp;
 	char	*temp3;
-	int		ret;
 
-	ret = 1;
-	temp2 = NULL;
 	after = NULL;
-	temp = ft_strdup(argv[i]);
-	temp3 = temp;
-	if (need_glob_str(argv[i]))
+	if (!(ret = get_pass(&argv, i, &tp, &temp3)))
 	{
-		if (!ft_strchr(argv[i], '/'))
-			match = ft_strdup(argv[i]);
-		else
-			match = ft_strndup(argv[i], ft_strlen(argv[i]) - ft_strlen(ft_strchr(argv[i], '/')));
-		argv = ft_strstrjoin(argv,
-				(temp2 = glob_get_files(NULL, match, ft_strchr(argv[i], '/'), &ret)));
-		free(match);
-	}
-	if (!ret)
+		ft_strstrfree(argv);
+		free(tp);
 		return (NULL);
-	while ((temp = ft_strchr(temp, '/')) != NULL)
+	}
+	while ((tp = ft_strchr(tp, '/')) != NULL)
 	{
-		if (need_glob_str(temp + 1))
+		if (need_glob_str(tp + 1))
 		{
-			previous = ft_strndup(argv[i], ft_strlen(argv[i]) - ft_strlen(temp));
-			if (previous && ft_strcmp(previous, "") == 0)
-			{
-				free(previous);
-				previous = ft_strdup("/");
-			}
-			match = (!ft_strchr(temp + 1, '/') ?  ft_strdup(temp + 1) : 
-					ft_strndup(temp + 1, ft_strlen(temp + 1) - ft_strlen(ft_strchr(temp + 1, '/'))));
-			after = (!ft_strchr(temp + 1, '/') ? NULL : ft_strdup(ft_strchr(temp + 1, '/')));
-			argv = ft_strstrjoin(argv,
-					(temp2 = glob_get_files(previous, match, after, &ret)));
-			free(match);
-			free(previous);
-			if (after)
-				free(after);
+			after = trace_road(&argv, tp, &ret, i);
+			if (after || !ret)
+				free(after ? after : temp3);
 			if (!ret)
-			{
-				free(temp3);
 				return (NULL);
-			}
 		}
-		temp++;
+		tp++;
 	}
 	free(temp3);
-	argv = ft_strstrdelone(i, argv);
-	return (argv);
+	return (ft_strstrdelone(i, argv));
 }
 
 int		need_glob(char **str)
@@ -134,7 +104,8 @@ int		need_glob(char **str)
 		test = 0;
 		while (str[x][i])
 		{
-			if ((str[x][i] == '?' || str[x][i] == '*') && is_reachable(str[x], i))
+			if ((str[x][i] == '?' || str[x][i] == '*') &&
+					is_reachable(str[x], i))
 				return (x);
 			if (str[x][i] == '[' && is_reachable(str[x], i))
 				test = 1;
@@ -159,10 +130,10 @@ char	**glob_result(char **argv)
 	while ((i = need_glob(argv)) != -1)
 	{
 		temp = ft_strdup(argv[i]);
-		argv = resolve_glob(argv, i);
+		argv = resolve_glob(argv, i, 1);
 		if (!argv)
 		{
-			ft_triplestr("zsh: no matches found: ", temp, "\n");
+			ft_triplestr("21sh: no matches found: ", temp, "\n");
 			free(temp);
 			return (NULL);
 		}

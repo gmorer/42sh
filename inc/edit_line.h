@@ -6,7 +6,7 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/19 12:25:01 by rvievill          #+#    #+#             */
-/*   Updated: 2017/01/18 14:43:38 by gmorer           ###   ########.fr       */
+/*   Updated: 2017/03/25 16:43:17 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct			s_info
 	int					column;
 	int					len;
 	int					nb_param;
+	int					size;
 }						t_info;
 
 typedef struct			s_hist
@@ -68,6 +69,7 @@ typedef struct			s_cursor
 {
 	char				*line;
 	char				*str_cpy;
+	int					quoting;
 	struct termios		term;
 	int					buff_size;
 	int					l_marge;
@@ -126,7 +128,7 @@ void					create_hist(t_hist **hist, char **line);
 /*
 ** edit_line.c
 */
-int						edit_line(char **line, t_hist **hist);
+int						edit_line(char **line, t_hist **hist, int i);
 /*
 ** init_term.c
 */
@@ -256,5 +258,10 @@ void					space(t_info *info);
 ** put_in_str.c
 */
 void					put_in_str(t_cursor *cur, t_info *info);
+
+/*
+** free_arg_list.c
+*/
+void					free_arg_list(t_arg *cur);
 
 #endif
