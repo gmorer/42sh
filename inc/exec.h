@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/05 18:32:26 by gmorer            #+#    #+#             */
-/*   Updated: 2017/04/03 18:30:01 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:27:41 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 20:58:08 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct		s_job
 	pid_t			pgid;
 }					t_job;
 
+int					father(t_node *tree, t_job *current_job, pid_t pid);
 void				job_quit(int sig);
 int					delet_job(t_job *job);
 int					add_job(t_job *job);
@@ -38,7 +39,9 @@ char				*get_file(char *str);
 int					linkio(t_detail *node);
 void				heredoc_assign(t_node *tree);
 int					heredoc(t_detail *node, int type, char *end, int i);
-void				exec_basic_cmd(t_detail *node, char **env, int fg);
+void				exec_basic_cmd(t_detail *node, char **env, int fg,
+		int normal);
 void				free_detail(t_detail *node);
+char				*find_bin(char *arg, int error);
 
 #endif

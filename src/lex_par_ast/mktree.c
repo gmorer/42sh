@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mktree.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acottier <acottier@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/29 16:39:40 by acottier          #+#    #+#             */
-/*   Updated: 2017/03/23 13:20:30 by acottier         ###   ########.fr       */
+/*   Created: 2017/04/03 18:24:36 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 15:21:45 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void		free_list(t_lex *lex)
 		return ;
 	if (lex->next)
 		free_list(lex->next);
-	free(lex->str);
+	ft_strdel(&lex->str);
 	free(lex);
 }
 

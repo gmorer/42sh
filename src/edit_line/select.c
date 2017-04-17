@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   select.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/14 15:36:17 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/09 10:26:53 by lvalenti         ###   ########.fr       */
+/*   Created: 2017/04/03 18:16:42 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 10:30:47 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,20 @@ void			select_left(t_cursor *cursor, t_hist **hist)
 
 	(void)hist;
 	i = cursor->cur_col - 3 + cursor->max_col * (cursor->cur_line - 1);
-	if (cursor->cur_col > cursor->l_marge)
+	if (i == 0 && cursor->cur_line == 1)
+		return ;
+	if (cursor->beg_select == -1 && cursor->end_select == -1)
 	{
-		if (cursor->beg_select == -1 && cursor->end_select == -1)
-		{
-			cursor->beg_select = i;
-			cursor->end_select = i - 1;
-		}
-		else
-			cursor->end_select--;
-		go_pos(cursor, 1, 3);
-		putstr_cmd(cursor, 0);
-		set_pos(cursor, i, &line, &col);
-		go_pos(cursor, line, col - 1);
-		set_marge(cursor);
+		cursor->beg_select = i;
+		cursor->end_select = i - 1;
 	}
+	else
+		cursor->end_select--;
+	go_pos(cursor, 1, 3);
+	putstr_cmd(cursor, 0);
+	set_pos(cursor, cursor->end_select + 1, &line, &col);
+	go_pos(cursor, line, col - 1);
+	set_marge(cursor);
 }
 
 void			select_right(t_cursor *cursor, t_hist **hist)
@@ -64,19 +63,20 @@ void			select_right(t_cursor *cursor, t_hist **hist)
 
 	(void)hist;
 	i = cursor->cur_col - 3 + cursor->max_col * (cursor->cur_line - 1);
-	if (cursor->cur_col < cursor->r_marge - 1)
+	while (i > (int)ft_strlen(cursor->line) - 1)
+		i--;
+	if (i == (int)ft_strlen(cursor->line) - 1)
+		return ;
+	if (cursor->beg_select == -1 && cursor->end_select == -1)
 	{
-		if (cursor->beg_select == -1 && cursor->end_select == -1)
-		{
-			cursor->beg_select = i;
-			cursor->end_select = i + 1;
-		}
-		else
-			cursor->end_select++;
-		go_pos(cursor, 1, 3);
-		putstr_cmd(cursor, 0);
-		set_pos(cursor, i, &line, &col);
-		go_pos(cursor, line, col + 1);
-		set_marge(cursor);
+		cursor->beg_select = i;
+		cursor->end_select = i + 1;
 	}
+	else
+		cursor->end_select++;
+	go_pos(cursor, 1, 3);
+	putstr_cmd(cursor, 0);
+	set_pos(cursor, cursor->end_select, &line, &col);
+	go_pos(cursor, line, col + 1);
+	set_marge(cursor);
 }

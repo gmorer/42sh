@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/04/04 16:56:57 by gmorer            #+#    #+#             */
-/*   Updated: 2017/01/11 14:16:53 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:21:05 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/03 18:21:41 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int			get_next_line(int fd, char **line)
 		(t = ft_strjoin(save[fd], buf)) ? free(save[fd]) : free(save[fd]);
 		save[fd] = t;
 	}
-	free(buf);
+	ft_strdel(&buf);
 	if (r < 0 || (!t && save[fd][0] == '\0'))
 		return ((r < 0) ? -1 : 0);
 	*line = (t ? ft_strsub(save[fd], 0, t - save[fd]) : ft_strdup(save[fd]));

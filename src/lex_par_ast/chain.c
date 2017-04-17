@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chain.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lvalenti <lvalenti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/17 14:29:40 by lvalenti          #+#    #+#             */
-/*   Updated: 2017/04/03 12:40:08 by acottier         ###   ########.fr       */
+/*   Created: 2017/04/04 10:51:01 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/17 15:05:24 by bngo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,18 @@ int				is_not_quote(char *str, int i)
 	j = 0;
 	while (str[j] && j < i)
 	{
-		if (str[j] == '\'' && is_reachable(str, j))
+		if (str[j] == '\'' && (j == 0 || str[j - 1] != '\\' ||
+					(str[j - 1] == '\\' && !is_reachable(str, j - 1))) &&
+					!g_shell->quote[1])
+		{
 			g_shell->quote[0] = 1 - g_shell->quote[0];
-		if (str[j] == '"' && is_reachable(str, j))
+		}
+		if (str[j] == '"' && (j == 0 || str[j - 1] != '\\' ||
+					(str[j - 1] == '\\' && !is_reachable(str, j - 1))) &&
+					!g_shell->quote[0])
+		{
 			g_shell->quote[1] = 1 - g_shell->quote[1];
+		}
 		j++;
 	}
 	if (g_shell->quote[0] || g_shell->quote[1])
@@ -68,7 +76,7 @@ int				get_redir_line(int start, int end, char **str)
 	while (start < end)
 	{
 		if ((temp = (ft_strstr(str[start], ">"))) ||
-		(temp = (ft_strstr(str[start], "<"))))
+				(temp = (ft_strstr(str[start], "<"))))
 		{
 			if (is_reachable(str[start], temp - str[start]))
 				return (start);
@@ -85,25 +93,25 @@ static t_detail	*remp_detail(int start, int *end, char ***str, t_detail *list)
 
 	new = (t_detail*)malloc(sizeof(t_detail));
 	*new = (t_detail){NULL, NULL, 0, NULL, NULL, NULL, {0, 0}, NULL, NULL};
-	while ((i = get_redir_line(start, *end, *str)) != -1)
+	while ((i = get_redir_line(start, *end, *str)) != -1 && (*end)--)
 	{
-		new->redir_str = ft_strstradd(ft_strdup((*str)[i]), new->redir_str);
+		new->redir_str = ft_strstradd(
+				argvtest(ft_strdup((*str)[i])), new->redir_str);
 		*str = ft_strstrdelone(i, *str);
-		(*end)--;
 	}
 	i = start - 1;
 	new->pipe = (ft_strcmp((*str)[*end], "|") == 0 ? 1 : 0);
 	new->argv = *end - start + 1 > 1 ?
 		(char**)malloc(sizeof(char*) * (*end - start + 1)) : NULL;
 	new->redir = (int*)malloc(sizeof(int) * ft_strstrlen(new->redir_str));
-	ft_bzero(new->redir, ft_strstrlen(new->redir_str));
+	ft_bzero(new->redir, sizeof(int) * ft_strstrlen(new->redir_str));
 	while (++i < *end && new->argv)
 		new->argv[i - start] = ft_strdup((*str)[i]);
 	new->argv ? new->argv[i - start] = NULL : NULL;
 	new->fd_std = (int *)malloc(sizeof(int) * ft_strstrlen(new->redir_str));
 	new->fd_file = (int *)malloc(sizeof(int) * ft_strstrlen(new->redir_str));
-	ft_memset(new->fd_std, -1, ft_strstrlen(new->redir_str));
-	ft_memset(new->fd_file, -1, ft_strstrlen(new->redir_str));
+	ft_memset(new->fd_std, -1, sizeof(int) * ft_strstrlen(new->redir_str));
+	ft_memset(new->fd_file, -1, sizeof(int) * ft_strstrlen(new->redir_str));
 	return (add_detail(list, new));
 }
 

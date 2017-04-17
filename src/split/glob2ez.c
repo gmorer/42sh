@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   glob2ez.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/21 10:44:51 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/21 10:45:35 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:25:51 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/03 18:25:51 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		get_pass(char ***argv, int i, char **tp, char **temp3)
 					ft_strlen(ft_strchr((*argv)[i], '/')));
 		*argv = ft_strstrjoin(*argv,
 				glob_get_files(NULL, match, ft_strchr((*argv)[i], '/'), &ret));
-		free(match);
+		ft_strdel(&match);
 	}
 	return (ret);
 }
@@ -44,7 +44,7 @@ char	*trace_road(char ***argv, char *tp, int *ret, int i)
 	previous = ft_strndup((*argv)[i], ft_strlen((*argv)[i]) - ft_strlen(tp));
 	if (previous && ft_strcmp(previous, "") == 0)
 	{
-		free(previous);
+		ft_strdel(&previous);
 		previous = ft_strdup("/");
 	}
 	match = (!ft_strchr(tp + 1, '/') ? ft_strdup(tp + 1) :
@@ -54,7 +54,7 @@ char	*trace_road(char ***argv, char *tp, int *ret, int i)
 			ft_strdup(ft_strchr(tp + 1, '/')));
 	*argv = ft_strstrjoin(*argv,
 			glob_get_files(previous, match, after, ret));
-	free(match);
-	free(previous);
+	ft_strdel(&match);
+	ft_strdel(&previous);
 	return (after);
 }

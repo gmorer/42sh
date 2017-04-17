@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/28 14:44:19 by rvievill          #+#    #+#             */
-/*   Updated: 2017/04/03 12:02:55 by rvievill         ###   ########.fr       */
+/*   Created: 2017/04/03 18:19:45 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 20:44:58 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ char			*get_file(char *str)
 	int					i;
 
 	i = ft_strlen(str);
-	while (i > 0 && str[i - 1] != '&' && str[i - 1] != ' ')
+	while (i > 0 && str[i - 1] != '>' && str[i - 1] != '<'
+			&& str[i - 1] != ' ' && str[i - 1] != '&')
 		i--;
 	return (str[i] ? ft_strdup(&str[i]) : NULL);
 }
@@ -48,7 +49,7 @@ int				redir_right(t_detail *node, int type, char *arg, int i)
 		node->fd_file[i] = open(arg, O_CREAT, 0644);
 	else if (access(arg, W_OK) == -1)
 	{
-		ft_putstr_fd("21sh: ", 2);
+		ft_putstr_fd("42sh: ", 2);
 		ft_putstr_fd(arg, 2);
 		ft_putendl_fd(": Permission denied", 2);
 		return (1);
@@ -66,16 +67,21 @@ int				sl_redir(t_detail *node, int type, char *file, int i)
 	node->fd_std[i] = STDIN_FILENO;
 	if (node->redir_str[i][0] != '<' && node->redir_str[i][0] != ' ')
 		node->fd_std[i] = ft_atoi(node->redir_str[i]);
+	if (ft_strisdigit(file) || !ft_strcmp(file, "-"))
+		ft_strisdigit(file) ? node->fd_std[i] = ft_atoi(file) :
+			close(node->fd_std[i]);
+	if (ft_strisdigit(file) || !ft_strcmp(file, "-"))
+		return (0);
 	if ((node->fd_file[i] = open(file, O_RDONLY)) != -1)
 		return (0);
 	else if ((lstat(file, &info)) == -1)
 	{
-		ft_putstr_fd("21sh: no such file or directory: ", 2);
+		ft_putstr_fd("42sh: no such file or directory: ", 2);
 		ft_putendl_fd(file, 2);
 	}
 	else if (access(file, W_OK) == -1)
 	{
-		ft_putstr_fd("21sh: ", 2);
+		ft_putstr_fd("42sh: ", 2);
 		ft_putstr_fd(file, 2);
 		ft_putendl_fd(": Permission denied", 2);
 	}

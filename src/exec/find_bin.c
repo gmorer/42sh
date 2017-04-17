@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_bin.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/23 11:11:06 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/10 12:44:57 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:19:04 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/03 18:19:05 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ static char	*getexec(char *path, char *file)
 	while ((ofile = readdir(dir)) && (ft_strcmp(ofile->d_name, file) ||
 				ft_checklink((tmp1 = ft_strjoin(tmp, ofile->d_name))) == 0))
 		if (ft_strcmp(ofile->d_name, file) == 0)
-			free(tmp1);
+			ft_strdel(&tmp1);
 	if (ofile && ft_strcmp(ofile->d_name, file) == 0)
-		free(tmp1);
-	free(tmp);
+		ft_strdel(&tmp1);
+	ft_strdel(&tmp);
 	if (ofile && ofile->d_name[0] != '.')
 	{
 		closedir(dir);
@@ -91,7 +91,7 @@ char		*toexec(char *argv)
 		return (NULL);
 	temp = getenvline("PATH=");
 	path = ft_strsplit(temp, ':');
-	free(temp);
+	ft_strdel(&temp);
 	len = ft_strlen(path[0]);
 	len = ft_strstrlen(path);
 	i = 0;
@@ -104,7 +104,7 @@ char		*toexec(char *argv)
 	temp = ft_strjoin(path[i], "/");
 	ft_strstrfree(path);
 	temp2 = ft_strjoin(temp, argv);
-	free(temp);
+	ft_strdel(&temp);
 	return (temp2);
 }
 

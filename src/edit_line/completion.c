@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   completion.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/28 11:15:05 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/25 17:42:36 by acottier         ###   ########.fr       */
+/*   Created: 2017/04/03 18:12:16 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 16:09:44 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void			completion(t_cursor *cursor, t_hist **hist)
 		find_files(cursor, &info, i);
 		if (info.arg)
 			ft_select(&info, cursor);
+		ft_strdel(&info.file);
 		free(info.dir);
 	}
 	g_shell->comp = 0;

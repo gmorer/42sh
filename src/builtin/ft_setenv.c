@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_setenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/06 15:34:32 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/21 15:39:20 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:10:38 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/03 18:10:40 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	setenv_ok(char **argvtemp, char *temp, int i)
 		if (g_shell->table && ft_strcmp(temp, "BINARY_LEN=") == 0)
 		{
 			ft_strstrfree(argvtemp);
-			free(temp);
+			ft_strdel(&temp);
 			return (0);
 		}
 		free(g_shell->env[i]);
@@ -60,11 +60,11 @@ static int	setenv_ok(char **argvtemp, char *temp, int i)
 		ft_free_hash_tab();
 		g_shell->table = ft_init_hash_table();
 		ft_strstrfree(argvtemp);
-		free(temp);
+		ft_strdel(&temp);
 		return (0);
 	}
 	ft_strstrfree(argvtemp);
-	free(temp);
+	ft_strdel(&temp);
 	return (0);
 }
 
@@ -83,7 +83,7 @@ int			ft_setenv(char **argv)
 	{
 		ft_putendl("setenv: bad usage");
 		ft_strstrfree(argvtemp);
-		free(temp);
+		ft_strdel(&temp);
 		return (1);
 	}
 	setenv_ok(argvtemp, temp, i);

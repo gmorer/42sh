@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/28 14:43:08 by rvievill          #+#    #+#             */
-/*   Updated: 2017/04/03 12:02:29 by rvievill         ###   ########.fr       */
+/*   Created: 2017/04/03 18:17:24 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/03 18:17:25 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int			free_hist(t_hist *hist)
 	while (hist)
 	{
 		tmp = hist->prev;
-		free(hist->cmd);
+		ft_strdel(&hist->cmd);
 		free(hist);
 		hist = tmp;
 	}

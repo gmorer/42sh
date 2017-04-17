@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   edit_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/05 13:34:49 by rvievill          #+#    #+#             */
-/*   Updated: 2017/04/03 16:34:46 by rvievill         ###   ########.fr       */
+/*   Created: 2017/04/03 18:13:39 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/17 14:20:38 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,15 @@ static int			catch_key(t_cursor *curs, char buff[5], t_hist **hist)
 
 static int			ctrl_d(char buff[5], t_cursor *cur, int quot)
 {
+	char			**tab1;
+
+	tab1 = NULL;
 	if (quot != 1 && !g_shell->quote[0] && !g_shell->quote[1]
 		&& (BUFF == -1 || BUFF == 4) && ft_strlen(cur->line) == 0)
 	{
+		tab1 = ft_strstradd("lol", tab1);
 		ft_putendl("exit");
-		exit(134);
+		ft_exit(tab1);
 	}
 	if (quot == 1 && (BUFF == -1 || BUFF == 4) && ft_strlen(cur->line) == 0)
 		return (1);
@@ -101,7 +105,7 @@ int					edit_line(char **line, t_hist **hist, int quot)
 		BUFF = 0;
 		tputs(tgetstr("ve", 0), 1, my_putchar);
 		read(0, buff, 4);
-		if (BUFF == 27)
+		if (quot == 1 && BUFF == 27)
 			return (free_cursor(cur));
 		if (ctrl_d(buff, cur, quot))
 			return (free_cursor(cur));

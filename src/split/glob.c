@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   glob.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/07 11:47:27 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/08 14:08:54 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:25:43 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/17 14:51:47 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		block(char *s2, char c, int *len)
 	char	*result;
 
 	result = NULL;
-	i = (s2[1] == '^' ? 1 : 2);
+	i = (s2[1] == '^' ? 2 : 1);
 	while (s2[i] && s2[i] != ']')
 	{
 		if (s2[i] == '-' && i >= 2 && s2[i + 1])
@@ -59,12 +59,12 @@ int		block(char *s2, char c, int *len)
 	if ((s2[1] == '^' && !ft_isin(result, c)) ||
 			(s2[1] != '^' && ft_isin(result, c)))
 	{
-		free(result);
+		ft_strdel(&result);
 		return (1);
 	}
 	else
 	{
-		free(result);
+		ft_strdel(&result);
 		return (0);
 	}
 }

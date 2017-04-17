@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/05 18:30:59 by gmorer            #+#    #+#             */
-/*   Updated: 2017/04/03 18:23:07 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:28:03 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/06 10:15:23 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "exec.h"
 # include "edit_line.h"
 # include "hashtab.h"
+# include "exec.h"
 
 typedef struct		s_shell
 {

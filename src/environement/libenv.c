@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libenv.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/24 10:52:08 by gmorer            #+#    #+#             */
-/*   Updated: 2017/04/01 15:27:06 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:18:18 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/11 12:49:43 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ static int		envtest(char *str, char *test)
 	tmp = ft_strndup(test, i);
 	if (ft_strcmp(tmp, str) == 0)
 	{
-		free(tmp);
+		ft_strdel(&tmp);
 		return (1);
 	}
 	else
 	{
-		free(tmp);
+		ft_strdel(&tmp);
 		return (0);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/25 11:29:11 by gmorer            #+#    #+#             */
-/*   Updated: 2017/04/03 18:34:36 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:18:07 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/17 15:14:00 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ void		job_quit(int sig)
 	temp = g_shell->first_job;
 	while (temp)
 	{
-		i++;
-		if (waitpid(temp->pgid, &i, WNOHANG | WCONTINUED | WUNTRACED) == -1 &&
-				errno == 10 && sig)
+		if ((i++ || 1) && waitpid(temp->pgid, &i, WNOHANG | WCONTINUED |
+					WUNTRACED) == -1 && errno == 10 && sig)
 		{
 			ft_putchar('[');
 			ft_putnbr(i);
@@ -45,15 +44,19 @@ void		job_quit(int sig)
 		else
 			temp = temp->next;
 	}
+	signal(SIGCHLD, SIG_DFL);
 }
 
 static void	reset_cursor(void)
 {
 	struct winsize	win;
 
+	if (!g_shell->cursor)
+		return ;
 	ioctl(0, TIOCGWINSZ, &win);
 	ft_bzero(g_shell->cursor->line, ft_strlen(g_shell->cursor->line));
-	ft_bzero(g_shell->av, ft_strlen(g_shell->av));
+	if (g_shell->av)
+		ft_bzero(g_shell->av, ft_strlen(g_shell->av));
 	g_shell->quote[0] = 0;
 	g_shell->quote[1] = 0;
 	g_shell->heredoc = 0;
@@ -70,12 +73,12 @@ static void	reset_cursor(void)
 
 void		sig(int i)
 {
-	char			c;
+	static char		c = 27;
 
 	(void)i;
-	c = 27;
-	if (g_shell->exec)
+	if (g_shell->exec || !g_shell->cursor)
 		return ;
+	go_pos(g_shell->cursor, g_shell->cursor->nb_line, 0);
 	ft_putchar('\n');
 	if (g_shell->comp)
 	{
@@ -97,15 +100,22 @@ void		sig(int i)
 	reset_cursor();
 }
 
-t_shell		*init_mainprocess(void)
+static void	ft_signal(void)
 {
-	g_shell = NULL;
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGWINCH, SIG_IGN);
 	signal(SIGCHLD, job_quit);
 	signal(SIGINT, sig);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGTTIN, SIG_IGN);
 	signal(SIGTTOU, SIG_IGN);
+}
+
+t_shell		*init_mainprocess(void)
+{
+	g_shell = NULL;
+	ft_signal();
 	if (!(g_shell = (t_shell*)malloc(sizeof(t_shell))))
 		return (NULL);
 	g_shell->first_job = NULL;
@@ -123,6 +133,8 @@ t_shell		*init_mainprocess(void)
 	g_shell->hist = NULL;
 	g_shell->table = NULL;
 	g_shell->comp = 0;
+	g_shell->heredoc = 0;
+	g_shell->av = NULL;
 	ft_bzero(g_shell->quote, sizeof(int) * 2);
 	if (tcgetattr(1, &(g_shell->dfl_term)) == -1)
 		ft_putendl("error");

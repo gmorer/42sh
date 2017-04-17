@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acottier <acottier@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/31 17:56:09 by acottier          #+#    #+#             */
-/*   Updated: 2017/04/03 12:31:22 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:24:55 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 19:19:11 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,23 @@ static void		add_suffix(char **line, t_lex **res)
 {
 	int		length;
 	char	*tmp;
+	char	*sep;
 
 	if (**line == ' ' || **line == '\n')
 		advance_pos(line, target(*line, 7));
 	length = ft_smallest(target(*line, 6), target(*line, 2));
 	if (**line == '&' && *(*line + 1) && *(*line + 1) == ' ')
-		length += ft_smallest(target(*line, 6), target(*line, 1));
-	if (!length)
+		length = ft_smallest(target(*line, 6), target(*line, 8));
+	if (!(tmp = length ? ft_strndup(*line, length) : NULL))
 		return ;
-	tmp = ft_strndup(*line, length);
+	if (!(sep = ft_strstr(tmp, "&&")))
+		sep = ft_strstr(tmp, "||");
+	if (sep)
+	{
+		length = ft_strlen(tmp) - ft_strlen(sep);
+		ft_strdel(&tmp);
+		tmp = ft_strndup(*line, length);
+	}
 	*res = add_link(tmp, *res, 0, 1);
 	advance_pos(line, length);
 }
@@ -66,7 +74,10 @@ static void		add_prefix(char **line, t_lex **res)
 	if (!length)
 		return ;
 	tmp = ft_strndup(*line, length);
-	*res = add_link(tmp, *res, 0, 0);
+	if (*res)
+		*res = add_link(tmp, *res, is_sep((*res)->str), 0);
+	else
+		*res = add_link(tmp, *res, 0, 0);
 	advance_pos(line, length);
 }
 

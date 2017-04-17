@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/19 12:25:01 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/25 16:43:17 by acottier         ###   ########.fr       */
+/*   Created: 2017/04/03 18:27:28 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 16:01:36 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct			s_info
 	t_arg				*arg;
 	size_t				len_arg;
 	char				*dir;
+	char				*file;
 	int					fd;
 	int					enter;
 	int					line;

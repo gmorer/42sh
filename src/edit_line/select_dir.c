@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   select_dir.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/02 12:56:41 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/27 14:42:35 by rvievill         ###   ########.fr       */
+/*   Created: 2017/04/03 18:16:54 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 16:07:56 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void			find_path(char **dir, char **file)
 		{
 			*file = ft_strdup(pathend + 1);
 			path = ft_strndup(*dir, ft_strlen(*dir) - ft_strlen(pathend) + 1);
-			free(*dir);
+			ft_strdel(dir);
 			*dir = path;
 		}
 	}
@@ -95,6 +95,7 @@ void				select_dir(t_info *info)
 	find_path(&info->dir, &file);
 	info->size = ft_strlen(file);
 	info->arg = NULL;
+	info->file = ft_strdup(file);
 	if (ft_strcmp(info->dir, ".") == 0 || (dirp = opendir(info->dir)) == NULL)
 		cur_dir(info);
 	else
@@ -102,5 +103,5 @@ void				select_dir(t_info *info)
 		closedir(dirp);
 		specific_dir(info, file);
 	}
-	ft_strdel(&file);
+	free(file);
 }

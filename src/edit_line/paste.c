@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/18 13:47:38 by rvievill          #+#    #+#             */
-/*   Updated: 2017/04/03 12:00:41 by rvievill         ###   ########.fr       */
+/*   Created: 2017/04/03 18:15:48 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/15 14:17:23 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ void			paste(t_cursor *cursor, t_hist **hist)
 	size = ft_strlen(cursor->str_cpy);
 	i = cursor->cur_col - 3 + cursor->max_col * (cursor->cur_line - 1);
 	if ((int)ft_strlen(cursor->line) + size >= cursor->buff_size)
+	{
 		extend_str(cursor);
+	}
 	move_str(&cursor->line, i, size, cursor->buff_size);
 	while (j < size)
 	{

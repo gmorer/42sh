@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   walkthrough.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acottier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/23 18:00:14 by acottier          #+#    #+#             */
-/*   Updated: 2017/03/09 15:48:36 by acottier         ###   ########.fr       */
+/*   Created: 2017/04/03 19:15:08 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/03 19:15:09 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int		init(t_node **tree, t_node **last, t_node **next, t_node **sep)
 	*next = NULL;
 	*sep = NULL;
 	*next = get_next_cmd(*tree);
-	*last = get_prev_cmd(*tree);
+	*last = get_prev_cmd(*next);
 	if (!(*next))
 	{
 		while ((*tree)->prev)

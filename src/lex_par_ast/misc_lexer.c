@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   misc_lexer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acottier <acottier@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/15 20:23:55 by acottier          #+#    #+#             */
-/*   Updated: 2017/04/03 11:33:27 by lvalenti         ###   ########.fr       */
+/*   Created: 2017/04/03 18:24:12 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 15:58:24 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,29 @@ int			is_sep(char *str)
 {
 	if (!str)
 		return (0);
-	if (!ft_strcmp(str, "&&") || !ft_strcmp(str, "||") || !ft_strcmp(str, ";"))
+	if (!ft_strcmp(str, "&&") || !ft_strcmp(str, "||") || !ft_strcmp(str, ";")
+			|| !ft_strcmp(str, "&"))
 		return (1);
 	return (0);
+}
+
+int			check_nbr(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n')
+		i++;
+	if (str[i] == '<' || str[i] == '>')
+		return (0);
+	else
+	{
+		while (str[i] && str[i] != '>' && str[i] != '<')
+		{
+			if (!ft_isdigit(str[i]))
+				return (0);
+			i++;
+		}
+		return (1);
+	}
 }

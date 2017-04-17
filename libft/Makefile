@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+         #
+#    By: rvievill <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2015/12/01 11:36:51 by gmorer            #+#    #+#              #
-#    Updated: 2017/03/25 17:26:35 by acottier         ###   ########.fr        #
+#    Created: 2017/04/03 18:28:36 by rvievill          #+#    #+#              #
+#    Updated: 2017/04/14 20:05:17 by acottier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,8 @@ SRC =	ft_abs.c\
 		ft_strncat.c\
 		ft_strncmp.c\
 		ft_strncpy.c\
+		ft_strlenchr.c \
+		ft_strdupchr.c \
 		ft_strnew.c\
 		ft_strnstr.c\
 		ft_strrchr.c\

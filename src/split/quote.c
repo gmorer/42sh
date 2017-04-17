@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/23 13:32:46 by gmorer            #+#    #+#             */
-/*   Updated: 2017/04/03 12:46:38 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:26:05 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/17 12:01:14 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 t_shell		*g_shell;
 
 /*
-**return 0 if special char is disable by " or ' or \
+** return 0 if special char is disable by " or ' or \
 */
 
 int		is_reachable(char *str, int i)
@@ -27,6 +27,8 @@ int		is_reachable(char *str, int i)
 	if (i == 0)
 		return (1);
 	if (str[i - 1] == '\\' && is_reachable(str, i - 1))
+		return (0);
+	if (str[i] == '?' && (i > 0 || (str[i - 1] == '$' && str[i - 1])))
 		return (0);
 	if (!is_not_quote(str, i) && (g_shell->quote[0] ? 1 : (str[i] != '\\')))
 	{
@@ -74,6 +76,9 @@ char	*ft_quote(char *av)
 
 	if (!av)
 		return (NULL);
+	i = ft_strlen(av);
+	if (is_reachable(av, i))
+		return (av);
 	g_shell->av = av;
 	g_shell->quote[0] = 0;
 	g_shell->quote[1] = 0;

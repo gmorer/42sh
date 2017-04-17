@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/10/28 12:42:11 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/28 17:12:25 by rvievill         ###   ########.fr       */
+/*   Created: 2017/04/03 18:15:37 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/04 12:33:42 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void			up_hist(t_cursor *cursor, t_hist **hist)
 	if (hist && *hist)
 	{
 		cl(cursor);
-		free(cursor->line);
+		ft_strdel(&cursor->line);
 		while (cursor->buff_size < (int)ft_strlen((*hist)->cmd))
 			cursor->buff_size *= 2;
 		cursor->line = ft_strnew(cursor->buff_size);
@@ -52,6 +52,7 @@ void			down_hist(t_cursor *cursor, t_hist **hist)
 		ft_bzero(cursor->line, cursor->buff_size);
 		if ((*hist)->next)
 		{
+			ft_strdel(&cursor->line);
 			*hist = (*hist)->next;
 			while (cursor->buff_size < (int)ft_strlen((*hist)->cmd))
 				cursor->buff_size *= 2;

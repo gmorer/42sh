@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/24 15:40:50 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/31 17:54:58 by acottier         ###   ########.fr       */
+/*   Created: 2017/04/03 18:25:16 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/11 16:50:37 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*tilde(char *str)
 	if ((temp = getenvline("HOME")))
 	{
 		rslt = ft_strjoin(temp, str + 1);
-		free(str);
+		ft_strdel(&str);
 		ft_strdel(&temp);
 		return (rslt);
 	}
@@ -36,7 +36,7 @@ static char	*tilde(char *str)
 	if (!pw)
 		return (str);
 	rslt = ft_strjoin(pw->pw_name, str + 1);
-	free(str);
+	ft_strdel(&str);
 	return (rslt);
 }
 
@@ -67,7 +67,7 @@ char		**argvsplit(char *av, char c)
 	int		start;
 
 	i = 0;
-	bzero(g_shell->quote, 2 * sizeof(int));
+	ft_bzero(g_shell->quote, 2 * sizeof(int));
 	rslt = NULL;
 	while (av[i] && ((start = -1)))
 	{
@@ -103,7 +103,7 @@ char		*charadd(char *str, char c)
 		rslt[i] = str[i];
 		i++;
 	}
-	free(str);
+	ft_strdel(&str);
 	rslt[i] = c;
 	rslt[i + 1] = '\0';
 	return (rslt);

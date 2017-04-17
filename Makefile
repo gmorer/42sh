@@ -5,14 +5,14 @@
 #                                                     +:+ +:+         +:+      #
 #    By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2017/01/05 12:45:55 by rvievill          #+#    #+#              #
-#    Updated: 2017/04/03 18:14:53 by gmorer           ###   ########.fr        #
+#    Created: 2017/04/03 18:09:10 by rvievill          #+#    #+#              #
+#    Updated: 2017/04/17 12:19:16 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC= gcc
-NAME= 21sh
-CFLAGS= -g -Wall -Werror -Wextra
+CC= clang
+NAME= 42sh
+CFLAGS= -g -Wall -Werror -Wextra #-fsanitize=address
 CPATH= src/
 OPATH= obj/
 HPATH= inc/ libft/
@@ -56,6 +56,7 @@ CFILES= main.c \
 		lex_par_ast/chain.c \
 		lex_par_ast/misc_parser.c \
 		lex_par_ast/redirection.c \
+		lex_par_ast/check_redir.c \
 		lex_par_ast/error_message_pars.c \
 		split/argv.c \
 		split/argvtest.c \
@@ -71,7 +72,6 @@ CFILES= main.c \
 		environement/init_env.c \
 		environement/ft_shlvl.c \
 		environement/free_env.c \
-		exec/controller.c \
 		exec/exec_cmd.c \
 		exec/linkio.c \
 		exec/find_bin.c \
@@ -80,12 +80,17 @@ CFILES= main.c \
 		exec/heredoc_assign.c \
 		exec/exec_check.c \
 		exec/walkthrough.c \
+		exec/controller.c \
 		exec/free_detail.c \
+		exec/father.c \
 		builtin/ft_cd.c \
+		builtin/misc_cd.c \
 		builtin/ft_echo.c \
+		builtin/ft_echo_bis.c \
 		builtin/ft_fg.c \
 		builtin/jobbuiltin.c \
 		builtin/exit.c \
+		builtin/env_advanced.c \
 		builtin/find_builtin.c \
 		builtin/ft_setenv.c \
 		builtin/hashtab.c \

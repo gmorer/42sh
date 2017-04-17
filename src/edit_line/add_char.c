@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/08 16:38:20 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/23 14:12:11 by rvievill         ###   ########.fr       */
+/*   Created: 2017/04/03 18:11:55 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 10:30:46 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void			add_char(char buff[5], t_cursor *cur)
 
 	if (BUFF >= ' ' && BUFF < 127)
 	{
+		check_select(cur, buff);
 		cur->r_marge++;
 		i = cur->cur_col - 3 + (cur->max_col * (cur->cur_line - 1));
 		if ((int)ft_strlen(cur->line) + 1 >= cur->buff_size)

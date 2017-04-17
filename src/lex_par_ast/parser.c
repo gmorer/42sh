@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acottier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/01 16:11:01 by acottier          #+#    #+#             */
-/*   Updated: 2017/04/03 12:40:08 by acottier         ###   ########.fr       */
+/*   Created: 2017/04/03 18:24:44 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 19:19:14 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,16 @@ static t_lex	*check_sep_syntax(t_lex *lex)
 		return (NULL);
 	if (!lex->lst)
 	{
-		if ((ft_strcmp(lex->str, ";") && !lex->next))
+		if ((ft_strcmp(lex->str, ";") && ft_strcmp(lex->str, "&")
+			&& !lex->next))
 			return (sep_pars_error(lex, 0));
-		if ((lex->prev && !lex->prev->lst) || (lex->next && !lex->next->lst))
+		if ((lex->prev && !lex->prev->lst))
 			return (sep_pars_error(lex, 1));
 		if (!lex->prev
 				&& (ft_strcmp(lex->str, "&&") || ft_strcmp(lex->str, "||")))
 			return (sep_pars_error(lex, 1));
-		if (pars_next_sep(lex) == lex->next)
-			return (sep_pars_error(lex, 1));
+		if (lex->next && pars_next_sep(lex) == lex->next)
+			return (sep_pars_error(lex->next, 1));
 	}
 	if ((error = check_sep_syntax(pars_next_sep(lex))))
 		return (error);
@@ -69,30 +70,30 @@ static t_lex	*free_all(t_lex *main_lst)
 static void		assign_redir(t_detail *link, char *file, t_detail **error)
 {
 	int		i;
+	char	*esp;
 
 	i = -1;
-	if (!link)
-		return ;
-	while (link->redir_str && link->redir_str[++i])
+	while (link && link->redir_str && link->redir_str[++i])
 	{
-		if (ft_strstr(link->redir_str[i], ">>"))
+		link->redir[i] = -1;
+		if ((esp = ft_strstr(link->redir_str[i], ">>")))
 			link->redir[i] = DB_R;
-		else if (ft_strstr(link->redir_str[i], "<<"))
+		else if ((esp = ft_strstr(link->redir_str[i], "<<")))
 		{
 			link->redir[i] = DB_L;
 			file = get_file(link->redir_str[i]);
-			if (heredoc(link, DB_L, file, i))
-				*error = link;
+			*error = (heredoc(link, DB_L, file, i) ? link : NULL);
 		}
-		else if (ft_strstr(link->redir_str[i], ">"))
+		else if ((esp = ft_strstr(link->redir_str[i], ">")))
 			link->redir[i] = S_R;
-		else if (ft_strstr(link->redir_str[i], "<"))
+		else if ((esp = ft_strstr(link->redir_str[i], "<")))
 			link->redir[i] = S_L;
-		else
-			link->redir[i] = -1;
+		if (link->argv && link->argv[0] && link->argv[0][0] == '&'
+				&& esp && !esp[-1])
+			*error = redir_pars_error(link, 0);
 		ft_strdel(&file);
 	}
-	!error ? assign_redir(link->next, NULL, error) : 0;
+	!(*error) && link ? assign_redir(link->next, NULL, error) : 0;
 }
 
 /*
@@ -137,7 +138,7 @@ t_lex			*parser(t_lex *lex)
 			if ((cursor->lst = str_to_lst(cursor->str)) == NULL)
 				return (free_all(lex));
 			det_error = check_cmd_syntax(cursor->lst);
-			if (!det_error)
+			if (!det_error && !(det_error = check_redir(cursor->lst)))
 				assign_redir(cursor->lst, NULL, &det_error);
 		}
 		else

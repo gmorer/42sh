@@ -3,38 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   controller.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/05 14:40:09 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/09 16:15:44 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/06 09:45:19 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/14 17:07:54 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-t_shell		*g_shell;
+t_shell			*g_shell;
 
 int				delet_job(t_job *job)
 {
-	t_job			*prev;
-	t_job			*temp;
-	int				i;
+	t_job		*prev;
+	t_job		*temp;
+	int			i;
 
 	i = 0;
 	prev = NULL;
 	temp = g_shell->first_job;
-	if (g_shell->first_job == job)
-	{
-			free(job->command);
-			free(job);
-			g_shell->first_job = NULL;
-			return (1);
-	}
-		
 	while (temp)
 	{
-		i++;
-		if (temp == job)
+		if ((i++ || 1) && temp == job)
 		{
 			if (prev && job->next)
 				prev->next = job->next;
@@ -42,7 +33,7 @@ int				delet_job(t_job *job)
 				prev->next = NULL;
 			else
 				g_shell->first_job = job->next;
-			free(job->command);
+			ft_strdel(&job->command);
 			free(job);
 			return (i);
 		}
@@ -52,9 +43,9 @@ int				delet_job(t_job *job)
 	return (0);
 }
 
-static int			job_is_in(t_job *job)
+static int		job_is_in(t_job *job)
 {
-	t_job			*temp;
+	t_job		*temp;
 
 	temp = g_shell->first_job;
 	while (temp)
@@ -66,10 +57,10 @@ static int			job_is_in(t_job *job)
 	return (0);
 }
 
-int					add_job(t_job *job)
+int				add_job(t_job *job)
 {
-	t_job			*temp;
-	int				i;
+	t_job		*temp;
+	int			i;
 
 	i = 1;
 	temp = g_shell->first_job;
@@ -85,10 +76,10 @@ int					add_job(t_job *job)
 		g_shell->first_job->next = job;
 		g_shell->first_job = temp;
 	}
-	return(i);
+	return (i);
 }
 
-static void			add_process(pid_t pid, int status, t_job *job)
+static void		add_process(pid_t pid, int status, t_job *job)
 {
 	if (WIFSTOPPED(status))
 	{
@@ -103,7 +94,7 @@ static void			add_process(pid_t pid, int status, t_job *job)
 			delet_job(job);
 		else
 		{
-			free(job->command);
+			ft_strdel(&job->command);
 			free(job);
 		}
 		if (WIFSIGNALED(status))
@@ -117,10 +108,10 @@ static void			add_process(pid_t pid, int status, t_job *job)
 	}
 }
 
-int					wait_for_job(t_job *job)
+int				wait_for_job(t_job *job)
 {
-	int				status;
-	pid_t			pid;
+	int			status;
+	pid_t		pid;
 
 	(void)job;
 	status = 0;

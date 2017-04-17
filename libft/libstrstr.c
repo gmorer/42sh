@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libstrstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/04/06 10:58:14 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/29 18:43:55 by acottier         ###   ########.fr       */
+/*   Created: 2017/04/03 18:45:55 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/15 13:24:56 by bngo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_strstrfree(char **str)
 	i = 0;
 	while (str[i])
 	{
-		free(str[i]);
+		ft_strdel(&str[i]);
 		i++;
 	}
 	free(str);
@@ -89,7 +89,7 @@ char	**ft_strstrdelone(int i, char **str)
 	int		y;
 
 	y = 0;
-	if (!(rslt = malloc(sizeof(char*) * ft_strstrlen(str))))
+	if (!(rslt = (char **)malloc(sizeof(char*) * ft_strstrlen(str))))
 		return (NULL);
 	i++;
 	while (y < i)

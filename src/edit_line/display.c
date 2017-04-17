@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/09 17:16:27 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/22 13:50:09 by rvievill         ###   ########.fr       */
+/*   Created: 2017/04/03 18:13:30 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/15 14:17:23 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** ligne quand on est au bout du shell
 */
 
-void			return_line(t_cursor *cursor)
+static void			return_line(t_cursor *cursor)
 {
 	cursor->l_marge = 0;
 	cursor->r_marge = 0;
@@ -36,10 +36,10 @@ void			return_line(t_cursor *cursor)
 ** ou le couper.
 */
 
-void			display(t_cursor *cur, int i)
+void				display(t_cursor *cur, int i)
 {
-	int			beg;
-	int			end;
+	int				beg;
+	int				end;
 
 	beg = cur->beg_select;
 	end = cur->end_select;
@@ -59,7 +59,7 @@ void			display(t_cursor *cur, int i)
 ** recoit la chaine a l'index ou l'affichage dois se faire
 */
 
-void			putstr_cmd(t_cursor *curs, int i)
+void				putstr_cmd(t_cursor *curs, int i)
 {
 	while (curs->line[i])
 	{

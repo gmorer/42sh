@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/26 13:05:51 by rvievill          #+#    #+#             */
-/*   Updated: 2017/04/03 16:34:32 by rvievill         ###   ########.fr       */
+/*   Created: 2017/04/03 18:14:48 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/15 14:06:28 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ int					init_term(t_cursor **cur)
 	struct termios	cur_term;
 
 	errno = 0;
-	init_cursor(cur);
-	g_shell->cursor = *cur;
 	if ((name = getenvline("TERM")) == NULL)
 		return (1);
 	if ((tgetent(NULL, name) == ERR))
@@ -55,13 +53,15 @@ int					init_term(t_cursor **cur)
 		return (1);
 	}
 	free(name);
-	if (tcgetattr(0, &((*cur)->term)) == -1)
+	init_cursor(cur);
+	g_shell->cursor = *cur;
+	if (tcgetattr(STDIN_FILENO, &((*cur)->term)) == -1)
 		return (1);
 	cur_term = (*cur)->term;
 	cur_term.c_lflag &= ~(ICANON | ECHO);
 	cur_term.c_cc[VMIN] = 1;
 	cur_term.c_cc[VTIME] = 0;
-	if (tcsetattr(0, TCSADRAIN, &cur_term))
+	if (tcsetattr(STDIN_FILENO, TCSADRAIN, &cur_term))
 		return (1);
 	return (0);
 }

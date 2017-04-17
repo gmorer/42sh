@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/09 11:30:41 by rvievill          #+#    #+#             */
-/*   Updated: 2017/02/25 17:07:23 by rvievill         ###   ########.fr       */
+/*   Created: 2017/04/03 18:14:37 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/06 14:27:44 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void			home(t_cursor *cursor, t_hist **hist)
 void			end(t_cursor *cursor, t_hist **hist)
 {
 	(void)hist;
+	go_home(cursor);
 	while (cursor->cur_col > 0)
 	{
 		tputs(tgetstr("le", 0), 1, my_putchar);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/05 18:10:16 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/21 10:53:12 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:28:10 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/10 20:10:31 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ char	*ft_quote_add(char *av);
 char	*ft_quote(char *av);
 char	*argvtest(char *str);
 char	**argvclean(char **argv);
+char	*rm_bs(char *str);
 
 #endif

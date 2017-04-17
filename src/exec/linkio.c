@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/23 18:39:00 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/28 16:19:04 by rvievill         ###   ########.fr       */
+/*   Created: 2017/04/03 18:19:37 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/17 10:58:45 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static int			link_dbl(t_detail *node, int i)
 
 static int			link_sr(t_detail *node, int i)
 {
-	dup2(node->fd_file[i], node->fd_std[i]);
-	close(node->fd_file[i]);
+	if (node->fd_file[i] != node->fd_std[i])
+		dup2(node->fd_file[i], node->fd_std[i]);
 	return (0);
 }
 

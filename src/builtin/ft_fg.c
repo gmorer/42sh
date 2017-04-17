@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_fg.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/06 12:15:36 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/09 15:21:08 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/06 09:47:36 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/06 10:10:45 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int					ft_bg(char **argv)
 	job = g_shell->first_job;
 	if (!job)
 	{
-		ft_putendl("fg: no currentjob");
+		ft_putendl("bg: no currentjob");
 		return (1);
 	}
 	if (argv[1] == NULL)

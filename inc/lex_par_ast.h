@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lex_par_ast.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acottier <acottier@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/07/07 19:18:19 by acottier          #+#    #+#             */
-/*   Updated: 2017/04/03 12:08:40 by acottier         ###   ########.fr       */
+/*   Created: 2017/04/03 18:27:55 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 17:58:41 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct		s_detail
 */
 typedef struct		s_lex
 {
+	char			*space;
 	char			*str;
 	int				placed;
 	t_detail		*lst;
@@ -91,9 +92,9 @@ int					redirection(char **line, t_lex **res);
 */
 int					redir_in_scope(char *line, int scope);
 int					quote_scope(char *line, char quote, int i);
-int					next_sep(char *line);
 void				advance_pos(char **line, int length);
 int					is_sep(char *str);
+int					check_nbr(char *str);
 
 /*
 ** PARSER.C
@@ -115,6 +116,11 @@ int					check_redir_tab(char **redir_str);
 char				*cur_lex_str(t_lex *lst);
 
 /*
+** CHECK_REDIR.C
+*/
+t_detail			*check_redir(t_detail *cursor);
+
+/*
 ** MKTREE.C
 */
 t_node				*mktree(t_lex *lex);
@@ -132,5 +138,6 @@ void				free_tree(t_node *tree);
 */
 t_detail			*cmd_pars_error(t_detail *cursor, int err);
 t_lex				*sep_pars_error(t_lex *cursor, int err);
+t_detail			*redir_pars_error(t_detail *cursor, int type);
 
 #endif

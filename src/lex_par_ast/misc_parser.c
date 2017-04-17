@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   misc_parser.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acottier <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/20 17:38:59 by acottier          #+#    #+#             */
-/*   Updated: 2017/03/31 17:57:52 by acottier         ###   ########.fr       */
+/*   Created: 2017/04/03 18:24:24 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 17:42:06 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ t_lex		*pars_next_sep(t_lex *lex)
 
 int			target(char *str, int type)
 {
-	static const char	*tab[8] = {"&|;", "<>", "<> \n\t", "&|;", " \n\t",
-									"", "|;"};
+	static const char	*tab[9] = {"&|;", "<>", "<> \n\t", "&|;", " \n\t",
+									"", "|;", "", "<> \n\t"};
 	int					i;
 
 	i = -1;
@@ -76,6 +76,8 @@ int			target(char *str, int type)
 			return (str[i] == str[i + 1] ? 2 : 1);
 		if (type == 7 && (str[i] != ' ' && str[i] != '\n' && str[i] != '\t'))
 			return (i);
+		if (type == 8 && ft_strchr(tab[type], str[i]) && is_reachable(str, i))
+			type = 2;
 		else if (ft_strchr(tab[type], str[i]) && is_reachable(str, i))
 			return (i);
 	}

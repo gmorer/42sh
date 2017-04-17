@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lvalenti <lvalenti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/06 13:20:51 by lvalenti          #+#    #+#             */
-/*   Updated: 2017/04/03 18:27:33 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/08 11:04:03 by lvalenti          #+#    #+#             */
+/*   Updated: 2017/04/17 14:12:17 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,81 +22,49 @@ void	show_env(void)
 	int		i;
 
 	i = 0;
-	while (g_shell->env[i])
+	while (g_shell->env && g_shell->env[i])
 	{
 		ft_putendl(g_shell->env[i]);
 		i++;
 	}
 }
 
-int		no_option(char **argv, t_detail *node, int j)
+int		no_option(char **argv, int j)
 {
-	pid_t		child;
-	int			status;
+	int			i;
+	char		**old_env;
+	t_detail	node;
+	pid_t		pid;
 
-	child = fork();
-	if (child == 0)
-	{
-		node->argv = argv + j;
-		exec_basic_cmd(node, g_shell->env, 1);
-		exit(0);
-	}
-	else if (child > 0)
-		waitpid(WAIT_ANY, &status, WUNTRACED);
-	return (0);
+	i = 0;
+	old_env = ft_strstrdup(g_shell->env);
+	while (++i < j)
+		temp_env(g_shell->env, argv[i]);
+	node.argv = argv + j;
+	if ((pid = fork()) == 0)
+		exec_basic_cmd(&node, g_shell->env, 1, 0);
+	else
+		waitpid(pid, &i, WUNTRACED);
+	ft_strstrfree(g_shell->env);
+	g_shell->env = old_env;
+	if (WIFEXITED(i))
+		return (WEXITSTATUS(i));
+	return (WIFSIGNALED(i) ? WTERMSIG(i) : i);
 }
 
-int		option_v(char **argv, t_detail *node, int i)
+int		option_i(char **argv, int i)
 {
-	pid_t		child;
 	int			status;
+	t_detail	node;
+	pid_t		pid;
 
-	ft_putstr("#env executing: ");
-	ft_putendl(argv[i]);
-	ft_putstr("#env    arg[0]= '");
-	ft_putstr(argv[i]);
-	ft_putendl("'");
-	child = fork();
-	if (child == 0)
-	{
-		node->argv = argv + 2;
-		exec_basic_cmd(node, g_shell->env, 1);
-		exit(0);
-	}
-	else if (child > 0)
-		waitpid(WAIT_ANY, &status, WUNTRACED);
-	return (0);
-}
-
-int		option_i(char **argv, t_detail *node)
-{
-	pid_t		child;
-	int			status;
-
-	child = fork();
-	if (child == 0)
-	{
-		node->argv = argv + 2;
-		exec_basic_cmd(node, NULL, 1);
-		exit(0);
-	}
-	else if (child > 0)
-		waitpid(WAIT_ANY, &status, WUNTRACED);
-	return (0);
-}
-
-int		option_u(char **argv)
-{
-	int		i;
-
-	if (ft_strstrlen(argv) != 2)
-		return (1);
-	if ((i = casenofor(argv[1])) == -1)
-		return (1);
-	if (ft_strcmp(argv[1], "BINARY_LEN") == 0)
-		return (0);
-	if (ft_strcmp(argv[1], "PATH") == 0)
-		ft_free_hash_tab();
-	g_shell->env = ft_strstrdelone(i, g_shell->env);
-	return (0);
+	status = 0;
+	node.argv = argv + i;
+	if ((pid = fork()) == 0)
+		exec_basic_cmd(&node, NULL, 1, 0);
+	else
+		waitpid(pid, &status, WUNTRACED);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (WIFSIGNALED(status) ? WTERMSIG(status) : status);
 }

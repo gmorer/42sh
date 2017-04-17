@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/26 16:10:32 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/27 15:06:49 by acottier         ###   ########.fr       */
+/*   Created: 2017/04/03 18:16:22 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/15 15:25:19 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void				path(void)
 
 	new_path = NULL;
 	tmp = NULL;
-	pwd = getcwd(NULL, 0);
+	pwd = getenvline("PWD=");
 	ft_putstr_fd(GREEN, 2);
 	if (!(home = getenvline("HOME=")) && pwd)
 		ft_putstr_fd(pwd, 2);
@@ -34,8 +34,8 @@ void				path(void)
 		ft_putstr_fd(new_path = ft_strdup(ft_strrchr(pwd, '/')), 2);
 	else
 		ft_putstr_fd(new_path = ft_strdup("no_where"), 2);
-	ft_strdel(&home);
-	ft_strdel(&pwd);
+	free(home);
+	free(pwd);
 	free(new_path);
 	ft_putstr_fd(RED, 2);
 	ft_putendl_fd(" ]", 2);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_shlvl.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/29 10:31:39 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/20 10:50:38 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:17:33 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/03 18:17:34 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**ft_shlvl(char **env)
 	free(env[i]);
 	temp = ft_itoa(ft_atoi(line) + 1);
 	env[i] = ft_strjoin("SHLVL=", temp);
-	free(temp);
-	free(line);
+	ft_strdel(&temp);
+	ft_strdel(&line);
 	return (env);
 }

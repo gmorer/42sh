@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/11 12:56:03 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/03 15:39:16 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:18:50 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/08 11:57:37 by bngo             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char			*error_message(int ret, char *cmd)
 		return (NULL);
 	if (ret == 127)
 	{
-		ft_putstr_fd("21sh: command not found: ", 2);
+		ft_putstr_fd("42sh: command not found: ", 2);
 		ft_putendl_fd(cmd, 2);
 	}
 	else if (ret == 126 || ret == 1)

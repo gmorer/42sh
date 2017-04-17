@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/30 11:17:30 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/22 10:36:10 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:17:59 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/04 15:33:52 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ static char		*ft_read_pathlinux(char *path)
 		if (temp && temp[0] && temp[0] != '#')
 			if (ft_strstr(temp, "ENV_PATH") != NULL)
 				dup = ft_strdup(temp);
-		free(temp);
+		ft_strdel(&temp);
 	}
 	close(fd);
 	if (dup)
 	{
 		temp = ft_strdup((ft_strstr(dup, "PATH=") + ft_strlen("PATH=")));
-		free(dup);
+		ft_strdel(&dup);
 		return (temp);
 	}
 	return (NULL);
@@ -88,10 +88,10 @@ static char		*ft_read_pathosx(char *path)
 	{
 		temp3 = ft_strjoin(temp, "\n");
 		result = ft_strjoin(temp2, temp3);
-		free(temp2);
+		ft_strdel(&temp2);
 		temp2 = result;
-		free(temp3);
-		free(temp);
+		ft_strdel(&temp3);
+		ft_strdel(&temp);
 	}
 	close(fd);
 	return (ft_change_c2c(result, '\n', ':'));
@@ -108,7 +108,7 @@ char			**init_path(char **env)
 		if (temp)
 		{
 			env = ft_strstradd(ft_strjoin("PATH=", temp), env);
-			free(temp);
+			ft_strdel(&temp);
 		}
 	}
 	return (env);
@@ -131,8 +131,10 @@ char			**init_env(char **oldenv)
 	if (casenofor("PWD") == -1 && (temp = getcwd(NULL, 0)))
 	{
 		env = ft_strstradd(ft_strjoin("PWD=", temp), env);
-		free(temp);
+		ft_strdel(&temp);
 	}
+	if (casenofor("TERM") == -1)
+		env = ft_strstradd(ft_strjoin("TERM=", "xterm-256color"), env);
 	env = ft_shlvl(env);
 	return (env);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/01 14:20:25 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/21 16:12:53 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:10:10 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/15 14:27:39 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,7 @@
 
 t_shell	*g_shell;
 
-static void	ft_cdok(char *oldpwd, char *arg, int option_p)
-{
-	char	*temp;
-	int		i;
-
-	if ((i = casenofor("OLDPWD")) == -1 && oldpwd)
-		g_shell->env = ft_strstradd(ft_strjoin("OLDPWD=", oldpwd),
-				g_shell->env);
-	else if (oldpwd && i != -1)
-	{
-		free(g_shell->env[i]);
-		g_shell->env[i] = ft_strjoin("OLDPWD=", oldpwd);
-	}
-	temp = option_p ? ft_strjoin(oldpwd, arg) : getcwd(NULL, 0);
-	if ((i = casenofor("PWD")) == -1)
-		g_shell->env = ft_strstradd(ft_strjoin("PWD=", temp), g_shell->env);
-	else
-	{
-		free(g_shell->env[i]);
-		g_shell->env[i] = ft_strjoin("PWD=", temp);
-	}
-	free(temp);
-	free(oldpwd);
-}
-
-static int	ft_cdtest(char *path)
+static int	change_dir(char *path)
 {
 	struct stat path_stat;
 
@@ -49,107 +24,109 @@ static int	ft_cdtest(char *path)
 	{
 		ft_putstr("cd: no such file or directory: ");
 		ft_putendl(path);
-		return (0);
+		return (1);
 	}
 	if (access(path, R_OK) == -1)
 	{
 		ft_putstr("ls: cannot open directory ");
 		ft_putstr(path);
 		ft_putendl(": Permission denied");
-		return (0);
+		return (1);
 	}
 	stat(path, &path_stat);
 	if (S_ISREG(path_stat.st_mode) == 1)
 	{
 		ft_putstr("cd: not a directory: ");
 		ft_putendl(path);
-		return (0);
+		return (1);
 	}
 	chdir(path);
+	return (0);
+}
+
+static int	option_p(char *path)
+{
+	char	*newpwd;
+	char	*curpwd;
+
+	if (ft_strcmp(path, "-") == 0)
+	{
+		ft_strdel(&path);
+		path = getenvline("OLDPWD=");
+		if (!path)
+			return (err_msg(NULL, 0, 2));
+	}
+	if (change_dir(path) == 0)
+	{
+		newpwd = NULL;
+		newpwd = getcwd(newpwd, 0);
+		curpwd = getenvline("PWD=");
+		replace_env("OLDPWD", "OLDPWD=", curpwd);
+		ft_strdel(&curpwd);
+		replace_env("PWD", "PWD=", newpwd);
+		ft_strdel(&newpwd);
+		ft_strdel(&path);
+		return (0);
+	}
+	ft_strdel(&path);
 	return (1);
 }
 
-static char	*ft_cd_find(char **argv, int opt_len)
+static int	option_l(char *path)
 {
-	char	*temp;
-	int		test;
-	char	*temp2;
+	struct stat	info;
+	char		*curpwd;
 
-	test = 0;
-	if ((ft_strcmp(argv[opt_len], "-") == 0) || !argv[opt_len])
+	if (ft_strcmp(path, "-") == 0)
 	{
-		temp2 = !argv[opt_len] ? "HOME" : "OLDPWD";
-		temp = getenvline(temp2);
-		if (!temp)
-		{
-			ft_putstr_fd("21sh: cd: ", 2);
-			ft_putstr_fd(temp2, 2);
-			ft_putendl_fd(" not set", 2);
-			return (NULL);
-		}
-		if (ft_cdtest(temp))
-			return (temp);
-		free(temp);
-		return (NULL);
+		ft_strdel(&path);
+		path = getenvline("OLDPWD=");
+		if (!path)
+			return (err_msg(NULL, 0, 2));
 	}
-	else if ((argv[opt_len]))
-		return (ft_cdtest(argv[opt_len]) ? ft_strdup(argv[opt_len]) : NULL);
-	return (NULL);
+	lstat(path, &info);
+	if (S_ISLNK(info.st_mode))
+	{
+		curpwd = getenvline("PWD=");
+		path = clear_path(path);
+		change_dir(path);
+		replace_env("OLDPWD", "OLDPWD=", curpwd);
+		ft_strdel(&curpwd);
+		replace_env("PWD", "PWD=", path);
+		ft_strdel(&path);
+		return (0);
+	}
+	else
+		return (option_p(path));
 }
 
-int			cd_option(char **argv, int *option_p, int *option_l)
+static int	no_arg(void)
 {
-	int i;
-	int	j;
+	char	*home;
 
-	i = 1;
-	*option_p = 0;
-	*option_l = 0;
-	while (argv[i] && argv[i][0] == '-' && argv[i][1])
-	{
-		if ((j = 1) && argv[i] && !ft_strcmp(argv[i], "--"))
-			return (i + 1);
-		while (argv[i][++j])
-		{
-			*option_p = argv[i][j] == 'P' ? 1 : *option_p;
-			*option_l = argv[i][j] == 'L' ? 1 : *option_l;
-			if (argv[i][j] != 'P' && argv[i][j] != 'L')
-			{
-				ft_putstr("21sh: -");
-				ft_putchar(argv[i][j]);
-				ft_putendl(": invalid option\ncd: usage: cd [-L|-P] [dir]");
-				return (-1);
-			}
-		}
-		i++;
-	}
-	return (i);
+	home = getenvline("HOME=");
+	if (!home)
+		err_msg(NULL, 0, 1);
+	else
+		return (option_p(home));
+	return (1);
 }
 
 int			ft_cd(char **argv)
 {
-	char	*oldpwd;
-	char	*temp;
-	int		option_p;
-	int		option_l;
-	int		option_len;
+	int			i;
+	int			option;
+	int			error;
 
-	if ((option_len = cd_option(argv, &option_p, &option_l)) == -1)
-		return (1);
-	if (ft_strstrlen(argv) - option_len > 2)
-	{
-		ft_putendl("cd: too many arguments");
-		return (-1);
-	}
-	oldpwd = getenvline("PWD=");
-	if (!oldpwd)
-		oldpwd = getcwd(NULL, 0);
-	if ((temp = ft_cd_find(argv, option_len)) == NULL)
-	{
-		free(oldpwd);
-		return (1);
-	}
-	ft_cdok(oldpwd, temp, option_p);
-	free(temp);
-	return (0);
+	error = 0;
+	option = get_opt(argv, &i, &error);
+	if (error)
+		return (err_msg(argv[i], error, 0));
+	if (!argv[i])
+		return (no_arg());
+	else if (option == OPT_P)
+		return (option_p(ft_strdup(argv[i])));
+	else
+		return (option_l(ft_strdup(argv[i])));
+	return (1);
 }

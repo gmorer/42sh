@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rvievill <rvievill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/09 16:44:48 by gmorer            #+#    #+#             */
-/*   Updated: 2017/04/03 18:22:03 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:27:20 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 19:54:51 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define BUILTIN_H
 
 # include "lex_par_ast.h"
+
+# define BAD_OPT -1
+# define OPT_L 0
+# define OPT_P 1
 
 typedef struct	s_builtin
 {
@@ -33,5 +37,11 @@ int				ft_setenv(char **argv);
 int				ft_exit(char **argv);
 int				ft_echo(char **argv);
 int				ft_env(char **argv);
+int				check_variable(char *var);
+int				special_char(char *str, char **res, int *k, int *i);
+int				err_msg(char *str, int error, int type);
+char			*clear_path(char *path);
+void			replace_env(char *type, char *type2, char *content);
+int				get_opt(char **argv, int *i, int *error);
 
 #endif

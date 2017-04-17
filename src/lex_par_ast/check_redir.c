@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlenchr.c                                     :+:      :+:    :+:   */
+/*   check_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acottier <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/17 18:13:37 by acottier          #+#    #+#             */
-/*   Updated: 2017/04/15 10:56:48 by acottier         ###   ########.fr       */
+/*   Created: 2017/04/16 17:48:13 by acottier          #+#    #+#             */
+/*   Updated: 2017/04/16 19:17:03 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "lex_par_ast.h"
+#include "exec.h"
 
-size_t	ft_strlenchr(char *str, char c)
+t_detail		*check_redir(t_detail *cursor)
 {
-	size_t	i;
+	int			i;
+	char		*file;
+	t_detail	*error;
 
 	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] != '\0' && str[i] != c)
+	error = NULL;
+	while (!error && cursor && cursor->redir_str && cursor->redir_str[i])
+	{
+		file = get_file(cursor->redir_str[i]);
+		if (!file)
+			error = cursor;
+		ft_strdel(&file);
 		i++;
-	return (i);
+	}
+	return (error ? redir_pars_error(error, 1) : NULL);
 }

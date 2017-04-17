@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/05/23 13:33:16 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/21 15:23:56 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:09:51 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 20:58:52 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int		ft_exit(char **argv)
 	int i;
 
 	if (ft_strstrlen(argv) > 2)
-	{
 		ft_putendl("exit: too many arguments");
+	if (ft_strstrlen(argv) > 2)
 		return (1);
-	}
+	tcsetpgrp(1, getppid());
 	if (ft_strstrlen(argv) == 1)
 	{
 		ft_free_hash_tab();

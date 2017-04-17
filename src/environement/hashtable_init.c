@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hashtable_init.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/15 12:56:31 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/07 13:22:32 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:17:49 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/03 18:17:51 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_binary	*ft_remp(char *binary, char *path)
 	bin->next = NULL;
 	temp = ft_strjoin(path, "/");
 	bin->data->full_path = ft_strjoin(temp, binary);
-	free(temp);
+	ft_strdel(&temp);
 	return (bin);
 }
 

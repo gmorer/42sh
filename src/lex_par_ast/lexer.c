@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acottier <acottier@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/14 17:34:10 by acottier          #+#    #+#             */
-/*   Updated: 2017/04/03 14:28:00 by lvalenti         ###   ########.fr       */
+/*   Created: 2017/04/03 18:23:57 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/16 18:03:03 by acottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** Fusionne 2 chaines en mettant un caractere special au milieu
 */
 
-static char	*trijoin(char *str1, char *str2, int merge)
+static char	*trijoin(char *str1, char *str2, int merge, char *space)
 {
 	char	*swap;
 	char	*tmp;
@@ -30,19 +30,19 @@ static char	*trijoin(char *str1, char *str2, int merge)
 	{
 		i = ft_strlen(str1) - 1;
 		while (i >= 0 && str1 && str1[i] && str1[i] != ' ' && str1[i] != 7)
-		{
-			if (ft_isdigit(str1[i]) == 0)
+			if (ft_isdigit(str1[i--]) == 0)
 				swap[0] = 7;
-			i--;
-		}
 		swap[0] == 0 ? swap[0] = ' ' : 0;
+		if (space && (*space == ' ' || *space == '\t' || *space == '\n')
+				&& !check_nbr(space))
+			swap[0] = 7;
 	}
 	else
 		swap[0] = (merge == 1 ? ' ' : 7);
 	tmp = ft_strjoin(str1, swap);
 	res = ft_strjoin(tmp, str2);
-	free(tmp);
-	free(swap);
+	ft_strdel(&tmp);
+	ft_strdel(&swap);
 	return (res);
 }
 
@@ -72,7 +72,7 @@ t_lex		*add_link(char *str, t_lex *prev, int add, int merge)
 		if (!prev)
 			prev = add_link("\a", NULL, 1, 0);
 		tmp = prev->str;
-		prev->str = trijoin(tmp, str, merge);
+		prev->str = trijoin(tmp, str, merge, prev->space);
 		ft_strdel(&tmp);
 	}
 	ft_strcmp(str, "\a") ? ft_strdel(&str) : 0;
@@ -125,6 +125,7 @@ t_lex		*lexer(char **line, char *cursor, int i)
 	while (*cursor)
 	{
 		i = 0;
+		res ? res->space = cursor : 0;
 		while (*cursor == ' ' || *cursor == '\n' || *cursor == '\t')
 			cursor++;
 		if (get_expr(&cursor, &i, &res) == 0 && i > 0)
@@ -137,7 +138,6 @@ t_lex		*lexer(char **line, char *cursor, int i)
 		}
 		cursor += i;
 	}
-	free((*line));
-	*line = NULL;
+	ft_strdel(line);
 	return (to_start(res));
 }

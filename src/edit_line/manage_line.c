@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   move_str.c                                         :+:      :+:    :+:   */
+/*   manage_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/08 15:08:04 by rvievill          #+#    #+#             */
-/*   Updated: 2017/03/10 13:18:35 by rvievill         ###   ########.fr       */
+/*   Created: 2017/04/03 18:14:59 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/15 14:59:37 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,16 @@ void		extend_str(t_cursor *cur)
 
 void		move_str(char **line, int i, int way, int max)
 {
-	int		limit;
 	char	tmp[max];
 	int		j;
 
 	j = 0;
 	ft_bzero(tmp, max);
 	ft_strcpy(tmp, &(*line)[i]);
-	if (way < 0)
-		limit = max;
-	else
-		limit = ft_strlen(*line);
-	while (i < limit)
+	while (i < max)
 	{
-		(*line)[i + way] = tmp[j];
+		if (i + way < max)
+			(*line)[i + way] = tmp[j];
 		i++;
 		j++;
 	}

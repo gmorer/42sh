@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hashtable.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmorer <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/15 12:57:25 by gmorer            #+#    #+#             */
-/*   Updated: 2017/03/07 13:27:33 by gmorer           ###   ########.fr       */
+/*   Created: 2017/04/03 18:17:41 by rvievill          #+#    #+#             */
+/*   Updated: 2017/04/03 18:17:42 by rvievill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static t_binary		*free_bin(t_binary *bin)
 
 	bin2 = bin;
 	bin = bin->next;
-	free(bin2->data->name);
-	free(bin2->data->full_path);
+	ft_strdel(&bin2->data->name);
+	ft_strdel(&bin2->data->full_path);
 	free(bin2->data);
 	free(bin2);
 	return (bin);
