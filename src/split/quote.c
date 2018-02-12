@@ -6,7 +6,7 @@
 /*   By: rvievill <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/03 18:26:05 by rvievill          #+#    #+#             */
-/*   Updated: 2017/04/17 12:01:14 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/02/12 15:29:54 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		is_reachable(char *str, int i)
 		return (1);
 	if (str[i - 1] == '\\' && is_reachable(str, i - 1))
 		return (0);
-	if (str[i] == '?' && (i > 0 || (str[i - 1] == '$' && str[i - 1])))
+	if (str[i] == '?' && (i < 0 || (str[i - 1] == '$' && str[i - 1])))
 		return (0);
 	if (!is_not_quote(str, i) && (g_shell->quote[0] ? 1 : (str[i] != '\\')))
 	{
